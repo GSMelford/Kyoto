@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot", "Kyoto.Bot\Kyoto.Bot.csproj", "{A23C068E-6EA1-4E58-99A2-2C1286010683}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{13308AE5-435D-4552-B25F-58A59BF2A2C8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Telegram.Receiver", "Kyoto.Telegram.Receiver\Kyoto.Telegram.Receiver.csproj", "{84A41CDB-6AF2-4B8E-9BEE-461A174F6291}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Telegram.Sender", "Kyoto.Telegram.Sender\Kyoto.Telegram.Sender.csproj", "{50429C27-C80A-44B9-80B8-8C6C52D244B8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A23C068E-6EA1-4E58-99A2-2C1286010683}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A23C068E-6EA1-4E58-99A2-2C1286010683}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A23C068E-6EA1-4E58-99A2-2C1286010683}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A23C068E-6EA1-4E58-99A2-2C1286010683}.Release|Any CPU.Build.0 = Release|Any CPU
+		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291}.Release|Any CPU.Build.0 = Release|Any CPU
+		{50429C27-C80A-44B9-80B8-8C6C52D244B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{50429C27-C80A-44B9-80B8-8C6C52D244B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{50429C27-C80A-44B9-80B8-8C6C52D244B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{50429C27-C80A-44B9-80B8-8C6C52D244B8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
+		{50429C27-C80A-44B9-80B8-8C6C52D244B8} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
+	EndGlobalSection
+EndGlobal
