@@ -1,4 +1,4 @@
-﻿namespace Kyoto.Kafka.Events;
+﻿namespace Kyoto.Kafka.Modules;
 
 public abstract class BaseEvent
 {

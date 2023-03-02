@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
-using Kyoto.Kafka.Events;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Kafka.Modules;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;

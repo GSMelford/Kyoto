@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
 
-namespace Kyoto.Kafka.Events;
+namespace Kyoto.Kafka.Modules;
 
 public class ReceivedEventDetails
 { 

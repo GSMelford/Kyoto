@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Telegram.Sender", "Ky
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka", "Kyoto.Kafka\Kyoto.Kafka.csproj", "{4A048108-968A-46E8-87D1-4B2F9C2FFC6B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Domain", "Kyoto.Domain\Kyoto.Domain.csproj", "{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -32,6 +34,10 @@ Global
 		{4A048108-968A-46E8-87D1-4B2F9C2FFC6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4A048108-968A-46E8-87D1-4B2F9C2FFC6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4A048108-968A-46E8-87D1-4B2F9C2FFC6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}

@@ -1,6 +1,6 @@
 ﻿using Confluent.Kafka;
-using Kyoto.Kafka.Events;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Kafka.Modules;
 using Microsoft.Extensions.Logging;
 
 namespace Kyoto.Kafka.Services;

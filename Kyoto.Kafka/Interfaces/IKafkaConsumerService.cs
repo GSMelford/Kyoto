@@ -1,4 +1,4 @@
-﻿using Kyoto.Kafka.Events;
+﻿using Kyoto.Kafka.Modules;
 
 namespace Kyoto.Kafka.Interfaces;
 

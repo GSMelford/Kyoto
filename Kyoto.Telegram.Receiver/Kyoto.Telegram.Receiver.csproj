@@ -13,4 +13,12 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="TBot.Telegram.Dto" Version="0.4.3.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+    </ItemGroup>
+
 </Project>
