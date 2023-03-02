@@ -6,4 +6,9 @@ public class Update
 {
     public int UpdateId { get; set; }
     public Message? Message { get; set; }
+
+    public bool IsMessageExist()
+    {
+        return Message is not null;
+    }
 }

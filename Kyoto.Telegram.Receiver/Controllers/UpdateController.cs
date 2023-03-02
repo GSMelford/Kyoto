@@ -16,7 +16,7 @@ public class UpdateController : ControllerBase
         _updateService = updateService;
     }
 
-    public async Task Post([FromBody, Required] UpdateDto updateDto)
+    public async Task GetUpdate([FromBody, Required] UpdateDto updateDto)
     {
         await _updateService.HandleAsync(updateDto.ToDomain());
     }

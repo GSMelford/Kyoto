@@ -12,6 +12,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka", "Kyoto.Kafka\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Domain", "Kyoto.Domain\Kyoto.Domain.csproj", "{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka.Event", "Kyoto.Kafka.Event\Kyoto.Kafka.Event.csproj", "{5B74433C-A68A-4903-A236-28C3675D3DCB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -38,6 +40,10 @@ Global
 		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}

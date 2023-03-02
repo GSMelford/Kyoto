@@ -1,6 +1,13 @@
+using Kyoto.Telegram.Receiver.Interfaces;
+using Kyoto.Telegram.Receiver.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddTransient<IUpdateService, UpdateService>();
+
 var app = builder.Build();
 
-app.MapGet("/", () => "Hello World!");
+app.UseRouting();
+app.MapControllers();
+app.MapHealthChecks("/health");
 
-app.Run();
+await app.RunAsync();
