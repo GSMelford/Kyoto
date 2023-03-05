@@ -13,4 +13,14 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="TBot.Core" Version="0.4.5.4" />
+      <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Kafka.Event\Kyoto.Kafka.Event.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
+    </ItemGroup>
+
 </Project>
