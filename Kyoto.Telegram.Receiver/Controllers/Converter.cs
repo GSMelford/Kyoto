@@ -22,7 +22,9 @@ public static class Converter
         {
             Chat = messageDto.Chat.ToDomain(),
             FromUser = messageDto.From?.ToDomain(),
-            MessageId = messageDto.MessageId
+            MessageId = messageDto.MessageId,
+            Text = messageDto.Text,
+            MessageEntities = messageDto.Entities?.Select(ToDomain).ToList()
         };
     }
 
@@ -43,6 +45,20 @@ public static class Converter
             Username = userDto.Username,
             FirstName = userDto.FirstName,
             LastName = userDto.LastName
+        };
+    }
+    
+    public static MessageEntity ToDomain(this MessageEntityDto messageEntityDto)
+    {
+        return new MessageEntity
+        {
+            Type = messageEntityDto.Type,
+            Offset = messageEntityDto.Offset,
+            Length = messageEntityDto.Length,
+            Language = messageEntityDto.Language,
+            Url = messageEntityDto.Url,
+            CustomEmojiId = messageEntityDto.CustomEmojiId,
+            User = messageEntityDto.User?.ToDomain()
         };
     }
 }
