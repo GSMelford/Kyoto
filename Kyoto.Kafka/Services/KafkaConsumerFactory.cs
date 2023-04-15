@@ -24,7 +24,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         ConsumerConfig? config = null,
         string? topic = null,
         string? groupId = null,
-        bool? enableAutoCommit = true) where THandler : IEventHandler<TEvent>
+        bool? enableAutoCommit = true) where THandler : class, IEventHandler<TEvent>
     {
         string eventName = typeof(TEvent).Name;
         if (string.IsNullOrEmpty(topic)) {
@@ -59,13 +59,20 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         return kafkaConsumerService;
     }
 
-    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : IEventHandler<TEvent>
+    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IEventHandler<TEvent>
     {
-        TEvent? @event = JsonConvert.DeserializeObject<TEvent>(e.Message);
-        THandler eventHandler = ActivatorUtilities.CreateInstance<THandler>(_serviceProvider);
-
-        if (@event != null) {
-            await eventHandler.HandleAsync(@event);
+        var @event = JsonConvert.DeserializeObject<TEvent>(e.Message);
+        
+        using var scope = _serviceProvider.CreateScope();
+        var handler = ActivatorUtilities.CreateInstance(scope.ServiceProvider, typeof(THandler)) as THandler;
+        var method = handler?.GetType().GetMethod("HandleAsync");
+            
+        if (@event != null)
+        {
+            if (method!.Invoke(handler, new object[] { @event }) is Task resultTask)
+            {
+                await resultTask;
+            }
         }
     }
     

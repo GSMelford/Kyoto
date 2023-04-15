@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Kyoto.Infrastructure;
 
-public interface IDatabaseContext
+public interface IDatabaseContext : IDisposable
 {
     Task MigrateAsync(string connectionString, CancellationToken cancellationToken = default);
     EntityEntry<TEntity> Add<TEntity>(TEntity entity) where TEntity : BaseModel;

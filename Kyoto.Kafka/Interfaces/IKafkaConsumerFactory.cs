@@ -9,5 +9,5 @@ public interface IKafkaConsumerFactory : IDisposable
         string? topic = null,
         string? groupId = null,
         bool? enableAutoCommit = true)
-        where THandler : IEventHandler<TEvent>;
+        where THandler : class, IEventHandler<TEvent>;
 }

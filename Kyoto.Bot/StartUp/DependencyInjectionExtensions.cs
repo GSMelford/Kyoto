@@ -27,6 +27,6 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddDatabase(this IServiceCollection services, DatabaseSettings databaseSettings)
     {
-        return services.AddScoped<IDatabaseContext>(_ => new DatabaseContext(databaseSettings.ToConnectionString()));
+        return services.AddScoped<IDatabaseContext, DatabaseContext>(_ => new DatabaseContext(databaseSettings.ToConnectionString()));
     }
 }
