@@ -5,8 +5,8 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Kyoto.Bot/Kyoto.Bot.csproj", "Kyoto/"]
-RUN dotnet restore "Kyoto/Kyoto.csproj"
+COPY ["Kyoto.Bot/Kyoto.Bot.csproj", "Kyoto.Bot/"]
+RUN dotnet restore "Kyoto.Bot/Kyoto.Bot.csproj"
 COPY . .
 WORKDIR "/src/Kyoto.Bot"
 RUN dotnet build "Kyoto.Bot.csproj" -c Release -o /app/build
