@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["Kyoto/Kyoto.csproj", "Kyoto/"]
+COPY ["Kyoto.Bot/Kyoto.Bot.csproj", "Kyoto/"]
 RUN dotnet restore "Kyoto/Kyoto.csproj"
 COPY . .
-WORKDIR "/src/Kyoto"
-RUN dotnet build "Kyoto.csproj" -c Release -o /app/build
+WORKDIR "/src/Kyoto.Bot"
+RUN dotnet build "Kyoto.Bot.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Kyoto.csproj" -c Release -o /app/publish
+RUN dotnet publish "Kyoto.Bot.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Kyoto.dll"]
+ENTRYPOINT ["dotnet", "Kyoto.Bot.dll"]
