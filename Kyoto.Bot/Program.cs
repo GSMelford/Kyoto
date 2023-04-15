@@ -1,11 +1,10 @@
 using Kyoto.Bot.Services.RequestSender;
 using Kyoto.Bot.StartUp;
-using Kyoto.Bot.StartUp.Settings;
 using Kyoto.Domain.RequestSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSettings(builder.Configuration, out AppSettings appSettings);
+builder.Services.AddSettings(builder.Configuration, out var appSettings);
 builder.Services.AddKafka(appSettings);
 builder.Services.AddTransient<IRequestService, RequestService>();
 
