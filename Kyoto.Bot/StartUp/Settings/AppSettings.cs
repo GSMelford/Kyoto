@@ -1,4 +1,4 @@
-namespace Kyoto.Bot;
+namespace Kyoto.Bot.StartUp.Settings;
 
 public class AppSettings
 {
