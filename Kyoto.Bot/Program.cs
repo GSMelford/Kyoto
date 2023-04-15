@@ -4,13 +4,16 @@ using Kyoto.Domain.RequestSender;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddSettings(builder.Configuration, out var appSettings);
-builder.Services.AddKafka(appSettings);
-builder.Services.AddTransient<IRequestService, RequestService>();
+builder.Services
+    .AddSettings(builder.Configuration, out var appSettings)
+    .AddKafka(appSettings)
+    .AddDatabase(appSettings.DatabaseSettings)
+    .AddTransient<IRequestService, RequestService>();
 
 var app = builder.Build();
 
 app.SubscribeToEvents(appSettings);
+await app.Services.PrepareDatabaseAsync(appSettings.DatabaseSettings);
 app.MapGet("/", () => "Kyoto bot! 0.1");
 
 await app.RunAsync();
