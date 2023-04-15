@@ -23,7 +23,7 @@ public class CommandHandler : IEventHandler<CommandEvent>
             {
                 SessionId = commandEvent.SessionId,
                 ChatId = commandEvent.Message.Chat.Id,
-                TelegramUserId = commandEvent.Message.FromUser!.Id
+                TelegramId = commandEvent.Message.FromUser!.Id
             });
             
             _logger.LogInformation("Start command in progress. SessionId: {SessionId}", commandEvent.SessionId);

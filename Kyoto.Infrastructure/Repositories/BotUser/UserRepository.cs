@@ -2,7 +2,7 @@ using Kyoto.Domain.BotUser;
 using Kyoto.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Infrastructure.Repositories;
+namespace Kyoto.Infrastructure.Repositories.BotUser;
 
 public class UserRepository : IUserRepository
 {

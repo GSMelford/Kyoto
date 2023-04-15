@@ -24,7 +24,8 @@ public static class Converter
             FromUser = messageDto.From?.ToDomain(),
             MessageId = messageDto.MessageId,
             Text = messageDto.Text,
-            MessageEntities = messageDto.Entities?.Select(ToDomain).ToList()
+            MessageEntities = messageDto.Entities?.Select(ToDomain).ToList(),
+            Contact = messageDto.Contact?.ToDomain()
         };
     }
 
@@ -59,6 +60,18 @@ public static class Converter
             Url = messageEntityDto.Url,
             CustomEmojiId = messageEntityDto.CustomEmojiId,
             User = messageEntityDto.User?.ToDomain()
+        };
+    }
+    
+    public static Contact ToDomain(this ContactDto contactDto)
+    {
+        return new Contact
+        {
+            LastName = contactDto.LastName,
+            FirstName = contactDto.FirstName,
+            PhoneNumber = contactDto.PhoneNumber,
+            Vcard = contactDto.Vcard,
+            UserId = contactDto.UserId
         };
     }
 }

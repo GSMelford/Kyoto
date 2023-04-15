@@ -9,6 +9,7 @@ public class Message
     public Chat Chat { get; set; } = null!;
     public string? Text { get; set; }
     public List<MessageEntity>? MessageEntities { get; set; }
+    public Contact? Contact { get; set; }
 
     public bool TryGetCommand(out Command? command)
     {

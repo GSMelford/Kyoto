@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka;
+using Kyoto.Kafka.Modules;
 
 namespace Kyoto.Kafka.Interfaces;
 
@@ -9,5 +10,6 @@ public interface IKafkaConsumerFactory : IDisposable
         string? topic = null,
         string? groupId = null,
         bool? enableAutoCommit = true)
-        where THandler : class, IEventHandler<TEvent>;
+        where THandler : class, IEventHandler<TEvent>
+        where TEvent : BaseEvent;
 }

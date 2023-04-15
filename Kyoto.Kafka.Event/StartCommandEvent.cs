@@ -4,6 +4,6 @@ namespace Kyoto.Kafka.Event;
 
 public class StartCommandEvent : BaseEvent
 {
-    public int ChatId { get; set; }
-    public long TelegramUserId { get; set; }
+    public long ChatId { get; set; }
+    public long TelegramId { get; set; }
 }

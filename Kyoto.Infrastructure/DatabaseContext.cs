@@ -10,6 +10,7 @@ public class DatabaseContext : DbContext, IDatabaseContext
     
     public DbSet<User>? Users { get; set; }
     public DbSet<TelegramUser>? TelegramUsers { get; set; }
+    public DbSet<ExecutiveTelegramCommand>? ExecutiveTelegramCommands { get; set; }
 
     public DatabaseContext(string connectionString = "Host=;Port=;Database=;Username=;Password=;")
     {

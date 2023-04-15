@@ -32,7 +32,7 @@ public class MessageDistributorService : IMessageDistributorService
             return;
         }
         
-        if (message.TryGetCommand(out Command? command))
+        if (message.TryGetCommand(out var command))
         {
             await _kafkaProducer.ProduceAsync(new CommandEvent
             {

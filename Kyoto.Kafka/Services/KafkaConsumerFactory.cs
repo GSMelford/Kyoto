@@ -24,7 +24,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         ConsumerConfig? config = null,
         string? topic = null,
         string? groupId = null,
-        bool? enableAutoCommit = true) where THandler : class, IEventHandler<TEvent>
+        bool? enableAutoCommit = true) where THandler : class, IEventHandler<TEvent> where TEvent : BaseEvent
     {
         string eventName = typeof(TEvent).Name;
         if (string.IsNullOrEmpty(topic)) {
@@ -59,7 +59,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         return kafkaConsumerService;
     }
 
-    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IEventHandler<TEvent>
+    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IEventHandler<TEvent> where TEvent : BaseEvent
     {
         var @event = JsonConvert.DeserializeObject<TEvent>(e.Message);
         
@@ -71,7 +71,21 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         {
             if (method!.Invoke(handler, new object[] { @event }) is Task resultTask)
             {
-                await resultTask;
+                _logger?.LogInformation("{CommandHandler} started processing. SessionId: {SessionId}",
+                    nameof(THandler), @event.SessionId);
+
+                try
+                {
+                    await resultTask;
+                }
+                catch (Exception exception)
+                {
+                    _logger?.LogError(exception,"{CommandHandler} caught an exception. SessionId: {SessionId}",
+                        nameof(THandler), @event.SessionId);
+                }
+                
+                _logger?.LogInformation("{CommandHandler} has been processed. SessionId: {SessionId}",
+                    nameof(THandler), @event.SessionId);
             }
         }
     }

@@ -14,8 +14,11 @@ public static class AppExtensions
     {
         IKafkaConsumerFactory kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
         ConsumerConfig consumerConfig = new ConsumerConfig{BootstrapServers = appSettings.KafkaBootstrapServers};
+        
         kafkaConsumerFactory.Subscribe<CommandEvent, CommandHandler>(consumerConfig);
-        kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandMessageHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<RegisterEvent, RegisterHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<MessageEvent, MessageHandler>(consumerConfig);
     }
 
     public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)
