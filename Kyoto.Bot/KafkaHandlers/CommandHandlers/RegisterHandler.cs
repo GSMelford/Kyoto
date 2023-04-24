@@ -4,6 +4,7 @@ using Kyoto.Domain.RequestSender;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using TBot.Client.Parameters;
+using TBot.Client.Parameters.ReplyMarkupParameters;
 using TBot.Client.Requests;
 
 namespace Kyoto.Bot.KafkaHandlers.CommandHandlers;
@@ -22,10 +23,21 @@ public class RegisterHandler : IEventHandler<RegisterEvent>
     public async Task HandleAsync(RegisterEvent @event)
     {
         await _authorizationService.RegisterAsync(@event.Username, @event.Contact);
+        
         await _requestService.SendRequestAsync(@event.SessionId, new SendMessageRequest(new SendMessageParameters
         {
             Text = $"Thank you for registering, {@event.Contact.FirstName}! 💞",
             ChatId = @event.ChatId
+        }).ToDomain());
+        
+        await _requestService.SendRequestAsync(@event.SessionId, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = $"Thank you for registering, {@event.Contact.FirstName}! 💞",
+            ChatId = @event.ChatId,
+            ReplyMarkup = new ReplyKeyboardRemove
+            {
+                RemoveKeyboard = true
+            }
         }).ToDomain());
     }
 }
