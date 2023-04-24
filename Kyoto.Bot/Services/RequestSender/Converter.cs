@@ -1,5 +1,5 @@
 using TBot.Core.RequestArchitecture;
-using Request = Kyoto.Domain.RequestSender.Request;
+using Request = Kyoto.Domain.PostSystem.Request;
 
 namespace Kyoto.Bot.Services.RequestSender;
 

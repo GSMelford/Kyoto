@@ -6,5 +6,5 @@ public class User : BaseModel
     public string? LastName { get; set; }
     public string Phone { get; set; } = null!;
 
-    public TelegramUser? TelegramUser { get; set; }
+    public ExternalUser? TelegramUser { get; set; }
 }

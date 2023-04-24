@@ -13,8 +13,8 @@ public class MessageHandler : IEventHandler<MessageEvent>
         _messageService = messageService;
     }
 
-    public Task HandleAsync(MessageEvent @event)
+    public Task HandleAsync(MessageEvent messageEvent)
     {
-        return _messageService.ProcessAsync(@event.SessionId, @event.Message);
+        return _messageService.ProcessAsync(messageEvent.GetSession(), messageEvent.Message);
     }
 }

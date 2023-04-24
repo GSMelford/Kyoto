@@ -1,8 +1,6 @@
-using Kyoto.Kafka.Modules;
-
 namespace Kyoto.Kafka.Event;
 
-public class RequestEvent : BaseEvent
+public class RequestEvent : BaseSessionEvent
 {
     public string Endpoint { get; set; } = null!;
     public HttpMethod HttpMethod { get; set; } = null!;

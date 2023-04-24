@@ -1,4 +1,3 @@
-using Kyoto.Domain.CommandPerformance;
 using Kyoto.Domain.Telegram.Types;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
@@ -38,7 +37,7 @@ public class MessageDistributorService : IMessageDistributorService
             {
                 SessionId = sessionId,
                 Message = message,
-                Command = command!.Value
+                CommandType = command!.Value
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +

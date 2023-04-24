@@ -21,11 +21,11 @@ public class AuthorizationRepository : IAuthorizationRepository
             FirstName = user.FirstName,
             LastName = user.LastName,
             Phone = user.PhoneNumber,
-            TelegramUser = new TelegramUser
+            TelegramUser = new ExternalUser
             {
                 UserId = user.Id,
                 Username = user.Username,
-                TelegramId = user.TelegramId
+                PrivateId = user.TelegramId
             }
         };
 

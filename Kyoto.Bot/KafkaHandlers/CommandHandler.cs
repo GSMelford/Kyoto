@@ -1,4 +1,4 @@
-using Kyoto.Domain.CommandPerformance;
+using Kyoto.Domain.Command;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 
@@ -17,13 +17,13 @@ public class CommandHandler : IEventHandler<CommandEvent>
 
     public async Task HandleAsync(CommandEvent commandEvent)
     {
-        if (commandEvent.Command == Command.Start)
+        if (commandEvent.CommandType == CommandType.Start)
         {
             await _kafkaProducer.ProduceAsync(new StartCommandEvent
             {
                 SessionId = commandEvent.SessionId,
                 ChatId = commandEvent.Message.Chat.Id,
-                TelegramId = commandEvent.Message.FromUser!.Id
+                ExternalUserId = commandEvent.Message.FromUser!.Id
             });
             
             _logger.LogInformation("Start command in progress. SessionId: {SessionId}", commandEvent.SessionId);

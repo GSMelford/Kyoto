@@ -15,7 +15,7 @@ public class UserRepository : IUserRepository
 
     public async Task<bool> IsUserExistAsync(long telegramId)
     {
-        return await _databaseContext.Set<TelegramUser>()
-            .FirstOrDefaultAsync(x => x.TelegramId == telegramId) is not null;
+        return await _databaseContext.Set<ExternalUser>()
+            .FirstOrDefaultAsync(x => x.PrivateId == telegramId) is not null;
     }
 }

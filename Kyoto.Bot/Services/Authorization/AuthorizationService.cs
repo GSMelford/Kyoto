@@ -1,21 +1,28 @@
+using Kyoto.Bot.Services.RequestSender;
 using Kyoto.Domain.Authorization;
-using Kyoto.Domain.Telegram.Types;
+using Kyoto.Kafka.Event;
+using TBot.Client.Parameters;
+using TBot.Client.Parameters.ReplyMarkupParameters;
+using TBot.Client.Requests;
 using User = Kyoto.Domain.Authorization.User;
 
 namespace Kyoto.Bot.Services.Authorization;
 
 public class AuthorizationService : IAuthorizationService
 {
+    private readonly ILogger<IAuthorizationService> _logger;
     private readonly IAuthorizationRepository _authorizationRepository;
 
-    public AuthorizationService(IAuthorizationRepository authorizationRepository)
+    public AuthorizationService(ILogger<IAuthorizationService> logger, IAuthorizationRepository authorizationRepository)
     {
+        _logger = logger;
         _authorizationRepository = authorizationRepository;
     }
 
-    public Task RegisterAsync(string username, Contact contact)
+    public Task RegisterAsync(User user)
     {
-        var user = User.Create(contact.FirstName, contact.LastName, contact.UserId, username, contact.PhoneNumber);
         return _authorizationRepository.SaveUserAsync(user);
     }
+    
+    
 }

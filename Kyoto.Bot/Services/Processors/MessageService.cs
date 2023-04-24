@@ -1,20 +1,25 @@
-using Kyoto.Domain.ExecutiveCommand;
+using Kyoto.Domain.Command;
+using Kyoto.Domain.Menu;
 using Kyoto.Domain.Processors;
+using Kyoto.Domain.System;
 using Kyoto.Domain.Telegram.Types;
 
 namespace Kyoto.Bot.Services.Processors;
 
 public class MessageService : IMessageService
 {
-    private readonly IExecutiveTelegramCommandService _executiveTelegramCommandService;
+    private readonly IExecutiveCommandService _executiveCommandService;
+    private readonly IMenuService _menuService;
 
-    public MessageService(IExecutiveTelegramCommandService executiveTelegramCommandService)
+    public MessageService(IExecutiveCommandService executiveCommandService, IMenuService menuService)
     {
-        _executiveTelegramCommandService = executiveTelegramCommandService;
+        _executiveCommandService = executiveCommandService;
+        _menuService = menuService;
     }
 
-    public Task ProcessAsync(Guid sessionId, Message message)
+    public async Task ProcessAsync(Session session, Message message)
     {
-        return _executiveTelegramCommandService.HandleExecutiveCommandIfExistAsync(sessionId, message);
+        await _executiveCommandService.HandleExecutiveCommandIfExistAsync(session, message);
+        await _menuService.ExecuteIfCommandAsync(session, message.Text!);
     }
 }

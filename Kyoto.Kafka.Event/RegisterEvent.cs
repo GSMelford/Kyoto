@@ -3,7 +3,7 @@ using Kyoto.Kafka.Modules;
 
 namespace Kyoto.Kafka.Event;
 
-public class RegisterEvent : BaseEvent
+public class RegisterEvent : BaseSessionEvent
 {
     public Contact Contact { get; set; } = null!;
     public long ChatId { get; set; }
