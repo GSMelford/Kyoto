@@ -23,13 +23,6 @@ public class RegisterHandler : IEventHandler<RegisterEvent>
     public async Task HandleAsync(RegisterEvent @event)
     {
         await _authorizationService.RegisterAsync(@event.Username, @event.Contact);
-        
-        await _requestService.SendRequestAsync(@event.SessionId, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = $"Thank you for registering, {@event.Contact.FirstName}! 💞",
-            ChatId = @event.ChatId
-        }).ToDomain());
-        
         await _requestService.SendRequestAsync(@event.SessionId, new SendMessageRequest(new SendMessageParameters
         {
             Text = $"Thank you for registering, {@event.Contact.FirstName}! 💞",
