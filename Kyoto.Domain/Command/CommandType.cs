@@ -2,18 +2,19 @@ namespace Kyoto.Domain.Command;
 
 public enum CommandType
 {
-    Start,
-    NotFound
+    Registration,
+    BotRegistration
 }
 
 public static class CommandTypeExtension
 {
-    public static CommandType Get(string value)
+    public static string GetName(this CommandType commandType)
     {
-        return value switch
+        return commandType switch
         {
-            "/start" => CommandType.Start,
-            _ => CommandType.NotFound
+            CommandType.Registration => nameof(CommandType.Registration),
+            CommandType.BotRegistration => nameof(CommandType.BotRegistration),
+            _ => throw new ArgumentOutOfRangeException(nameof(commandType), commandType, null)
         };
     }
 }

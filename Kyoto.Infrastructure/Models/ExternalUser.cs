@@ -8,6 +8,5 @@ public class ExternalUser : BaseModel
     public string Username { get; set; } = null!;
     
     public MenuPanel? MenuPanel { get; set; }
-    public ExecutiveCommand? ExecutiveCommand { get; set; }
     public ICollection<Bot> Bots { get; set; } = new List<Bot>();
 }

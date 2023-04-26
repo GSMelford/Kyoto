@@ -1,4 +1,5 @@
 using Kyoto.Domain.Command;
+using Kyoto.Domain.Command.GlobalCommand;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 
@@ -17,7 +18,7 @@ public class CommandHandler : IEventHandler<CommandEvent>
 
     public async Task HandleAsync(CommandEvent commandEvent)
     {
-        if (commandEvent.CommandType == CommandType.Start)
+        if (commandEvent.GlobalCommandType == GlobalCommandType.Start)
         {
             await _kafkaProducer.ProduceAsync(new StartCommandEvent
             {

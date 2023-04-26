@@ -5,7 +5,7 @@ namespace Kyoto.Bot.Services.RequestSender;
 
 public static class Converter
 {
-    public static Request ToDomain(this BaseRequest baseRequest)
+    public static Request ToRequest(this BaseRequest baseRequest)
     {
         return new Request(
             baseRequest.Endpoint,

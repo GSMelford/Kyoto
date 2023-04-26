@@ -4,7 +4,9 @@ namespace Kyoto.Domain.Command;
 
 public interface IExecutiveCommandRepository
 {
-    Task<bool> SaveExecutiveCommandAsync(Session session, ExecutiveCommandType executiveCommand, object? additionalData = null);
-    Task<bool> IsExecutiveCommandExistAsync(Session session);
-    Task<ExecutiveCommand> PopExecutiveCommandAsync(Session session);
+    Task SaveAsync(Session session, CommandType command, object? additionalData = null);
+    Task UpdateAsync(Session session, ExecutiveCommand executiveCommand);
+    Task<bool> IsExistAsync(Session session);
+    Task RemoveAsync(Session session);
+    Task<ExecutiveCommand> GetAsync(Session session);
 }

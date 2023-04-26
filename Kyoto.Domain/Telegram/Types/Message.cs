@@ -1,4 +1,5 @@
 ﻿using Kyoto.Domain.Command;
+using Kyoto.Domain.Command.GlobalCommand;
 
 namespace Kyoto.Domain.Telegram.Types;
 
@@ -11,7 +12,7 @@ public class Message
     public List<MessageEntity>? MessageEntities { get; set; }
     public Contact? Contact { get; set; }
 
-    public bool TryGetCommand(out CommandType? command)
+    public bool TryGetCommand(out GlobalCommandType? command)
     {
         command = null;
         if (MessageEntities is null || Text is null)
@@ -27,7 +28,7 @@ public class Message
             return false;
         }
 
-        command = CommandTypeExtension.Get(Text.Substring(commandEntity.Offset, commandEntity.Length));
+        command = GlobalCommandTypeExtension.Get(Text.Substring(commandEntity.Offset, commandEntity.Length));
         return true;
     }
 }

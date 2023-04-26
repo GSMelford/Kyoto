@@ -19,7 +19,7 @@ public class MessageService : IMessageService
 
     public async Task ProcessAsync(Session session, Message message)
     {
-        await _executiveCommandService.HandleExecutiveCommandIfExistAsync(session, message);
-        await _menuService.ExecuteIfCommandAsync(session, message.Text!);
+        await _executiveCommandService.ProcessExecutiveCommandIfExistAsync(session, message);
+        await _menuService.DrawMenuIfExist(session, message.Text!);
     }
 }

@@ -31,7 +31,7 @@ public class MenuPanelPostService
             Text = "📃 Kyoto Bot Menu ⬇️",
             ChatId = session.ChatId,
             ReplyMarkup = keyboard
-        }).ToDomain());
+        }).ToRequest());
     }
     
     public Task SendBotManagementAsync(Session session)
@@ -55,6 +55,6 @@ public class MenuPanelPostService
             Text = MenuButtons.BotManagement,
             ChatId = session.ChatId,
             ReplyMarkup = keyboard
-        }).ToDomain());
+        }).ToRequest());
     }
 }

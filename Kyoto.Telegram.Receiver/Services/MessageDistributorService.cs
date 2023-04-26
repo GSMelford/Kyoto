@@ -23,7 +23,9 @@ public class MessageDistributorService : IMessageDistributorService
             await _kafkaProducer.ProduceAsync(new MessageEvent
             {
                 SessionId = sessionId,
-                Message = message
+                Message = message,
+                ChatId = message.Chat.Id,
+                ExternalUserId = message.FromUser!.Id
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +
@@ -37,7 +39,9 @@ public class MessageDistributorService : IMessageDistributorService
             {
                 SessionId = sessionId,
                 Message = message,
-                CommandType = command!.Value
+                GlobalCommandType = command!.Value,
+                ChatId = message.Chat.Id,
+                ExternalUserId = message.FromUser!.Id
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +

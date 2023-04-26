@@ -1,4 +1,3 @@
-using Kyoto.Bot.Services.Command.CommandServices;
 using Kyoto.Domain.Command;
 
 namespace Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
@@ -12,15 +11,9 @@ public class ExecutiveCommandFactory : IExecutiveCommandFactory
         _serviceProvider = serviceProvider;
     }
 
-    public IMessageCommandService CreateMessageCommandService(ExecutiveCommandType commandType)
+    public ICommandStepFactory GetCommandStepFactory(CommandType commandType)
     {
-        var services = _serviceProvider.GetServices<IMessageCommandService>();
-        return services.First(x => x.ExecutiveCommandType == commandType);
-    }
-    
-    public ICallbackQueryCommandService CreateCallbackQueryCommandService(ExecutiveCommandType commandType)
-    {
-        var services = _serviceProvider.GetServices<ICallbackQueryCommandService>();
-        return services.First(x => x.ExecutiveCommandType == commandType);
+        var services = _serviceProvider.GetServices<ICommandStepFactory>();
+        return services.First(x => x.CommandType == commandType);
     }
 }

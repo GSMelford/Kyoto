@@ -24,7 +24,7 @@ public class BotPostService
         {
             Text = "🎉🎊 Bot successfully registered! Let's give him a short code name",
             ChatId = session.ChatId
-        }).ToDomain());
+        }).ToRequest());
     }
     
     public Task SendUpdateBotNameConfirmationRequestAsync(Session session, string botName)
@@ -44,7 +44,7 @@ public class BotPostService
                     Text = CallbackQueryButtons.Cancel,
                     CallbackData = botName
                 })
-        }).ToDomain());
+        }).ToRequest());
     }
 
     public Task SendMessageSuccessfulFullyRegistrationAsync(Session session)
@@ -53,6 +53,6 @@ public class BotPostService
         {
             Text = "Your bot is fully registered in the system. Let's run it 🚀",
             ChatId = session.ChatId
-        }).ToDomain());
+        }).ToRequest());
     }
 }

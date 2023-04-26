@@ -1,6 +1,6 @@
 using Kyoto.Domain.System;
 
-namespace Kyoto.Domain.Command;
+namespace Kyoto.Domain.Command.GlobalCommand;
 
 public interface IStartCommandService
 {

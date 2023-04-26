@@ -1,4 +1,5 @@
 using Kyoto.Domain.Command;
+using Kyoto.Domain.Command.GlobalCommand;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 

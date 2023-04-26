@@ -1,5 +1,6 @@
 using Kyoto.Domain.Command;
 using Kyoto.Domain.System;
+using Kyoto.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using ExecutiveCommand = Kyoto.Domain.Command.ExecutiveCommand;
 
@@ -14,17 +15,15 @@ public class ExecutiveCommandRepository : IExecutiveCommandRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<bool> SaveExecutiveCommandAsync(
+    public async Task SaveAsync(
         Session session,
-        ExecutiveCommandType executiveCommand, 
+        CommandType command, 
         object? additionalData = null)
     {
-        var executiveTelegramCommandDal =
-           await _databaseContext.Set<Models.ExecutiveCommand>()
-               .FirstOrDefaultAsync(x => x.ExternalUserId == session.ExternalUserId);
-
-        if (executiveTelegramCommandDal is not null) {
-            return false;
+        var executiveTelegramCommandDal = await GetAsync(session.ExternalUserId);
+        if (executiveTelegramCommandDal is not null)
+        {
+            return;
         }
         
         var executiveTelegramCommand = new Models.ExecutiveCommand
@@ -32,29 +31,48 @@ public class ExecutiveCommandRepository : IExecutiveCommandRepository
             SessionId = session.Id,
             ExternalUserId = session.ExternalUserId,
             ChatId = session.ChatId,
-            Command = executiveCommand.ToString(),
-            AdditionalData = additionalData?.ToString()
+            Command = command.ToString(),
+            AdditionalData = additionalData?.ToString(),
+            StepState = (int)ExecutiveCommandStep.FirstStep,
+            Step = (int)CommandStepState.RequestToAction
         };
 
         await _databaseContext.AddAsync(executiveTelegramCommand);
         await _databaseContext.SaveChangesAsync();
-        return true;
     }
 
-    public async Task<bool> IsExecutiveCommandExistAsync(Session session)
+    public async Task UpdateAsync(Session session, ExecutiveCommand executiveCommand)
     {
-        return await _databaseContext.Set<Models.ExecutiveCommand>()
-            .FirstOrDefaultAsync(x => x.ExternalUserId == session.ExternalUserId) is not null;
+        var executiveCommandDal = await GetAsync(session.ExternalUserId);
+
+        executiveCommandDal!.Step = (int)executiveCommand.Step;
+        executiveCommandDal.StepState = (int)executiveCommand.StepState;
+        executiveCommandDal.AdditionalData = executiveCommand.AdditionalData;
+        
+        _databaseContext.Update(executiveCommandDal);
+        await _databaseContext.SaveChangesAsync();
     }
     
-    public async Task<ExecutiveCommand> PopExecutiveCommandAsync(Session session)
+    public async Task<bool> IsExistAsync(Session session)
     {
-        var command = await _databaseContext.Set<Models.ExecutiveCommand>()
-            .FirstAsync(x => x.ExternalUserId == session.ExternalUserId);
-        
-        _databaseContext.Remove(command);
+        return await GetAsync(session.ExternalUserId) is not null;
+    }
+    
+    public async Task RemoveAsync(Session session)
+    {
+        var executiveCommand = await GetAsync(session.ExternalUserId);
+        _databaseContext.Remove(executiveCommand!);
         await _databaseContext.SaveChangesAsync();
-
-        return command.ToDomain();
+    }
+    
+    public async Task<ExecutiveCommand> GetAsync(Session session)
+    {
+        return (await GetAsync(session.ExternalUserId))!.ToDomain();
+    }
+    
+    private async Task<Models.ExecutiveCommand?> GetAsync(long externalUserId)
+    {
+        return await _databaseContext.Set<Models.ExecutiveCommand>()
+            .FirstOrDefaultAsync(x => x.ExternalUserId == externalUserId);
     }
 }

@@ -1,6 +1,8 @@
 using Confluent.Kafka;
 using Kyoto.Bot.Services.Authorization;
-using Kyoto.Bot.Services.Command.CommandServices;
+using Kyoto.Bot.Services.Bot;
+using Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
+using Kyoto.Bot.Services.Command.CommandServices.Registration;
 using Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
 using Kyoto.Bot.Services.Command.GlobalCommandServices;
 using Kyoto.Bot.Services.Menu;
@@ -8,13 +10,16 @@ using Kyoto.Bot.Services.Processors;
 using Kyoto.Bot.Services.RequestSender;
 using Kyoto.Bot.StartUp.Settings;
 using Kyoto.Domain.Authorization;
+using Kyoto.Domain.Bot;
 using Kyoto.Domain.BotUser;
 using Kyoto.Domain.Command;
+using Kyoto.Domain.Command.GlobalCommand;
 using Kyoto.Domain.Menu;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.Processors;
 using Kyoto.Infrastructure;
 using Kyoto.Infrastructure.Repositories.Authorization;
+using Kyoto.Infrastructure.Repositories.Bot;
 using Kyoto.Infrastructure.Repositories.BotUser;
 using Kyoto.Infrastructure.Repositories.ExecutiveCommandSystem;
 using Kyoto.Infrastructure.Repositories.Menu;
@@ -64,7 +69,8 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddCommandServices(this IServiceCollection services)
     {
         return services
-            .AddTransient<IMessageCommandService, RegisterMessageCommandService>()
+            .AddTransient<ICommandStepFactory, RegistrationCommandStepFactory>()
+            .AddTransient<ICommandStepFactory, BotRegistrationCommandStepFactory>()
             .AddTransient<IExecutiveCommandFactory, ExecutiveCommandFactory>()
             .AddTransient<IExecutiveCommandRepository, ExecutiveCommandRepository>()
             .AddTransient<IExecutiveCommandService, ExecutiveCommandService>()
@@ -73,15 +79,14 @@ public static class DependencyInjectionExtensions
 
     public static IServiceCollection AddPostServices(this IServiceCollection services)
     {
-        return services
-            .AddTransient<AuthorizationPostService>()
-            .AddTransient<MenuPostService>()
-            .AddTransient<MenuPanelPostService>();
+        return services.AddTransient<MenuPanelPostService>();
     }
 
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {
         return services
+            .AddTransient<IBotRepository, BotRepository>()
+            .AddTransient<IBotService, BotService>()
             .AddTransient<IUserRepository, UserRepository>()
             .AddTransient<IPostService, PostService>()
             .AddTransient<IMessageService, MessageService>();

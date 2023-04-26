@@ -16,6 +16,6 @@ public class CallbackQueryService : ICallbackQueryService
     
     public Task ProcessAsync(Session session, CallbackQuery callbackQuery)
     {
-        return _executiveCommandService.HandleExecutiveCommandIfExistAsync(session, callbackQuery);
+        return _executiveCommandService.ProcessExecutiveCommandIfExistAsync(session, callbackQuery: callbackQuery);
     }
 }

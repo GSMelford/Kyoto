@@ -10,7 +10,9 @@ public static class Converter
             executiveCommand.SessionId,
             executiveCommand.ChatId,
             executiveCommand.ExternalUserId,
-            Enum.Parse<ExecutiveCommandType>(executiveCommand.Command),
-            executiveCommand.AdditionalData);
+            Enum.Parse<CommandType>(executiveCommand.Command),
+            executiveCommand.AdditionalData,
+            (ExecutiveCommandStep)executiveCommand.Step,
+            (CommandStepState)executiveCommand.StepState);
     }
 }

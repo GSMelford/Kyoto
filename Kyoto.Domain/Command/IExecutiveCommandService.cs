@@ -5,6 +5,9 @@ namespace Kyoto.Domain.Command;
 
 public interface IExecutiveCommandService
 {
-    Task HandleExecutiveCommandIfExistAsync(Session session, Message message);
-    Task HandleExecutiveCommandIfExistAsync(Session session, CallbackQuery callbackQuery);
+    Task StartExecutiveCommandAsync(Session session, CommandType commandType, object? additionalData = null);
+    Task ProcessExecutiveCommandIfExistAsync(
+        Session session, 
+        Message? message = null,
+        CallbackQuery? callbackQuery = null);
 }

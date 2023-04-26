@@ -4,5 +4,5 @@ namespace Kyoto.Domain.Menu;
 
 public interface IMenuService
 {
-    Task ExecuteIfCommandAsync(Session session, string value);
+    Task DrawMenuIfExist(Session session, string value);
 }
