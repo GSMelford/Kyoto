@@ -85,6 +85,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {
         return services
+            .AddTransient<ICallbackQueryService, CallbackQueryService>()
             .AddTransient<IBotRepository, BotRepository>()
             .AddTransient<IBotService, BotService>()
             .AddTransient<IUserRepository, UserRepository>()

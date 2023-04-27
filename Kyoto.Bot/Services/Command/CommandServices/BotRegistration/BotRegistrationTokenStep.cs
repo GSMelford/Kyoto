@@ -1,33 +1,30 @@
-using Kyoto.Domain.Bot;
-using Kyoto.Domain.Command;
 using Kyoto.Domain.PostSystem;
+using Newtonsoft.Json;
 
 namespace Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
 
-public class BotRegistrationTokenStep : ICommandStep
+public class BotRegistrationTokenStep : BaseCommandStep
 {
     private readonly IPostService _postService;
-    private readonly IBotService _botService;
 
-    public BotRegistrationTokenStep(IPostService postService, IBotService botService)
+    public BotRegistrationTokenStep(IPostService postService)
     {
         _postService = postService;
-        _botService = botService;
     }
     
-    public Task SendActionRequestAsync(CommandContext commandContext)
+    public override async Task SendActionRequestAsync()
     {
-        return _postService.SendTextMessageAsync(commandContext.Session, "🪄 Send the bot token with the following message");
+        await _postService.SendTextMessageAsync(CommandContext.Session, 
+            "🔑 First of all, generate and send us a bot token:");
     }
 
-    public async Task<CommandStepResult> ProcessResponseAsync(CommandContext commandContext)
+    public override Task ProcessResponseAsync()
     {
-        var botId= await _botService.SaveAsync(commandContext.Session, commandContext.Message!.Text!);
-        return CommandStepResult.CreateSuccessful(botId);
-    }
-    
-    public Task FinalAction(CommandContext commandContext)
-    {
-        return _postService.SendTextMessageAsync(commandContext.Session, "Your token has been successfully saved!");
+        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(new BotRegistrationData
+        {
+            Token = CommandContext.Message!.Text!
+        }));
+        
+        return Task.CompletedTask;
     }
 }

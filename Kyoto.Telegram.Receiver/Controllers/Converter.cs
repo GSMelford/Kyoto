@@ -12,7 +12,8 @@ public static class Converter
         return new Update
         {
             UpdateId = updateDto.UpdateId,
-            Message = updateDto.Message?.ToDomain()
+            Message = updateDto.Message?.ToDomain(),
+            CallbackQuery = updateDto.CallbackQuery?.ToDomain()
         };
     }
 
@@ -26,6 +27,20 @@ public static class Converter
             Text = messageDto.Text,
             MessageEntities = messageDto.Entities?.Select(ToDomain).ToList(),
             Contact = messageDto.Contact?.ToDomain()
+        };
+    }
+    
+    public static CallbackQuery ToDomain(this CallbackQueryDto callbackQueryDto)
+    {
+        return new CallbackQuery
+        {
+            Message = callbackQueryDto.Message?.ToDomain(),
+            From = callbackQueryDto.From.ToDomain(),
+            Id = callbackQueryDto.Id,
+            Data = callbackQueryDto.Data,
+            ChatInstance = callbackQueryDto.ChatInstance,
+            GameShortName = callbackQueryDto.GameShortName,
+            InlineMessageId = callbackQueryDto.InlineMessageId
         };
     }
 

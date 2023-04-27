@@ -28,7 +28,7 @@ public class PostService : IPostService
         }).ToRequest());
     }
     
-    public Task SendConfirmationMessageAsync(Session session, string text, string callbackData)
+    public Task SendConfirmationMessageAsync(Session session, string text)
     {
         return SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
@@ -38,12 +38,12 @@ public class PostService : IPostService
                 .Add(new InlineKeyboardButton
                 {
                     Text = CallbackQueryButtons.Confirmation,
-                    CallbackData = callbackData
+                    CallbackData = CallbackQueryButtons.Confirmation
                 })
                 .Add(new InlineKeyboardButton
                 {
                     Text = CallbackQueryButtons.Cancel,
-                    CallbackData = string.Empty
+                    CallbackData = CallbackQueryButtons.Cancel
                 })
         }).ToRequest());
     }

@@ -1,6 +1,5 @@
 using Kyoto.Domain.Command;
 using Kyoto.Domain.System;
-using Kyoto.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
 using ExecutiveCommand = Kyoto.Domain.Command.ExecutiveCommand;
 

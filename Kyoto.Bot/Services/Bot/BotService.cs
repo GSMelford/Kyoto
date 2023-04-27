@@ -12,9 +12,9 @@ public class BotService : IBotService
         _botRepository = botRepository;
     }
 
-    public Task<Guid> SaveAsync(Session session, string token)
+    public Task<Guid> SaveAsync(Session session, string name, string token)
     {
-        return _botRepository.SaveAsync(session.ExternalUserId, BotModel.Create(token));
+        return _botRepository.SaveAsync(session.ExternalUserId, BotModel.Create(name, token));
     }
     
     public Task UpdateBotNameAsync(Guid botId, string name)

@@ -18,6 +18,7 @@ public static class AppExtensions
         kafkaConsumerFactory.Subscribe<CommandEvent, CommandHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<MessageEvent, MessageHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig);
     }
 
     public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)

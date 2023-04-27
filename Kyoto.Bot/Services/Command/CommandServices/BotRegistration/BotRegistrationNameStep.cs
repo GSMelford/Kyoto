@@ -1,34 +1,28 @@
-using Kyoto.Domain.Bot;
-using Kyoto.Domain.Command;
 using Kyoto.Domain.PostSystem;
+using Newtonsoft.Json;
 
 namespace Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
 
-public class BotRegistrationNameStep : ICommandStep
+public class BotRegistrationNameStep : BaseCommandStep
 {
     private readonly IPostService _postService;
-    private readonly IBotService _botService;
 
-    public BotRegistrationNameStep(IPostService postService, IBotService botService)
+    public BotRegistrationNameStep(IPostService postService)
     {
         _postService = postService;
-        _botService = botService;
     }
     
-    public Task SendActionRequestAsync(CommandContext commandContext)
+    public override async Task SendActionRequestAsync()
     {
-        return _postService.SendTextMessageAsync(commandContext.Session,
-            "Let's come up with a short name for your bot:");
+        await _postService.SendTextMessageAsync(CommandContext.Session,
+            "🤔 Think of a short name for the bot (4 - 15 characters, for example: kyoto_factory)");
     }
 
-    public Task<CommandStepResult> ProcessResponseAsync(CommandContext commandContext)
+    public override Task ProcessResponseAsync()
     {
-        commandContext.SetAdditionalData(commandContext.Message!.Text!);
-        return Task.FromResult(CommandStepResult.CreateSuccessful());
-    }
-
-    public Task FinalAction(CommandContext commandContext)
-    {
-        return _postService.SendTextMessageAsync(commandContext.Session, "Great!");
+        var botRegistrationData = JsonConvert.DeserializeObject<BotRegistrationData>(CommandContext.AdditionalData!);
+        botRegistrationData!.Name = CommandContext.Message!.Text!;
+        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(botRegistrationData));
+        return Task.FromResult(CommandContext);
     }
 }

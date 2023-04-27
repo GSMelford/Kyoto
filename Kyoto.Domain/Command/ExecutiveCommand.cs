@@ -8,7 +8,7 @@ public class ExecutiveCommand
     public CommandType CommandValue { get; private set; }
     public ExecutiveCommandStep Step { get; private set; }
     public CommandStepState StepState { get; private set; }
-    public string? AdditionalData { get; set; }
+    public string? AdditionalData { get; private set; }
 
     private ExecutiveCommand(
         Guid sessionId, 
@@ -54,5 +54,15 @@ public class ExecutiveCommand
     {
         var temp = (int)Step;
         Step = (ExecutiveCommandStep)(++temp);
+    }
+    
+    public void SetStep(ExecutiveCommandStep step)
+    {
+        Step = step;
+    }
+    
+    public void SetAdditionalData(string? additionalData)
+    {
+        AdditionalData = additionalData;
     }
 }

@@ -1,8 +1,10 @@
+using Kyoto.Bot.Services.Command.CommandServices;
 using Kyoto.Domain.Command;
 using Kyoto.Domain.Menu;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
 using Kyoto.Domain.Telegram.Types;
+using Newtonsoft.Json;
 
 namespace Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
 
@@ -25,6 +27,12 @@ public class ExecutiveCommandService : IExecutiveCommandService
         _serviceProvider = serviceProvider;
     }
 
+    public async Task StartExecutiveCommandAsync(Session session, CommandType commandType, object? additionalData = null)
+    {
+        await _executiveCommandRepository.SaveAsync(session, commandType, additionalData);
+        await ProcessExecutiveCommandIfExistAsync(session);
+    }
+    
     public async Task ProcessExecutiveCommandIfExistAsync(
         Session session,
         Message? message = null,
@@ -44,80 +52,72 @@ public class ExecutiveCommandService : IExecutiveCommandService
         }
     }
     
-    public async Task StartExecutiveCommandAsync(Session session, CommandType commandType, object? additionalData = null)
-    {
-        await _executiveCommandRepository.SaveAsync(session, commandType, additionalData);
-        await ProcessExecutiveCommandIfExistAsync(session);
-    }
-
     private async Task DoExecutiveCommandAsync(Session session, Message? message = null, CallbackQuery? callbackQuery = null)
     {
+        using var scope = _serviceProvider.CreateScope();
+        var executiveCommand = await _executiveCommandRepository.GetAsync(session);
+        var commandStepFactory = _executiveCommandFactory.GetCommandStepFactory(executiveCommand.CommandValue);
+        var commandContext = CommandContext.Create(session, message, callbackQuery, executiveCommand.AdditionalData);
+        
         while (true)
         {
-            var executiveCommand = await _executiveCommandRepository.GetAsync(session);
-            var commandStepFactory = _executiveCommandFactory.GetCommandStepFactory(executiveCommand.CommandValue);
-
-            using var scope = _serviceProvider.CreateScope();
             var commandStep = ActivatorUtilities.CreateInstance(
-                scope.ServiceProvider, commandStepFactory.GetCommandStep(executiveCommand.Step)) as ICommandStep;
+                scope.ServiceProvider, commandStepFactory.GetCommandStep(executiveCommand.Step)) as BaseCommandStep;
 
-            var commandContext = CommandContext.Create(session, message, callbackQuery, executiveCommand.AdditionalData);
-            switch (executiveCommand.StepState)
+            commandStep!.SetCommandContext(commandContext);
+            
+            if (executiveCommand.StepState == CommandStepState.RequestToAction)
             {
-                case CommandStepState.RequestToAction:
-                    await DoRequestToActionAsync(session, commandStep!, executiveCommand, commandContext);
-                    return;
-                case CommandStepState.ProcessResponse:
-                    await DoProcessResponseAsync(session, commandStep!, commandContext);
-                    break;
+                await commandStep.SendActionRequestAsync();
+                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
+                executiveCommand.SetStepState(CommandStepState.ProcessResponse);
+                await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
+                return;
             }
 
+            if (executiveCommand.StepState == CommandStepState.ProcessResponse)
+            {
+                await commandStep.ProcessResponseAsync();
+                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
+                
+                if (commandStep.CommandContext.IsRetry)
+                {
+                    if (commandStep.CommandContext.ToRetryStep is not null)
+                    {
+                        executiveCommand.SetStep(commandStep.CommandContext.ToRetryStep.Value);
+                    }
+                    
+                    executiveCommand.ResetState();
+                    await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
+                    await SendErrorMessageAsync(session, commandStep.CommandContext.ErrorMessage!);
+                    continue;
+                }
+                
+                if (commandStep.CommandContext.IsFailure)
+                {
+                    await _executiveCommandRepository.RemoveAsync(session);
+                    await SendErrorMessageAsync(session, commandStep.CommandContext.ErrorMessage!);
+                }
+                
+                await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
+            }
+            
             if (commandStepFactory.HasNext(executiveCommand.Step))
             {
                 executiveCommand.IncreaseStep();
                 executiveCommand.ResetState();
                 await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
-                continue;
             }
-
-            await _executiveCommandRepository.RemoveAsync(session);
-            break;
+            else
+            {
+                await _executiveCommandRepository.RemoveAsync(session);
+                break;
+            }
         }
     }
 
-    private async Task DoRequestToActionAsync(
-        Session session,
-        ICommandStep commandStep,
-        ExecutiveCommand executiveCommand,
-        CommandContext commandContext)
+    private Task SendErrorMessageAsync(Session session, string text)
     {
-        await commandStep.SendActionRequestAsync(commandContext);
-        executiveCommand.SetStepState(CommandStepState.ProcessResponse);
-        await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
-    }
-    
-    private async Task DoProcessResponseAsync(
-        Session session,
-        ICommandStep commandStep,
-        CommandContext commandContext)
-    {
-        var result = await commandStep.ProcessResponseAsync(commandContext);
-        if (result is { IsSuccessful: true, IsRetry: true })
-        {
-            await commandStep.SendActionRequestAsync(commandContext);
-            return;
-        }
-
-        if (result.IsSuccessful)
-        {
-            await commandStep.FinalAction(commandContext);
-        }
-        else
-        {
-            await _postService.SendTextMessageAsync(session,
-                $"Something went wrong...\nReason: {result.ErrorMessage}\nContact support or try again.");
-
-            await _executiveCommandRepository.RemoveAsync(session);
-        }
+        return _postService.SendTextMessageAsync(session, text);
     }
 }

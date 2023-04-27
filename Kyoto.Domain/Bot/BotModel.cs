@@ -13,9 +13,9 @@ public class BotModel
         Token = token;
     }
 
-    public static BotModel Create(string token)
+    public static BotModel Create(string name, string token)
     {
         var id = Guid.NewGuid();
-        return new BotModel(id,id.ToString(), token);
+        return new BotModel(id,name, token);
     }
 }
