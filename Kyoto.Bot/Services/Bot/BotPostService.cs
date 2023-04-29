@@ -1,4 +1,4 @@
-using Kyoto.Bot.Services.RequestSender;
+using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.Processors;
 using Kyoto.Domain.System;
@@ -20,7 +20,7 @@ public class BotPostService
 
     public Task SendMessageSuccessfulRegistrationAsync(Session session)
     {
-        return _postService.SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = "🎉🎊 Bot successfully registered! Let's give him a short code name",
             ChatId = session.ChatId
@@ -29,7 +29,7 @@ public class BotPostService
     
     public Task SendUpdateBotNameConfirmationRequestAsync(Session session, string botName)
     {
-        return _postService.SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = $"⚠️ Are you sure you want to name the bot like {botName.ToLower()}?",
             ChatId = session.ChatId,
@@ -49,7 +49,7 @@ public class BotPostService
 
     public Task SendMessageSuccessfulFullyRegistrationAsync(Session session)
     {
-        return _postService.SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = "Your bot is fully registered in the system. Let's run it 🚀",
             ChatId = session.ChatId

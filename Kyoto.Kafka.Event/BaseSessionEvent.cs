@@ -7,9 +7,10 @@ public class BaseSessionEvent : BaseEvent
 {
     public long ChatId { get; set; }
     public long ExternalUserId { get; set; }
+    public int MessageId { get; set; }
 
     public Session GetSession()
     {
-        return Session.Create(SessionId, ChatId, ExternalUserId);
+        return Session.Create(SessionId, ChatId, ExternalUserId, MessageId);
     } 
 }

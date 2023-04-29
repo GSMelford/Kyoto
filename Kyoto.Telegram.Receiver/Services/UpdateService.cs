@@ -34,7 +34,8 @@ public class UpdateService : IUpdateService
                 CallbackQuery = update.CallbackQuery!,
                 ChatId = update.CallbackQuery!.Message!.Chat.Id,
                 ExternalUserId = update.CallbackQuery.From.Id,
-                SessionId = sessionId
+                SessionId = sessionId,
+                MessageId = update.CallbackQuery!.Message.MessageId
             });
             return;
         }

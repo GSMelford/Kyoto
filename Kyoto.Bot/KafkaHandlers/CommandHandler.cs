@@ -1,4 +1,3 @@
-using Kyoto.Domain.Command;
 using Kyoto.Domain.Command.GlobalCommand;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
@@ -24,7 +23,8 @@ public class CommandHandler : IEventHandler<CommandEvent>
             {
                 SessionId = commandEvent.SessionId,
                 ChatId = commandEvent.Message.Chat.Id,
-                ExternalUserId = commandEvent.Message.FromUser!.Id
+                ExternalUserId = commandEvent.Message.FromUser!.Id,
+                MessageId = commandEvent.MessageId
             });
             
             _logger.LogInformation("Start command in progress. SessionId: {SessionId}", commandEvent.SessionId);

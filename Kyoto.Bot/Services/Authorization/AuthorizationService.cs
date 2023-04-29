@@ -1,4 +1,3 @@
-using Kyoto.Bot.Services.RequestSender;
 using Kyoto.Domain.Authorization;
 using Kyoto.Kafka.Event;
 using TBot.Client.Parameters;

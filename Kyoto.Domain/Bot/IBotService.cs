@@ -5,5 +5,4 @@ namespace Kyoto.Domain.Bot;
 public interface IBotService
 {
     Task<Guid> SaveAsync(Session session, string name, string token);
-    Task UpdateBotNameAsync(Guid botId, string name);
 }

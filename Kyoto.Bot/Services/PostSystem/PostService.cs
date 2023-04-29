@@ -7,8 +7,9 @@ using TBot.Client.Parameters;
 using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
+using ReturnResponseDetails = Kyoto.Domain.PostSystem.ReturnResponseDetails;
 
-namespace Kyoto.Bot.Services.RequestSender;
+namespace Kyoto.Bot.Services.PostSystem;
 
 public class PostService : IPostService
 {
@@ -19,18 +20,27 @@ public class PostService : IPostService
         _kafkaProducer = kafkaProducer;
     }
 
-    public Task SendTextMessageAsync(Session session, string text)
+    public Task DeleteMessageAsync(Session session)
     {
-        return SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return PostAsync(session.Id, new DeleteMessageRequest(new DeleteMessageParameters
         {
-            Text = text,
+            MessageId = session.MessageId,
             ChatId = session.ChatId
         }).ToRequest());
     }
     
-    public Task SendConfirmationMessageAsync(Session session, string text)
+    public Task SendTextMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
     {
-        return SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = text,
+            ChatId = session.ChatId
+        }).ToRequest(), returnResponseDetails);
+    }
+    
+    public Task SendConfirmationMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
+    {
+        return PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
             ChatId = session.ChatId,
@@ -45,10 +55,10 @@ public class PostService : IPostService
                     Text = CallbackQueryButtons.Cancel,
                     CallbackData = CallbackQueryButtons.Cancel
                 })
-        }).ToRequest());
+        }).ToRequest(), returnResponseDetails);
     }
     
-    public async Task SendAsync(Guid sessionId, Request request)
+    public async Task PostAsync(Guid sessionId, Request request, ReturnResponseDetails? returnResponseDetails = null)
     {
         await _kafkaProducer.ProduceAsync(new RequestEvent
         { 
@@ -56,7 +66,11 @@ public class PostService : IPostService
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
             Headers = request.Headers,
-            Parameters = request.Parameters
+            Parameters = request.Parameters,
+            ReturnResponse = returnResponseDetails is null ? null : new Kafka.Event.ResponseMessageReturn
+            {
+                HandlerType = returnResponseDetails.HandlerType
+            }
         });
     }
 }

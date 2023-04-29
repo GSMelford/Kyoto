@@ -4,7 +4,8 @@ namespace Kyoto.Domain.PostSystem;
 
 public interface IPostService
 {
-    Task SendTextMessageAsync(Session session, string text);
-    Task SendConfirmationMessageAsync(Session session, string text);
-    Task SendAsync(Guid sessionId, Request request);
+    Task DeleteMessageAsync(Session session);
+    Task SendTextMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null);
+    Task SendConfirmationMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null);
+    Task PostAsync(Guid sessionId, Request request, ReturnResponseDetails? returnResponseDetails = null);
 }

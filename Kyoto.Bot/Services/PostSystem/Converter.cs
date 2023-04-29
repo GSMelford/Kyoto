@@ -1,7 +1,7 @@
 using TBot.Core.RequestArchitecture;
 using Request = Kyoto.Domain.PostSystem.Request;
 
-namespace Kyoto.Bot.Services.RequestSender;
+namespace Kyoto.Bot.Services.PostSystem;
 
 public static class Converter
 {

@@ -25,7 +25,8 @@ public class MessageDistributorService : IMessageDistributorService
                 SessionId = sessionId,
                 Message = message,
                 ChatId = message.Chat.Id,
-                ExternalUserId = message.FromUser!.Id
+                ExternalUserId = message.FromUser!.Id,
+                MessageId = message.MessageId
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +
@@ -41,7 +42,8 @@ public class MessageDistributorService : IMessageDistributorService
                 Message = message,
                 GlobalCommandType = command!.Value,
                 ChatId = message.Chat.Id,
-                ExternalUserId = message.FromUser!.Id
+                ExternalUserId = message.FromUser!.Id,
+                MessageId = message.MessageId
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +

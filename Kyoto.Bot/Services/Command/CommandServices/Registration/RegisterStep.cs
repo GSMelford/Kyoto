@@ -1,5 +1,5 @@
 using Kyoto.Bot.Services.Menu;
-using Kyoto.Bot.Services.RequestSender;
+using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Domain.Authorization;
 using Kyoto.Domain.PostSystem;
 using TBot.Client.Parameters;
@@ -43,7 +43,7 @@ public class RegisterStep : BaseCommandStep
                 })
         }).ToRequest();
         
-        await _postService.SendAsync(CommandContext.Session.Id, request);
+        await _postService.PostAsync(CommandContext.Session.Id, request);
     }
 
     public override async Task ProcessResponseAsync()

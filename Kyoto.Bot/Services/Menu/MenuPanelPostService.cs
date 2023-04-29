@@ -1,4 +1,4 @@
-using Kyoto.Bot.Services.RequestSender;
+using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Domain.Menu;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
@@ -26,7 +26,7 @@ public class MenuPanelPostService
                 Text = MenuButtons.BotManagement
             });
         
-        return _postService.SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = "📃 Kyoto Bot Menu ⬇️",
             ChatId = session.ChatId,
@@ -50,7 +50,7 @@ public class MenuPanelPostService
                 Text = MenuButtons.Back
             });
         
-        return _postService.SendAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
         {
             Text = MenuButtons.BotManagement,
             ChatId = session.ChatId,
