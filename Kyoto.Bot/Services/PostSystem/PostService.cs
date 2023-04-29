@@ -14,7 +14,7 @@ namespace Kyoto.Bot.Services.PostSystem;
 public class PostService : IPostService
 {
     private readonly IKafkaProducer<string> _kafkaProducer;
-
+    
     public PostService(IKafkaProducer<string> kafkaProducer)
     {
         _kafkaProducer = kafkaProducer;
@@ -22,7 +22,7 @@ public class PostService : IPostService
 
     public Task DeleteMessageAsync(Session session)
     {
-        return PostAsync(session.Id, new DeleteMessageRequest(new DeleteMessageParameters
+        return PostAsync(session, new DeleteMessageRequest(new DeleteMessageParameters
         {
             MessageId = session.MessageId,
             ChatId = session.ChatId
@@ -31,7 +31,7 @@ public class PostService : IPostService
     
     public Task SendTextMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
     {
-        return PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
             ChatId = session.ChatId
@@ -40,7 +40,7 @@ public class PostService : IPostService
     
     public Task SendConfirmationMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
     {
-        return PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
             ChatId = session.ChatId,
@@ -58,16 +58,17 @@ public class PostService : IPostService
         }).ToRequest(), returnResponseDetails);
     }
     
-    public async Task PostAsync(Guid sessionId, Request request, ReturnResponseDetails? returnResponseDetails = null)
+    public async Task PostAsync(Session session, Request request, ReturnResponseDetails? returnResponseDetails = null)
     {
         await _kafkaProducer.ProduceAsync(new RequestEvent
         { 
-            SessionId = sessionId,
+            TenantKey = session.TenantKey,
+            SessionId = session.Id,
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
             Headers = request.Headers,
             Parameters = request.Parameters,
-            ReturnResponse = returnResponseDetails is null ? null : new Kafka.Event.ResponseMessageReturn
+            ReturnResponse = returnResponseDetails is null ? null : new ResponseMessageReturn
             {
                 HandlerType = returnResponseDetails.HandlerType
             }

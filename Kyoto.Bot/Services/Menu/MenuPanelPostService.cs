@@ -12,21 +12,23 @@ namespace Kyoto.Bot.Services.Menu;
 public class MenuPanelPostService
 {
     private readonly IPostService _postService;
+    private readonly IMenuRepository _menuRepository;
 
-    public MenuPanelPostService(IPostService postService)
+    public MenuPanelPostService(IPostService postService, IMenuRepository menuRepository)
     {
         _postService = postService;
+        _menuRepository = menuRepository;
     }
     
     public Task SendMenuAsync(Session session)
     {
-        var keyboard = new ReplyKeyboardMarkup { OneTimeKeyboard = true }
+        var keyboard = new ReplyKeyboardMarkup { OneTimeKeyboard = true, ResizeKeyboard = true}
             .Add(new KeyboardButton
             {
                 Text = MenuButtons.BotManagement
             });
         
-        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = "📃 Kyoto Bot Menu ⬇️",
             ChatId = session.ChatId,
@@ -36,11 +38,21 @@ public class MenuPanelPostService
     
     public Task SendBotManagementAsync(Session session)
     {
-        var keyboard = new ReplyKeyboardMarkup { OneTimeKeyboard = true }
+        var keyboard = new ReplyKeyboardMarkup { OneTimeKeyboard = true, ResizeKeyboard = true }
             .Add(new KeyboardButton
             {
                 Text = MenuButtons.BotManagementButtons.RegisterNewBot
             })
+            .AddNextLine()
+            .Add(new KeyboardButton
+            {
+                Text = MenuButtons.BotManagementButtons.DeployBot
+            })
+            .Add(new KeyboardButton
+            {
+                Text = MenuButtons.BotManagementButtons.DisableBot
+            })
+            .AddNextLine()
             .Add(new KeyboardButton
             {
                 Text = MenuButtons.BotManagementButtons.DeleteBot
@@ -50,7 +62,7 @@ public class MenuPanelPostService
                 Text = MenuButtons.Back
             });
         
-        return _postService.PostAsync(session.Id, new SendMessageRequest(new SendMessageParameters
+        return _postService.PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = MenuButtons.BotManagement,
             ChatId = session.ChatId,

@@ -3,19 +3,87 @@ namespace Kyoto.Domain.Bot;
 public class BotModel
 {
     public Guid Id { get; set; }
-    public string Prefix { get; private set; }
+    public string PrivateId { get; private set; }
+    public string FirstName { get; private set; }
+    public string Username { get; private set; }
+    public bool CanJoinGroups { get; private set; }
+    public bool CanReadAllGroupMessages { get; private set; }
+    public bool SupportsInlineQueries { get; private set; }
     public string Token { get; private set; }
+    public bool IsEnable { get; private set; }
 
-    private BotModel(Guid id, string prefix, string token)
+    private BotModel(
+        Guid id,
+        string privateId,
+        string firstName, 
+        string username,
+        bool canJoinGroups, 
+        bool canReadAllGroupMessages, 
+        bool supportsInlineQueries, 
+        string token, 
+        bool isEnable)
     {
         Id = id;
-        Prefix = prefix;
+        PrivateId = privateId;
+        FirstName = firstName;
+        Username = username;
+        CanJoinGroups = canJoinGroups;
+        CanReadAllGroupMessages = canReadAllGroupMessages;
+        SupportsInlineQueries = supportsInlineQueries;
         Token = token;
+        IsEnable = isEnable;
     }
 
-    public static BotModel Create(string name, string token)
+    public static BotModel Create(
+        string privateId,
+        string firstName, 
+        string username,
+        bool canJoinGroups, 
+        bool canReadAllGroupMessages, 
+        bool supportsInlineQueries, 
+        string token, 
+        bool isEnable)
     {
-        var id = Guid.NewGuid();
-        return new BotModel(id,name, token);
+        return new BotModel(
+            Guid.NewGuid(), 
+            privateId, 
+            firstName, 
+            username, 
+            canJoinGroups,
+            canReadAllGroupMessages,
+            supportsInlineQueries, 
+            token, 
+            isEnable);
+    }
+    
+    public static BotModel CreateWithOnlyToken(string token)
+    {
+        return new BotModel(
+            Guid.NewGuid(), 
+            string.Empty, 
+            string.Empty, 
+            string.Empty, 
+            false,
+            false,
+            false, 
+            token, 
+            false);
+    }
+
+    public BotModel Init(
+        string privateId,
+        string firstName, 
+        string username,
+        bool canJoinGroups, 
+        bool canReadAllGroupMessages, 
+        bool supportsInlineQueries)
+    {
+        PrivateId = privateId;
+        FirstName = firstName;
+        Username = username;
+        CanJoinGroups = canJoinGroups;
+        CanReadAllGroupMessages = canReadAllGroupMessages;
+        SupportsInlineQueries = supportsInlineQueries;
+        return this;
     }
 }

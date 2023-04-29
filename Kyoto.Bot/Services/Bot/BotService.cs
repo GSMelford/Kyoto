@@ -1,24 +1,58 @@
+using Kyoto.Bot.Services.PostSystem;
+using Kyoto.Bot.StartUp.Settings;
 using Kyoto.Domain.Bot;
+using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
+using Kyoto.Domain.Tenant;
+using Kyoto.Kafka.Event;
+using Kyoto.Kafka.Interfaces;
+using TBot.Client.Parameters.Webhook;
+using TBot.Client.Requests.Webhook;
 
 namespace Kyoto.Bot.Services.Bot;
 
 public class BotService : IBotService
 {
+    private readonly AppSettings _appSettings;
     private readonly IBotRepository _botRepository;
+    private readonly IPostService _postService;
+    private readonly IKafkaProducer<string> _kafkaProducer;
+    private readonly ITenantRepository _tenantRepository;
 
-    public BotService(IBotRepository botRepository)
+    public BotService(
+        AppSettings appSettings,
+        IBotRepository botRepository,
+        IPostService postService, 
+        IKafkaProducer<string> kafkaProducer, 
+        ITenantRepository tenantRepository)
     {
+        _appSettings = appSettings;
         _botRepository = botRepository;
+        _postService = postService;
+        _kafkaProducer = kafkaProducer;
+        _tenantRepository = tenantRepository;
     }
 
-    public Task<Guid> SaveAsync(Session session, string name, string token)
+    public Task<Guid> SaveAsync(Session session, BotModel botModel)
     {
-        return _botRepository.SaveAsync(session.ExternalUserId, BotModel.Create(name, token));
+        return _botRepository.SaveAsync(session.ExternalUserId, botModel);
     }
-    
-    public Task UpdateBotNameAsync(Guid botId, string name)
+
+    public async Task ActivateBotAsync(Session session, string username)
     {
-        return _botRepository.UpdateNameAsync(botId, name);
+        var botTenant = await _tenantRepository.GetBotTenantAsync(session.ExternalUserId, username);
+        await _postService.PostAsync(session, new SetWebhookRequest(new SetWebhookParameters
+        {
+            Url = $"{_appSettings.BaseUrl}{_appSettings.ReceiverEndpoint}",
+            SecretToken = botTenant.TenantKey
+        }).ToRequest());
+
+        await _kafkaProducer.ProduceAsync(new InitTenantEvent
+        {
+            Token = botTenant.TenantKey,
+            TenantKey = botTenant.TenantKey
+        });
+        
+        await _botRepository.SetActiveBotAsync(session.ExternalUserId, username);
     }
 }

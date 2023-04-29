@@ -34,6 +34,9 @@ namespace Kyoto.Infrastructure.Migrations
                     b.Property<Guid>("ExternalUserId")
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 

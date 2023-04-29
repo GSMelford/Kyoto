@@ -9,7 +9,6 @@ public class BotRegistrationCommandStepFactory : BaseCommandStepFactory
     protected override List<Type> CommandStepTypes { get; set; } = new ()
     {
         typeof(BotRegistrationTokenStep),
-        typeof(BotRegistrationNameStep),
         typeof(BotRegistrationConfirmNameStep)
     };
 }

@@ -24,7 +24,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         ConsumerConfig? config = null,
         string? topic = null,
         string? groupId = null,
-        bool? enableAutoCommit = true) where THandler : class, IEventHandler<TEvent> where TEvent : BaseEvent
+        bool? enableAutoCommit = true) where THandler : class, IKafkaHandler<TEvent> where TEvent : BaseEvent
     {
         string eventName = typeof(TEvent).Name;
         if (string.IsNullOrEmpty(topic)) {
@@ -59,7 +59,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         return kafkaConsumerService;
     }
 
-    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IEventHandler<TEvent> where TEvent : BaseEvent
+    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IKafkaHandler<TEvent> where TEvent : BaseEvent
     {
         var @event = JsonConvert.DeserializeObject<TEvent>(e.Message);
         

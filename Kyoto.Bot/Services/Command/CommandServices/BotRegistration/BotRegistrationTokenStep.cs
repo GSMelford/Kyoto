@@ -1,3 +1,4 @@
+using Kyoto.Domain.Bot;
 using Kyoto.Domain.PostSystem;
 using Newtonsoft.Json;
 
@@ -20,11 +21,7 @@ public class BotRegistrationTokenStep : BaseCommandStep
 
     public override Task ProcessResponseAsync()
     {
-        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(new BotRegistrationData
-        {
-            Token = CommandContext.Message!.Text!
-        }));
-        
+        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(BotModel.CreateWithOnlyToken(CommandContext.Message!.Text!)));
         return Task.CompletedTask;
     }
 }

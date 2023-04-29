@@ -49,6 +49,9 @@ public class ExecutiveCommandService : IExecutiveCommandService
             case MenuButtons.BotManagementButtons.RegisterNewBot:
                 await StartExecutiveCommandAsync(session, CommandType.BotRegistration);
                 break;
+            case MenuButtons.BotManagementButtons.DeployBot:
+                await StartExecutiveCommandAsync(session, CommandType.DeployBot);
+                break;
         }
     }
     
@@ -87,10 +90,9 @@ public class ExecutiveCommandService : IExecutiveCommandService
                         executiveCommand.SetStep(commandStep.CommandContext.ToRetryStep.Value);
                     }
                     
-                    executiveCommand.ResetState();
                     await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
                     await SendErrorMessageAsync(session, commandStep.CommandContext.ErrorMessage!);
-                    continue;
+                    return;
                 }
                 
                 if (commandStep.CommandContext.IsFailure)

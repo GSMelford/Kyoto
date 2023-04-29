@@ -4,7 +4,7 @@ using Kyoto.Kafka.Interfaces;
 
 namespace Kyoto.Bot.KafkaHandlers;
 
-public class ResponseMessageHandler : IEventHandler<ResponseMessageEvent>
+public class ResponseMessageHandler : IKafkaHandler<ResponseMessageEvent>
 {
     private readonly IResponseMessageExecutor _responseMessageExecutor;
 

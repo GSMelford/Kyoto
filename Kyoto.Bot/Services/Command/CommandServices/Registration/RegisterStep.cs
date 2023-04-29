@@ -43,7 +43,7 @@ public class RegisterStep : BaseCommandStep
                 })
         }).ToRequest();
         
-        await _postService.PostAsync(CommandContext.Session.Id, request);
+        await _postService.PostAsync(CommandContext.Session, request);
     }
 
     public override async Task ProcessResponseAsync()

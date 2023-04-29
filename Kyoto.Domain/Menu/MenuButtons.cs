@@ -7,6 +7,8 @@ public static class MenuButtons
     public static class BotManagementButtons
     {
         public const string RegisterNewBot = "🤖 Register a new bot!";
+        public const string DeployBot = "🚀 Deploy bot";
+        public const string DisableBot = "🚀 Deploy bot";
         public const string DeleteBot = "❌ Delete bot";
     }
 

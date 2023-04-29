@@ -1,31 +1,20 @@
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
-using TBot.Client.Interfaces;
-using TBot.Core.RequestArchitecture;
-using TBot.Core.RequestArchitecture.Structure;
+using Kyoto.Telegram.Sender.Interfaces;
 
 namespace Kyoto.Telegram.Sender.KafkaHandlers;
 
-public class RequestHandler : IEventHandler<RequestEvent>
+public class RequestHandler : IKafkaHandler<RequestEvent>
 {
-    private readonly ILogger<IEventHandler<RequestEvent>> _logger;
-    private readonly ITBot _tBot;
+    private readonly IRequestService _requestService;
 
-    public RequestHandler(ILogger<IEventHandler<RequestEvent>> logger, ITBot tBot)
+    public RequestHandler(IRequestService requestService)
     {
-        _logger = logger;
-        _tBot = tBot;
+        _requestService = requestService;
     }
 
-    public async Task HandleAsync(RequestEvent requestEvent)
+    public Task HandleAsync(RequestEvent requestEvent)
     {
-        requestEvent.Parameters.TryGetValue("chat_id", out string? key);
-
-        await _tBot.PostAsync(new BaseRequest(
-            requestEvent.Endpoint,
-            requestEvent.HttpMethod,
-            requestEvent.Parameters.Select(x => new Parameter(x.Key, x.Value)).ToList()), key);
-        
-        _logger.LogInformation("The message was successfully delivered to telegram. Session ended. SessionId: {SessionId}", requestEvent.SessionId);
+        return _requestService.SendAsync(requestEvent.GetSession(), requestEvent.ToDomain());
     }
 }

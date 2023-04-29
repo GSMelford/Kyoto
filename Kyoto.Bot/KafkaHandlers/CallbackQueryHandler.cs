@@ -4,7 +4,7 @@ using Kyoto.Kafka.Interfaces;
 
 namespace Kyoto.Bot.KafkaHandlers;
 
-public class CallbackQueryHandler : IEventHandler<CallbackQueryEvent>
+public class CallbackQueryHandler : IKafkaHandler<CallbackQueryEvent>
 {
     private readonly ICallbackQueryService _callbackQueryService;
 

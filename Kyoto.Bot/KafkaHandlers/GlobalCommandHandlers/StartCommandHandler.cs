@@ -4,7 +4,7 @@ using Kyoto.Kafka.Interfaces;
 
 namespace Kyoto.Bot.KafkaHandlers.GlobalCommandHandlers;
 
-public class StartCommandHandler : IEventHandler<StartCommandEvent>
+public class StartCommandHandler : IKafkaHandler<StartCommandEvent>
 {
     private readonly IStartCommandService _startCommandService;
 

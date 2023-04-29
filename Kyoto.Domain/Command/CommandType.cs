@@ -3,7 +3,8 @@ namespace Kyoto.Domain.Command;
 public enum CommandType
 {
     Registration,
-    BotRegistration
+    BotRegistration,
+    DeployBot
 }
 
 public static class CommandTypeExtension
@@ -14,6 +15,7 @@ public static class CommandTypeExtension
         {
             CommandType.Registration => nameof(CommandType.Registration),
             CommandType.BotRegistration => nameof(CommandType.BotRegistration),
+            CommandType.DeployBot => nameof(CommandType.DeployBot),
             _ => throw new ArgumentOutOfRangeException(nameof(commandType), commandType, null)
         };
     }

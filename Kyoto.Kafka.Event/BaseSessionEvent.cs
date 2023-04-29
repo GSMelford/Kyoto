@@ -5,12 +5,13 @@ namespace Kyoto.Kafka.Event;
 
 public class BaseSessionEvent : BaseEvent
 {
+    public string TenantKey { get; set; } = null!;
     public long ChatId { get; set; }
     public long ExternalUserId { get; set; }
     public int MessageId { get; set; }
 
     public Session GetSession()
     {
-        return Session.Create(SessionId, ChatId, ExternalUserId, MessageId);
+        return Session.Create(SessionId, ChatId, ExternalUserId, MessageId, TenantKey);
     } 
 }

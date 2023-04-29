@@ -4,12 +4,12 @@ using Kyoto.Kafka.Interfaces;
 
 namespace Kyoto.Bot.KafkaHandlers;
 
-public class CommandHandler : IEventHandler<CommandEvent>
+public class CommandHandler : IKafkaHandler<CommandEvent>
 {
-    private readonly ILogger<IEventHandler<CommandEvent>> _logger;
+    private readonly ILogger<IKafkaHandler<CommandEvent>> _logger;
     private readonly IKafkaProducer<string> _kafkaProducer;
 
-    public CommandHandler(ILogger<IEventHandler<CommandEvent>> logger, IKafkaProducer<string> kafkaProducer)
+    public CommandHandler(ILogger<IKafkaHandler<CommandEvent>> logger, IKafkaProducer<string> kafkaProducer)
     {
         _logger = logger;
         _kafkaProducer = kafkaProducer;

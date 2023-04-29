@@ -1,6 +1,8 @@
 using Kyoto.Domain.Bot;
+using Kyoto.Domain.Tenant;
 using Kyoto.Infrastructure.Models;
 using Microsoft.EntityFrameworkCore;
+using BotDal = Kyoto.Infrastructure.Models.Bot;
 
 namespace Kyoto.Infrastructure.Repositories.Bot;
 
@@ -18,7 +20,6 @@ public class BotRepository : IBotRepository
         var bot = new Models.Bot
         {
             Id = botModel.Id,
-            Prefix = botModel.Prefix,
             Token = botModel.Token,
             ExternalUser = await _databaseContext.Set<ExternalUser>().FirstAsync(x => x.PrivateId == externalId)
         };
@@ -27,16 +28,33 @@ public class BotRepository : IBotRepository
         await _databaseContext.SaveChangesAsync();
         return bot.Id;
     }
-
-    public async Task UpdateNameAsync(Guid botId, string prefix)
+    
+    public async Task<List<string>> GetBotListAsync(long externalId)
     {
-        var bot = await _databaseContext.Set<Models.Bot>().FirstOrDefaultAsync(x => x.Id == botId);
-        
-        if (bot is not null)
-        {
-            bot.Prefix = prefix;
-            _databaseContext.Update(bot);
-            await _databaseContext.SaveChangesAsync();
-        }
+        return await _databaseContext.Set<Models.Bot>()
+            .Include(x => x.ExternalUser)
+            .Where(x => x.ExternalUser.PrivateId == externalId)
+            .Select(x => x.Username)
+            .ToListAsync();
+    }
+
+    public async Task SetActiveBotAsync(long externalId, string name)
+    {
+        var bot = await GetBotAsync(externalId, name);
+        bot!.IsEnable = true;
+        await _databaseContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsBotActiveAsync(long externalId, string name)
+    {
+        var bot = await GetBotAsync(externalId, name);
+        return bot!.IsEnable;
+    }
+
+    private Task<BotDal?> GetBotAsync(long externalId, string name)
+    {
+        return _databaseContext.Set<BotDal>()
+            .Include(x=>x.ExternalUser)
+            .FirstOrDefaultAsync(x => x.ExternalUser.PrivateId == externalId && x.Username == name);
     }
 }
