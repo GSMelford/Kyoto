@@ -4,5 +4,5 @@ namespace Kyoto.Domain.Command.GlobalCommand;
 
 public interface IStartCommandService
 {
-    Task ExecuteAsync(Session session);
+    Task ExecuteAsync(Session session, string firstName);
 }

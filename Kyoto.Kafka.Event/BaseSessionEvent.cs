@@ -13,5 +13,19 @@ public class BaseSessionEvent : BaseEvent
     public Session GetSession()
     {
         return Session.Create(SessionId, ChatId, ExternalUserId, MessageId, TenantKey);
-    } 
+    }
+
+    public BaseSessionEvent()
+    {
+        
+    }
+
+    public BaseSessionEvent(Session session)
+    {
+        SessionId = session.Id;
+        TenantKey = session.TenantKey;
+        ChatId = session.ChatId;
+        MessageId = session.MessageId;
+        ExternalUserId = session.ExternalUserId;
+    }
 }

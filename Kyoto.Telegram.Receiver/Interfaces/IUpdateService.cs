@@ -4,5 +4,5 @@ namespace Kyoto.Telegram.Receiver.Interfaces;
 
 public interface IUpdateService
 {
-    Task HandleAsync(Update update);
+    Task HandleAsync(string tenantKey, Update update);
 }

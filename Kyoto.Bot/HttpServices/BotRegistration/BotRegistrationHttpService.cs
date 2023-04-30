@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace Kyoto.Bot.HttpServices.BotRegistration;
 
-public class BotRegistrationHttpServices
+public class BotRegistrationHttpService
 {
     private readonly HttpClient _httpClient;
 
     private const string API_URL = "https://api.telegram.org/bot";
     
-    public BotRegistrationHttpServices(HttpClient httpClient)
+    public BotRegistrationHttpService(HttpClient httpClient)
     {
         _httpClient = httpClient;
     }
@@ -22,10 +22,10 @@ public class BotRegistrationHttpServices
         
         return botModel.Init(
             botInfo.Id,
-            botModel.FirstName,
-            botModel.Username,
-            botModel.CanJoinGroups,
-            botModel.CanReadAllGroupMessages,
-            botModel.SupportsInlineQueries);
+            botInfo.FirstName,
+            botInfo.Username,
+            botInfo.CanJoinGroups,
+            botInfo.CanReadAllGroupMessages,
+            botInfo.SupportsInlineQueries);
     }
 }

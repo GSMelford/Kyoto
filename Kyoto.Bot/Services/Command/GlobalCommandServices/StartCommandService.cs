@@ -25,7 +25,7 @@ public class StartCommandService : IStartCommandService
         _executiveCommandService = executiveCommandService;
     }
 
-    public async Task ExecuteAsync(Session session)
+    public async Task ExecuteAsync(Session session, string firstName)
     {
         if (await _userRepository.IsUserExistAsync(session.ExternalUserId))
         {
@@ -33,7 +33,7 @@ public class StartCommandService : IStartCommandService
         }
         else
         {
-            await _executiveCommandService.StartExecutiveCommandAsync(session, CommandType.Registration);
+            await _executiveCommandService.StartExecutiveCommandAsync(session, CommandType.Registration, firstName);
             _logger.LogInformation("{CommandService}. New user. SessionId: {SessionId}",
                 nameof(StartCommandService), session.Id);
         }

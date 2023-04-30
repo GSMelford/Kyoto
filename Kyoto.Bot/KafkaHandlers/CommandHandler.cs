@@ -21,10 +21,12 @@ public class CommandHandler : IKafkaHandler<CommandEvent>
         {
             await _kafkaProducer.ProduceAsync(new StartCommandEvent
             {
+                UserFirstName = commandEvent.Message.FromUser!.FirstName,
                 SessionId = commandEvent.SessionId,
                 ChatId = commandEvent.Message.Chat.Id,
                 ExternalUserId = commandEvent.Message.FromUser!.Id,
-                MessageId = commandEvent.MessageId
+                MessageId = commandEvent.MessageId,
+                TenantKey = commandEvent.TenantKey
             });
             
             _logger.LogInformation("Start command in progress. SessionId: {SessionId}", commandEvent.SessionId);

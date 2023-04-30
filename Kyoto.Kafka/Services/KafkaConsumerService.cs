@@ -38,7 +38,7 @@ public class KafkaConsumerService : IKafkaConsumerService
                 {
                     ConsumeResult<Ignore, string> consumeResult = _consumer.Consume(300);
                     
-                    if (consumeResult is null) 
+                    if (consumeResult is null)
                         continue;
                     
                     var receivedEventArgs = new ReceivedEventDetails(

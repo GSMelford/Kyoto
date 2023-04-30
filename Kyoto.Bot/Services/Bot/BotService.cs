@@ -41,18 +41,21 @@ public class BotService : IBotService
     public async Task ActivateBotAsync(Session session, string username)
     {
         var botTenant = await _tenantRepository.GetBotTenantAsync(session.ExternalUserId, username);
-        await _postService.PostAsync(session, new SetWebhookRequest(new SetWebhookParameters
+        var newSession = Session.CreateNew(botTenant.TenantKey);
+        
+        await _kafkaProducer.ProduceAsync(new InitTenantEvent
+        {
+            SessionId = newSession.Id,
+            Token = botTenant.TenantKey,
+            TenantKey = botTenant.Token
+        });
+        
+        await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
         {
             Url = $"{_appSettings.BaseUrl}{_appSettings.ReceiverEndpoint}",
             SecretToken = botTenant.TenantKey
         }).ToRequest());
 
-        await _kafkaProducer.ProduceAsync(new InitTenantEvent
-        {
-            Token = botTenant.TenantKey,
-            TenantKey = botTenant.TenantKey
-        });
-        
         await _botRepository.SetActiveBotAsync(session.ExternalUserId, username);
     }
 }

@@ -15,6 +15,6 @@ public class StartCommandHandler : IKafkaHandler<StartCommandEvent>
 
     public async Task HandleAsync(StartCommandEvent startCommandEvent)
     {
-        await _startCommandService.ExecuteAsync(startCommandEvent.GetSession());
+        await _startCommandService.ExecuteAsync(startCommandEvent.GetSession(), startCommandEvent.UserFirstName);
     }
 }

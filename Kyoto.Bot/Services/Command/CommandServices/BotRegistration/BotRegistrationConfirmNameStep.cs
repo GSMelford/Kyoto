@@ -12,7 +12,7 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
     private readonly IPostService _postService;
     private readonly IBotService _botService;
 
-    private readonly BotRegistrationHttpServices _botRegistrationHttpServices;
+    private readonly BotRegistrationHttpService _botRegistrationHttpService;
 
     private static string BuildConfirmNameQuestion(BotModel botModel) => 
         $"🤔 Do you want to register this bot?\n\n" +
@@ -22,18 +22,19 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
     public BotRegistrationConfirmNameStep(
         IPostService postService, 
         IBotService botService, 
-        BotRegistrationHttpServices botRegistrationHttpServices)
+        BotRegistrationHttpService botRegistrationHttpService)
     {
         _postService = postService;
         _botService = botService;
-        _botRegistrationHttpServices = botRegistrationHttpServices;
+        _botRegistrationHttpService = botRegistrationHttpService;
     }
     
     public override async Task SendActionRequestAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
-        botModel = await _botRegistrationHttpServices.GetBotInfoAsync(botModel);
+        botModel = await _botRegistrationHttpService.GetBotInfoAsync(botModel);
         await _postService.SendConfirmationMessageAsync(CommandContext.Session, BuildConfirmNameQuestion(botModel));
+        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(botModel));
     }
 
     public override async Task ProcessResponseAsync()

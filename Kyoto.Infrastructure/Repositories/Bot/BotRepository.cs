@@ -21,6 +21,13 @@ public class BotRepository : IBotRepository
         {
             Id = botModel.Id,
             Token = botModel.Token,
+            PrivateId = botModel.PrivateId,
+            Username = botModel.Username,
+            FirstName = botModel.FirstName,
+            SupportsInlineQueries = botModel.SupportsInlineQueries,
+            CanReadAllGroupMessages = botModel.CanReadAllGroupMessages,
+            CanJoinGroups = botModel.CanJoinGroups,
+            IsEnable = false,
             ExternalUser = await _databaseContext.Set<ExternalUser>().FirstAsync(x => x.PrivateId == externalId)
         };
         

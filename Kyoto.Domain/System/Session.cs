@@ -21,4 +21,14 @@ public class Session
     {
         return new Session(id, chatId, externalUserId, messageId, tenantKey);
     }
+    
+    public static Session CreateNew(long chatId, long externalUserId, int messageId, string tenantKey)
+    {
+        return new Session(Guid.NewGuid(), chatId, externalUserId, messageId, tenantKey);
+    }
+    
+    public static Session CreateNew(string tenantKey)
+    {
+        return new Session(Guid.NewGuid(), default, default, default, tenantKey);
+    }
 }

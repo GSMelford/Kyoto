@@ -1,3 +1,5 @@
+using Kyoto.Domain.System;
+
 namespace Kyoto.Kafka.Event;
 
 public class RequestEvent : BaseSessionEvent
@@ -7,6 +9,16 @@ public class RequestEvent : BaseSessionEvent
     public Dictionary<string, string>? Headers { get; set; } = new ();
     public Dictionary<string, string> Parameters { get; set; } = new ();
     public ResponseMessageReturn? ReturnResponse { get; set; }
+
+    public RequestEvent()
+    {
+        
+    }
+    
+    public RequestEvent(Session session) : base(session)
+    {
+        
+    }
 }
 
 public class ResponseMessageReturn

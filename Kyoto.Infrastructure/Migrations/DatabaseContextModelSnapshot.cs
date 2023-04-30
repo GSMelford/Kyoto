@@ -28,23 +28,40 @@ namespace Kyoto.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<bool>("CanJoinGroups")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("CanReadAllGroupMessages")
+                        .HasColumnType("boolean");
+
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("ExternalUserId")
                         .HasColumnType("uuid");
 
-                    b.Property<bool>("IsActive")
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsEnable")
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Prefix")
+                    b.Property<string>("PrivateId")
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<bool>("SupportsInlineQueries")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 

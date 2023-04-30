@@ -6,24 +6,16 @@ namespace Kyoto.Bot.KafkaHandlers;
 
 public class RequestTenantHandler : IKafkaHandler<RequestTenantEvent>
 {
-    private readonly IKafkaProducer<string> _kafkaProducer;
-    private readonly ITenantRepository _tenantRepository;
+    private readonly ITenantService _tenantService;
 
-    public RequestTenantHandler(IKafkaProducer<string> kafkaProducer, ITenantRepository tenantRepository)
+    public RequestTenantHandler(ITenantService tenantService)
     {
-        _kafkaProducer = kafkaProducer;
-        _tenantRepository = tenantRepository;
+        _tenantService = tenantService;
     }
 
     public async Task HandleAsync(RequestTenantEvent @event)
     {
-        await foreach (var botTenant in _tenantRepository.GetAllTenantsAsync())
-        {
-            await _kafkaProducer.ProduceAsync(new InitTenantEvent
-            {
-                TenantKey = botTenant.TenantKey,
-                Token = botTenant.Token
-            });
-        }
+        await _tenantService.InitMainBotTenantAsync();
+        await _tenantService.InitBotTenantsFromDatabaseAsync();
     }
 }

@@ -4,5 +4,5 @@ namespace Kyoto.Telegram.Receiver.Interfaces;
 
 public interface IMessageDistributorService
 {
-    public Task DefineAsync(Guid sessionId, Message message);
+    public Task DefineAsync(string tenantKey, Message message);
 }

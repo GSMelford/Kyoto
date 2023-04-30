@@ -28,17 +28,17 @@ public class RegisterStep : BaseCommandStep
     public override async Task SendActionRequestAsync()
     {
         string text = CommandContext.IsRetry
-            ? "Let's try to get to know each other again!"
-            : "Hello! We haven't met before, let's get to know each other 👉👈⬇️";
+            ? "Press the button to share the contact so that we can get to know each other ☺️"
+            : "Kon'nichiwa! 👋\nLet's get to know each other!\nI'm Kyoto, like a city in Japan ⛩\nAnd what is your name?😉";
         
         var request = new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
             ChatId = CommandContext.Session.ChatId,
-            ReplyMarkup = new ReplyKeyboardMarkup { OneTimeKeyboard = true }
+            ReplyMarkup = new ReplyKeyboardMarkup { OneTimeKeyboard = true, ResizeKeyboard = true }
                 .Add(new KeyboardButton
                 {
-                    Text = "Register - and start creating your bot! 😎",
+                    Text = $"I'm {CommandContext.AdditionalData}! (Share contact with Kyoto) 👋",
                     RequestContact = true
                 })
         }).ToRequest();
@@ -50,15 +50,17 @@ public class RegisterStep : BaseCommandStep
     {
         if (CommandContext.Message!.Contact is null)
         {
-            CommandContext.SetRetry(errorMessage: "First you need to register!");
+            CommandContext.SetRetry();
         }
         else
         {
             var user = CommandContext.Message!.ToUserDomain();
             await _authorizationService.RegisterAsync(user);
             
-            await _postService.SendTextMessageAsync(
-                CommandContext.Session, $"Thank you for registering, {CommandContext.Message!.FromUser!.FirstName}! 💞");
+            await _postService.SendTextMessageAsync(CommandContext.Session, 
+                $"Nice to meet you, {CommandContext.Message!.FromUser!.FirstName}! 💞");
+            
+            await _postService.SendTextMessageAsync(CommandContext.Session, "Now a little about myself..."); //TODO: Text
             await _menuPanelPostService.SendBotManagementAsync(CommandContext.Session);
         }
     }

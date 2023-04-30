@@ -60,10 +60,8 @@ public class PostService : IPostService
     
     public async Task PostAsync(Session session, Request request, ReturnResponseDetails? returnResponseDetails = null)
     {
-        await _kafkaProducer.ProduceAsync(new RequestEvent
-        { 
-            TenantKey = session.TenantKey,
-            SessionId = session.Id,
+        await _kafkaProducer.ProduceAsync(new RequestEvent (session)
+        {
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
             Headers = request.Headers,

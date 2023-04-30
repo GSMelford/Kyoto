@@ -1,4 +1,5 @@
-﻿using Kyoto.Domain.Telegram.Updates;
+﻿using Kyoto.Domain.System;
+using Kyoto.Domain.Telegram.Updates;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Telegram.Receiver.Interfaces;
@@ -18,25 +19,18 @@ public class UpdateService : IUpdateService
         _kafkaProducer = kafkaProducer;
     }
 
-    public async Task HandleAsync(Update update)
+    public async Task HandleAsync(string tenantKey, Update update)
     {
-        Guid sessionId = Guid.NewGuid();
-        
         if (update.IsMessage()) {
-            await _messageDistributorService.DefineAsync(sessionId, update.Message!);
+            await _messageDistributorService.DefineAsync(tenantKey, update.Message!);
             return;
         }
         
         if (update.IsCallbackQuery())
         {
-            await _kafkaProducer.ProduceAsync(new CallbackQueryEvent
+            await _kafkaProducer.ProduceAsync(new CallbackQueryEvent(update.CallbackQuery!.ToSession(tenantKey))
             {
-                CallbackQuery = update.CallbackQuery!,
-                ChatId = update.CallbackQuery!.Message!.Chat.Id,
-                ExternalUserId = update.CallbackQuery.From.Id,
-                SessionId = sessionId,
-                MessageId = update.CallbackQuery!.Message.MessageId,
-                TenantKey = "Main"
+                CallbackQuery = update.CallbackQuery!
             });
             return;
         }

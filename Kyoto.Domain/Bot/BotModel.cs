@@ -12,7 +12,7 @@ public class BotModel
     public string Token { get; private set; }
     public bool IsEnable { get; private set; }
 
-    private BotModel(
+    public BotModel(
         Guid id,
         string privateId,
         string firstName, 

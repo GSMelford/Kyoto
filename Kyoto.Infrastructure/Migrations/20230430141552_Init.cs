@@ -75,8 +75,14 @@ namespace Kyoto.Infrastructure.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     ExternalUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    Prefix = table.Column<string>(type: "text", nullable: false),
+                    PrivateId = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    Username = table.Column<string>(type: "text", nullable: false),
+                    CanJoinGroups = table.Column<bool>(type: "boolean", nullable: false),
+                    CanReadAllGroupMessages = table.Column<bool>(type: "boolean", nullable: false),
+                    SupportsInlineQueries = table.Column<bool>(type: "boolean", nullable: false),
                     Token = table.Column<string>(type: "text", nullable: false),
+                    IsEnable = table.Column<bool>(type: "boolean", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },

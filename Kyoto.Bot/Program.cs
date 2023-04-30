@@ -15,6 +15,7 @@ builder.Services
 var app = builder.Build();
 
 app.SubscribeToEvents(appSettings);
+await app.Services.InitBotTenantsAsync();
 await app.Services.PrepareDatabaseAsync(appSettings.DatabaseSettings);
 app.MapGet("/", () => "Kyoto bot! 0.3");
 

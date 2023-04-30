@@ -16,41 +16,34 @@ public class MessageDistributorService : IMessageDistributorService
         _kafkaProducer = kafkaProducer;
     }
 
-    public async Task DefineAsync(Guid sessionId, Message message)
+    public async Task DefineAsync(string tenantKey, Message message)
     {
+        var session = message.ToSession(tenantKey);
         if (message.MessageEntities is null)
         {
-            await _kafkaProducer.ProduceAsync(new MessageEvent
+            await _kafkaProducer.ProduceAsync(new MessageEvent (session)
             {
-                SessionId = sessionId,
-                Message = message,
-                ChatId = message.Chat.Id,
-                ExternalUserId = message.FromUser!.Id,
-                MessageId = message.MessageId
+                MessageId = message.MessageId,
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +
-                                   "SessionId: {SessionId}, EventType: {UpdateType}", sessionId, nameof(MessageEvent));
+                                   "SessionId: {SessionId}, EventType: {UpdateType}", session.Id, nameof(MessageEvent));
             return;
         }
         
         if (message.TryGetCommand(out var command))
         {
-            await _kafkaProducer.ProduceAsync(new CommandEvent
+            await _kafkaProducer.ProduceAsync(new CommandEvent (session)
             {
-                SessionId = sessionId,
                 Message = message,
-                GlobalCommandType = command!.Value,
-                ChatId = message.Chat.Id,
-                ExternalUserId = message.FromUser!.Id,
-                MessageId = message.MessageId
+                GlobalCommandType = command!.Value
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +
-                                   "SessionId: {SessionId}, EventType: {UpdateType}", sessionId, nameof(CommandEvent));
+                                   "SessionId: {SessionId}, EventType: {UpdateType}", session.Id, nameof(CommandEvent));
             return;
         }
         
-        _logger.LogInformation("Message handler not defined. End of session. SessionId: {SessionId}", sessionId);
+        _logger.LogInformation("Message handler not defined. End of session. SessionId: {SessionId}", session.Id);
     }
 }

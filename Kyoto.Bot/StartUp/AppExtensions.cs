@@ -19,6 +19,8 @@ public static class AppExtensions
         kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<MessageEvent, MessageHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<RequestTenantEvent, RequestTenantHandler>(consumerConfig);
+        kafkaConsumerFactory.Subscribe<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Bot");
     }
 
     public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)
@@ -26,5 +28,12 @@ public static class AppExtensions
         using var scope = serviceProvider.CreateScope();
         var databaseContext = scope.ServiceProvider.GetRequiredService<IDatabaseContext>();
         await databaseContext.MigrateAsync(databaseSettings.ToConnectionString());
+    }
+    
+    public static async Task InitBotTenantsAsync(this IServiceProvider serviceProvider)
+    {
+        using var scope = serviceProvider.CreateScope();
+        var kafkaProducer = scope.ServiceProvider.GetRequiredService<IKafkaProducer<string>>();
+        await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() });
     }
 }

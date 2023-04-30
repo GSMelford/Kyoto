@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Kyoto.Bot.HttpServices.BotRegistration;
 using Kyoto.Bot.Services.Authorization;
 using Kyoto.Bot.Services.Bot;
 using Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
@@ -9,6 +10,7 @@ using Kyoto.Bot.Services.Command.GlobalCommandServices;
 using Kyoto.Bot.Services.Menu;
 using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Bot.Services.Processors;
+using Kyoto.Bot.Services.Tenant;
 using Kyoto.Bot.StartUp.Settings;
 using Kyoto.Domain.Authorization;
 using Kyoto.Domain.Bot;
@@ -89,6 +91,7 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddOtherServices(this IServiceCollection services)
     {
         return services
+            .AddTransient<ITenantService, TenantService>()
             .AddTransient<ITenantRepository, TenantRepository>()
             .AddTransient<ICallbackQueryService, CallbackQueryService>()
             .AddTransient<IBotRepository, BotRepository>()
@@ -96,8 +99,7 @@ public static class DependencyInjectionExtensions
             .AddTransient<IUserRepository, UserRepository>()
             .AddTransient<IPostService, PostService>()
             .AddTransient<IMessageService, MessageService>()
-            .AddTransient<IResponseMessageExecutor, ResponseMessageExecutor>();
+            .AddTransient<IResponseMessageExecutor, ResponseMessageExecutor>()
+            .AddHttpClient<BotRegistrationHttpService>().Services;
     }
-    
-    
 }
