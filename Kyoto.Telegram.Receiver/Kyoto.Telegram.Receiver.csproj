@@ -21,7 +21,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="TBot.Telegram.Dto" Version="0.4.3.10" />
+      <PackageReference Include="TBot.Telegram.Dto" Version="0.4.3.11" />
     </ItemGroup>
 
 </Project>

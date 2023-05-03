@@ -13,14 +13,14 @@ public class BotRegistrationTokenStep : BaseCommandStep
     {
         _postService = postService;
     }
-    
-    public override async Task SendActionRequestAsync()
+
+    protected override Task SetActionRequestAsync()
     {
-        await _postService.SendTextMessageAsync(CommandContext.Session, 
-            "🔑 First of all, generate and send us a bot token:");
+       return _postService.SendTextMessageAsync(CommandContext.Session, 
+           "🔑 First of all, generate and send us a bot token:");
     }
 
-    public override Task ProcessResponseAsync()
+    protected override Task SetProcessResponseAsync()
     {
         CommandContext.SetAdditionalData(JsonConvert.SerializeObject(BotModel.CreateWithOnlyToken(CommandContext.Message!.Text!)));
         return Task.CompletedTask;

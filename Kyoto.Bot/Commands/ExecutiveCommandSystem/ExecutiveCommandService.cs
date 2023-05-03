@@ -1,6 +1,5 @@
 using Kyoto.Domain.Command;
 using Kyoto.Domain.Menu;
-using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
 using Kyoto.Domain.Telegram.Types;
 
@@ -10,18 +9,15 @@ public class ExecutiveCommandService : IExecutiveCommandService
 {
     private readonly IExecutiveCommandRepository _executiveCommandRepository;
     private readonly IExecutiveCommandFactory _executiveCommandFactory;
-    private readonly IPostService _postService;
     private readonly IServiceProvider _serviceProvider;
 
     public ExecutiveCommandService(
         IExecutiveCommandRepository executiveCommandRepository,
         IExecutiveCommandFactory executiveCommandFactory,
-        IPostService postService, 
         IServiceProvider serviceProvider)
     {
         _executiveCommandRepository = executiveCommandRepository;
         _executiveCommandFactory = executiveCommandFactory;
-        _postService = postService;
         _serviceProvider = serviceProvider;
     }
 
@@ -66,46 +62,27 @@ public class ExecutiveCommandService : IExecutiveCommandService
                 scope.ServiceProvider, commandStepFactory.GetCommandStep(executiveCommand.Step)) as BaseCommandStep;
 
             commandStep!.SetCommandContext(commandContext);
-            
             if (executiveCommand.StepState == CommandStepState.RequestToAction)
             {
                 await commandStep.SendActionRequestAsync();
-                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
-                executiveCommand.SetStepState(CommandStepState.ProcessResponse);
-                await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
-                return;
             }
 
             if (executiveCommand.StepState == CommandStepState.ProcessResponse)
             {
                 await commandStep.ProcessResponseAsync();
-                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
-                
                 if (commandStep.CommandContext.IsRetry)
                 {
-                    if (commandStep.CommandContext.ToRetryStep is not null)
-                    {
-                        executiveCommand.SetStep(commandStep.CommandContext.ToRetryStep.Value);
-                    }
-                    
-                    await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
-                    await SendErrorMessageAsync(session, commandStep.CommandContext.ErrorMessage!);
-                    return;
+                    executiveCommand.SetStep(commandStep.CommandContext.ToRetryStep!.Value);
+                    continue;
                 }
-                
-                if (commandStep.CommandContext.IsFailure)
-                {
-                    await _executiveCommandRepository.RemoveAsync(session);
-                    await SendErrorMessageAsync(session, commandStep.CommandContext.ErrorMessage!);
-                }
-                
-                await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
             }
             
             if (commandStepFactory.HasNext(executiveCommand.Step))
             {
                 executiveCommand.IncreaseStep();
                 executiveCommand.ResetState();
+                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
+                executiveCommand.SetStepState(CommandStepState.ProcessResponse);
                 await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
             }
             else
@@ -114,10 +91,5 @@ public class ExecutiveCommandService : IExecutiveCommandService
                 break;
             }
         }
-    }
-
-    private Task SendErrorMessageAsync(Session session, string text)
-    {
-        return _postService.SendTextMessageAsync(session, text);
     }
 }

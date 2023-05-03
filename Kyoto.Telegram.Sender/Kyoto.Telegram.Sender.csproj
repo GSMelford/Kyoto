@@ -14,8 +14,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="TBot.Core" Version="0.4.5.9" />
-      <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.12" />
+      <PackageReference Include="TBot.Core" Version="0.4.5.10" />
+      <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.13" />
     </ItemGroup>
 
     <ItemGroup>

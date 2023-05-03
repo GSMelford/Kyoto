@@ -24,11 +24,10 @@ public class RequestService : IRequestService
         var botTenantModel = BotTenantFactory.Store.Get(session.TenantKey);
         requestModel.Parameters.TryGetValue("chat_id", out var key);
 
-        ((BotClient)_tBot).Init(new BotSettings(botTenantModel.Token), new LimiterConfig{StoreName = botTenantModel.TenantKey});
-        
+        _tBot.Init(new BotSettings(botTenantModel.Token), new LimiterConfig{StoreName = botTenantModel.TenantKey});
         return await _tBot.PostWithLimiterAsync(new BaseRequest(
             requestModel.Endpoint,
             requestModel.HttpMethod,
-            requestModel.Parameters.Select(x => new Parameter(x.Key, x.Value)).ToList()), key!);
+            requestModel.Parameters.Select(x => new Parameter(x.Key, x.Value)).ToList()), $"{botTenantModel.TenantKey}:{key!}");
     }
 }

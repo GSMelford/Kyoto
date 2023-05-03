@@ -22,7 +22,7 @@ public class SelectDeployBotCommandStep : BaseCommandStep
         _postService = postService;
     }
 
-    public override async Task SendActionRequestAsync()
+    protected override async Task SetActionRequestAsync()
     {
         var keyboard = new InlineKeyboardMarkup();
         var botList = await _botRepository.GetBotListAsync(CommandContext.Session.ExternalUserId);
@@ -48,12 +48,11 @@ public class SelectDeployBotCommandStep : BaseCommandStep
         }).ToRequest());
     }
 
-    public override async Task ProcessResponseAsync()
+    protected override async Task SetProcessResponseAsync()
     {
         if (CommandContext.CallbackQuery is null)
         {
-            CommandContext.SetRetry(
-                errorMessage: "You need to choose one of the bots! Or cancel the current command: /cancel");
+            CommandContext.SetRetry();
             return;
         }
 

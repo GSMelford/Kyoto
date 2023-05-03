@@ -10,28 +10,25 @@ public class CommandContext
     public CallbackQuery? CallbackQuery { get; private set; }
     public string? AdditionalData { get; private set; }
     public bool IsRetry { get; private set; }
+    public bool IsInterrupt { get; private set; }
     public ExecutiveCommandStep? ToRetryStep { get; private set; }
-    public bool IsFailure { get; private set; }
-    public string? ErrorMessage { get; private set; }
 
     public CommandContext(
         Session session, 
         Message? message, 
         CallbackQuery? callbackQuery, 
         string? additionalData, 
-        bool isRetry, 
-        bool isFailure, 
-        string? errorMessage, 
-        ExecutiveCommandStep? toRetryStep)
+        bool isRetry,
+        ExecutiveCommandStep? toRetryStep,
+        bool isInterrupt)
     {
         Session = session;
         Message = message;
         CallbackQuery = callbackQuery;
         AdditionalData = additionalData;
         IsRetry = isRetry;
-        IsFailure = isFailure;
-        ErrorMessage = errorMessage;
         ToRetryStep = toRetryStep;
+        IsInterrupt = isInterrupt;
     }
 
     public static CommandContext Create(
@@ -40,7 +37,7 @@ public class CommandContext
         CallbackQuery? callbackQuery, 
         string? additionalData)
     {
-        return new CommandContext(session, message, callbackQuery, additionalData, false, false, null, null);
+        return new CommandContext(session, message, callbackQuery, additionalData, false, null, false);
     }
 
     public void SetAdditionalData(string additionalData)
@@ -48,11 +45,14 @@ public class CommandContext
         AdditionalData = additionalData;
     }
     
-    public void SetRetry(ExecutiveCommandStep? toStep = null, string? errorMessage = null)
+    public void SetRetry(ExecutiveCommandStep? toStep = null)
     {
-        IsFailure = true;
         IsRetry = true;
-        ErrorMessage = errorMessage;
-        ToRetryStep = toStep;
+        ToRetryStep = toStep ?? ExecutiveCommandStep.FirstStep;
+    }
+    
+    public void SetInterrupt()
+    {
+        IsInterrupt = true;
     }
 }

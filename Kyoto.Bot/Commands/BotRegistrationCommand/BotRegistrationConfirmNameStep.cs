@@ -28,8 +28,8 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
         _botService = botService;
         _botRegistrationHttpService = botRegistrationHttpService;
     }
-    
-    public override async Task SendActionRequestAsync()
+
+    protected override async Task SetActionRequestAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
         botModel = await _botRegistrationHttpService.GetBotInfoAsync(botModel);
@@ -37,7 +37,7 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
         CommandContext.SetAdditionalData(JsonConvert.SerializeObject(botModel));
     }
 
-    public override async Task ProcessResponseAsync()
+    protected override async Task SetProcessResponseAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
         
@@ -50,12 +50,18 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
             await _botService.SaveAsync(CommandContext.Session, botModel);
             await _postService.SendTextMessageAsync(CommandContext.Session, 
                 "The bot has been successfully registered! 🪄🥰");
+            return;
         }
-        else {
-            await _postService.DeleteMessageAsync(CommandContext.Session);
-            await _postService.SendTextMessageAsync(CommandContext.Session, 
-                $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Cancel}");
-            CommandContext.SetRetry();
-        }
+        
+        CommandContext.SetRetry();
+    }
+
+    protected override async Task SetRetryActionRequestAsync()
+    {
+        var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
+        
+        await _postService.DeleteMessageAsync(CommandContext.Session);
+        await _postService.SendTextMessageAsync(CommandContext.Session, 
+            $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Cancel}");
     }
 }

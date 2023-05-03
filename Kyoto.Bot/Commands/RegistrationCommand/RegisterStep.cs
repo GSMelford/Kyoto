@@ -25,13 +25,37 @@ public class RegisterStep : BaseCommandStep
         _authorizationService = authorizationService;
         _menuPanelPostService = menuPanelPostService;
     }
-    
-    public override async Task SendActionRequestAsync()
+
+    protected override Task SetActionRequestAsync()
     {
-        string text = CommandContext.IsRetry
-            ? "Press the button to share the contact so that we can get to know each other ☺️"
-            : "Kon'nichiwa! 👋\nLet's get to know each other!\nI'm Kyoto, like a city in Japan ⛩\nAnd what is your name?😉";
+        return SendWelcomeMessageAsync("Kon'nichiwa! 👋\nLet's get to know each other!\nI'm Kyoto, like a city in Japan ⛩\nAnd what is your name?😉");
+    }
+
+    protected override async Task SetProcessResponseAsync()
+    {
+        if (CommandContext.Message!.Contact is null)
+        {
+            CommandContext.SetRetry();
+            return;
+        }
         
+        var user = CommandContext.Message!.ToUserDomain();
+        await _authorizationService.RegisterAsync(user);
+            
+        await _postService.SendTextMessageAsync(CommandContext.Session, 
+            $"Nice to meet you, {CommandContext.Message!.FromUser!.FirstName}! 💞");
+            
+        await _postService.SendTextMessageAsync(CommandContext.Session, "Now a little about myself..."); //TODO: Text
+        await _menuPanelPostService.SendBotManagementAsync(CommandContext.Session);
+    }
+
+    protected override Task SetRetryActionRequestAsync()
+    {
+        return SendWelcomeMessageAsync("Press the button to share the contact so that we can get to know each other ☺️");
+    }
+
+    private Task SendWelcomeMessageAsync(string text)
+    {
         var request = new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
@@ -44,25 +68,6 @@ public class RegisterStep : BaseCommandStep
                 })
         }).ToRequest();
         
-        await _postService.PostAsync(CommandContext.Session, request);
-    }
-
-    public override async Task ProcessResponseAsync()
-    {
-        if (CommandContext.Message!.Contact is null)
-        {
-            CommandContext.SetRetry();
-        }
-        else
-        {
-            var user = CommandContext.Message!.ToUserDomain();
-            await _authorizationService.RegisterAsync(user);
-            
-            await _postService.SendTextMessageAsync(CommandContext.Session, 
-                $"Nice to meet you, {CommandContext.Message!.FromUser!.FirstName}! 💞");
-            
-            await _postService.SendTextMessageAsync(CommandContext.Session, "Now a little about myself..."); //TODO: Text
-            await _menuPanelPostService.SendBotManagementAsync(CommandContext.Session);
-        }
+        return _postService.PostAsync(CommandContext.Session, request);
     }
 }
