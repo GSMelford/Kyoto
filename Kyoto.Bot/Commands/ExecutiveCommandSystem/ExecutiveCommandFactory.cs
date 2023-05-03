@@ -1,6 +1,6 @@
 using Kyoto.Domain.Command;
 
-namespace Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
+namespace Kyoto.Bot.Commands.ExecutiveCommandSystem;
 
 public class ExecutiveCommandFactory : IExecutiveCommandFactory
 {

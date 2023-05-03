@@ -19,8 +19,4 @@
       <PackageReference Include="TBot.Telegram.Dto" Version="0.4.3.10" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="ResponseMessageHandlers\" />
-    </ItemGroup>
-
 </Project>

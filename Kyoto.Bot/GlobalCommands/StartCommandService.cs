@@ -4,7 +4,7 @@ using Kyoto.Domain.Command.GlobalCommand;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
 
-namespace Kyoto.Bot.Services.Command.GlobalCommandServices;
+namespace Kyoto.Bot.GlobalCommands;
 
 public class StartCommandService : IStartCommandService
 {

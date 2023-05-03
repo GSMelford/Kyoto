@@ -1,6 +1,6 @@
 using Kyoto.Domain.Command;
 
-namespace Kyoto.Bot.Services.Command.CommandServices;
+namespace Kyoto.Bot.Commands.ExecutiveCommandSystem;
 
 public abstract class BaseCommandStep : ICommandStep
 {

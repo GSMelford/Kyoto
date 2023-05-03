@@ -1,12 +1,12 @@
 using Confluent.Kafka;
+using Kyoto.Bot.Commands.BotRegistrationCommand;
+using Kyoto.Bot.Commands.DeployBotCommand;
+using Kyoto.Bot.Commands.ExecutiveCommandSystem;
+using Kyoto.Bot.Commands.RegistrationCommand;
+using Kyoto.Bot.GlobalCommands;
 using Kyoto.Bot.HttpServices.BotRegistration;
 using Kyoto.Bot.Services.Authorization;
 using Kyoto.Bot.Services.Bot;
-using Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
-using Kyoto.Bot.Services.Command.CommandServices.DeployBot;
-using Kyoto.Bot.Services.Command.CommandServices.Registration;
-using Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
-using Kyoto.Bot.Services.Command.GlobalCommandServices;
 using Kyoto.Bot.Services.Menu;
 using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Bot.Services.Processors;

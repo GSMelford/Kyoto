@@ -1,6 +1,7 @@
+using Kyoto.Bot.Commands.ExecutiveCommandSystem;
 using Kyoto.Domain.Command;
 
-namespace Kyoto.Bot.Services.Command.CommandServices.BotRegistration;
+namespace Kyoto.Bot.Commands.BotRegistrationCommand;
 
 public class BotRegistrationCommandStepFactory : BaseCommandStepFactory
 {

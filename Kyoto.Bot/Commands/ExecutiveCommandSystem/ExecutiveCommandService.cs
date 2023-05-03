@@ -1,12 +1,10 @@
-using Kyoto.Bot.Services.Command.CommandServices;
 using Kyoto.Domain.Command;
 using Kyoto.Domain.Menu;
 using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.System;
 using Kyoto.Domain.Telegram.Types;
-using Newtonsoft.Json;
 
-namespace Kyoto.Bot.Services.Command.ExecutiveCommandSystem;
+namespace Kyoto.Bot.Commands.ExecutiveCommandSystem;
 
 public class ExecutiveCommandService : IExecutiveCommandService
 {

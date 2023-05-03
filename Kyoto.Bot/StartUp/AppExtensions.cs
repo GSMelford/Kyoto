@@ -1,6 +1,5 @@
 using Confluent.Kafka;
 using Kyoto.Bot.KafkaHandlers;
-using Kyoto.Bot.KafkaHandlers.GlobalCommandHandlers;
 using Kyoto.Bot.StartUp.Settings;
 using Kyoto.Infrastructure;
 using Kyoto.Kafka.Event;

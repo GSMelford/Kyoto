@@ -1,3 +1,4 @@
+using Kyoto.Bot.Commands.ExecutiveCommandSystem;
 using Kyoto.Bot.Services.Menu;
 using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Domain.Authorization;
@@ -7,7 +8,7 @@ using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Bot.Services.Command.CommandServices.Registration;
+namespace Kyoto.Bot.Commands.RegistrationCommand;
 
 public class RegisterStep : BaseCommandStep
 {

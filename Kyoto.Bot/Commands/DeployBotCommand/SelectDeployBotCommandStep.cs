@@ -1,3 +1,4 @@
+using Kyoto.Bot.Commands.ExecutiveCommandSystem;
 using Kyoto.Bot.Services.PostSystem;
 using Kyoto.Domain.Bot;
 using Kyoto.Domain.PostSystem;
@@ -6,7 +7,7 @@ using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Bot.Services.Command.CommandServices.DeployBot;
+namespace Kyoto.Bot.Commands.DeployBotCommand;
 
 public class SelectDeployBotCommandStep : BaseCommandStep
 {

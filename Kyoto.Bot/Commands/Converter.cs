@@ -1,7 +1,7 @@
 using Kyoto.Domain.Telegram.Types;
 using User = Kyoto.Domain.Authorization.User;
 
-namespace Kyoto.Bot.Services.Command;
+namespace Kyoto.Bot.Commands;
 
 public static class Converter
 {

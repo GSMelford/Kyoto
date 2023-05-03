@@ -1,6 +1,7 @@
+using Kyoto.Bot.Commands.ExecutiveCommandSystem;
 using Kyoto.Domain.Command;
 
-namespace Kyoto.Bot.Services.Command.CommandServices.DeployBot;
+namespace Kyoto.Bot.Commands.DeployBotCommand;
 
 public class DeployBotCommandStepFactory : BaseCommandStepFactory
 {
