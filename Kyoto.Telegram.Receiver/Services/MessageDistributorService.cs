@@ -23,7 +23,7 @@ public class MessageDistributorService : IMessageDistributorService
         {
             await _kafkaProducer.ProduceAsync(new MessageEvent (session)
             {
-                MessageId = message.MessageId,
+                Message = message
             });
             
             _logger.LogInformation("Update has been submitted for processing. " +
