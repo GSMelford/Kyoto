@@ -1,4 +1,5 @@
 using Kyoto.Bot.StartUp;
+using Kyoto.Logger;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +13,7 @@ builder.Services
     .AddPostServices()
     .AddOtherServices();
 
+builder.Logging.AddLogger(builder.Configuration, appSettings.KafkaBootstrapServers);
 var app = builder.Build();
 
 app.SubscribeToEvents(appSettings);
