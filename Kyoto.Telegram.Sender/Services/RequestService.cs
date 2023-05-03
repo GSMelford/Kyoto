@@ -2,33 +2,33 @@ using Kyoto.Domain.System;
 using Kyoto.Domain.Tenant;
 using Kyoto.Telegram.Sender.Domain;
 using Kyoto.Telegram.Sender.Interfaces;
+using TBot.Client;
 using TBot.Client.Interfaces;
 using TBot.Core.RequestArchitecture;
 using TBot.Core.RequestArchitecture.Structure;
+using TBot.Core.RequestLimiter;
 
 namespace Kyoto.Telegram.Sender.Services;
 
 public class RequestService : IRequestService
 {
-    private readonly IServiceProvider _serviceProvider;
+    private readonly ITBot _tBot;
 
-    public RequestService(IServiceProvider serviceProvider)
+    public RequestService(ITBot tBot)
     {
-        _serviceProvider = serviceProvider;
+        _tBot = tBot;
     }
 
     public async Task<HttpResponseMessage> SendAsync(Session session, RequestModel requestModel)
     {
         var botTenantModel = BotTenantFactory.Store.Get(session.TenantKey);
-        using (CurrentBotTenant.SetBotTenant(botTenantModel))
-        {
-            var bot = _serviceProvider.GetRequiredService<ITBot>();
-            requestModel.Parameters.TryGetValue("chat_id", out var key);
+        requestModel.Parameters.TryGetValue("chat_id", out var key);
 
-            return await bot.PostAsync(new BaseRequest(
-                requestModel.Endpoint,
-                requestModel.HttpMethod,
-                requestModel.Parameters.Select(x => new Parameter(x.Key, x.Value)).ToList()), key);
-        }
+        ((BotClient)_tBot).Init(new BotSettings(botTenantModel.Token), new LimiterConfig{StoreName = botTenantModel.TenantKey});
+        
+        return await _tBot.PostWithLimiterAsync(new BaseRequest(
+            requestModel.Endpoint,
+            requestModel.HttpMethod,
+            requestModel.Parameters.Select(x => new Parameter(x.Key, x.Value)).ToList()), key!);
     }
 }
