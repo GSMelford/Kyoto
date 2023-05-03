@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using Kyoto.Kafka;
+using Kyoto.Logger;
 using Kyoto.Telegram.Receiver;
 using Kyoto.Telegram.Receiver.Interfaces;
 using Kyoto.Telegram.Receiver.Services;
@@ -15,6 +16,7 @@ builder.Services.AddTransient<IUpdateService, UpdateService>();
 builder.Services.AddTransient<IMessageDistributorService, MessageDistributorService>();
 builder.Services.AddKafkaProducer<string>(new ProducerConfig { BootstrapServers = appSettings.KafkaBootstrapServers });
 builder.Services.AddKafkaConsumersFactory();
+builder.Logging.AddLogger(builder.Configuration, appSettings.KafkaBootstrapServers);
 
 var app = builder.Build();
 
