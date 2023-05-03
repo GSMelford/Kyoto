@@ -1,5 +1,4 @@
-﻿using Kyoto.Domain.System;
-using Kyoto.Domain.Telegram.Updates;
+﻿using Kyoto.Domain.Telegram.Updates;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Telegram.Receiver.Interfaces;
@@ -21,9 +20,11 @@ public class UpdateService : IUpdateService
 
     public async Task HandleAsync(string tenantKey, Update update)
     {
-        if (update.IsMessage()) {
+        _logger.LogInformation("New update received. UpdateId: {UpdateId}", update.UpdateId);
+        
+        if (update.IsMessage()) 
+        {
             await _messageDistributorService.DefineAsync(tenantKey, update.Message!);
-            return;
         }
         
         if (update.IsCallbackQuery())
@@ -31,10 +32,7 @@ public class UpdateService : IUpdateService
             await _kafkaProducer.ProduceAsync(new CallbackQueryEvent(update.CallbackQuery!.ToSession(tenantKey))
             {
                 CallbackQuery = update.CallbackQuery!
-            });
-            return;
+            }, tenantKey);
         }
-        
-        _logger.LogInformation("The update did not find a handler and was ignored. UpdateId: {UpdateId}", update.UpdateId);
     }
 }

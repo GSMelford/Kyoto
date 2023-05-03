@@ -81,11 +81,11 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
                 catch (Exception exception)
                 {
                     _logger?.LogError(exception,"{CommandHandler} caught an exception. SessionId: {SessionId}",
-                        nameof(THandler), @event.SessionId);
+                        typeof(THandler).Name, @event.SessionId);
                 }
                 
                 _logger?.LogInformation("{CommandHandler} has been processed. SessionId: {SessionId}",
-                    nameof(THandler), @event.SessionId);
+                    typeof(THandler).Name, @event.SessionId);
             }
         }
     }

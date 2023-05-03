@@ -13,10 +13,11 @@ public class KafkaProducerService<TKey> : IKafkaProducer<TKey>
         _producer = new ProducerBuilder<TKey?, string>(config).Build();
     }
 
-    public async Task<DeliveryResult<TKey?, string>> ProduceAsync<TEvent>(TEvent eventData, string? topic = null, TKey? key = default)
+    public async Task<DeliveryResult<TKey?, string>> ProduceAsync<TEvent>(TEvent eventData, string? topicPrefix = null, TKey? key = default)
     {
-        if (string.IsNullOrEmpty(topic)) {
-            topic = typeof(TEvent).Name;
+        string topic = typeof(TEvent).Name;
+        if (string.IsNullOrEmpty(topicPrefix)) {
+            topic = $"{topicPrefix}.{topic}";
         }
         
         DeliveryResult<TKey?, string> deliveryResult = await _producer.ProduceAsync(topic, new Message<TKey?, string>

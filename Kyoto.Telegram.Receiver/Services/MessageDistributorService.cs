@@ -19,31 +19,18 @@ public class MessageDistributorService : IMessageDistributorService
     public async Task DefineAsync(string tenantKey, Message message)
     {
         var session = message.ToSession(tenantKey);
-        if (message.MessageEntities is null)
-        {
-            await _kafkaProducer.ProduceAsync(new MessageEvent (session)
-            {
-                Message = message
-            });
-            
-            _logger.LogInformation("Update has been submitted for processing. " +
-                                   "SessionId: {SessionId}, EventType: {UpdateType}", session.Id, nameof(MessageEvent));
-            return;
-        }
-        
         if (message.TryGetCommand(out var command))
         {
-            await _kafkaProducer.ProduceAsync(new CommandEvent (session)
+            await _kafkaProducer.ProduceAsync(new CommandEvent(session)
             {
                 Message = message,
                 GlobalCommandType = command!.Value
-            });
-            
-            _logger.LogInformation("Update has been submitted for processing. " +
-                                   "SessionId: {SessionId}, EventType: {UpdateType}", session.Id, nameof(CommandEvent));
-            return;
+            }, tenantKey);
         }
-        
-        _logger.LogInformation("Message handler not defined. End of session. SessionId: {SessionId}", session.Id);
+
+        await _kafkaProducer.ProduceAsync(new MessageEvent(session)
+        {
+            Message = message
+        }, tenantKey);
     }
 }
