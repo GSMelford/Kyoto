@@ -15,10 +15,6 @@ public static class AppExtensions
         var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
         var consumerConfig = new ConsumerConfig{ BootstrapServers = appSettings.KafkaBootstrapServers };
         
-        kafkaConsumerFactory.Subscribe<CommandEvent, CommandHandler>(consumerConfig);
-        kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandHandler>(consumerConfig);
-        kafkaConsumerFactory.Subscribe<MessageEvent, MessageHandler>(consumerConfig);
-        kafkaConsumerFactory.Subscribe<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<RequestTenantEvent, RequestTenantHandler>(consumerConfig);
         kafkaConsumerFactory.Subscribe<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Bot");
     }
@@ -34,6 +30,6 @@ public static class AppExtensions
     {
         using var scope = serviceProvider.CreateScope();
         var kafkaProducer = scope.ServiceProvider.GetRequiredService<IKafkaProducer<string>>();
-        await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() });
+        await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() }, string.Empty);
     }
 }

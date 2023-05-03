@@ -22,13 +22,14 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
     
     public void Subscribe<TEvent, THandler>(
         ConsumerConfig? config = null,
-        string? topic = null,
+        string? topicPrefix = null,
         string? groupId = null,
         bool? enableAutoCommit = true) where THandler : class, IKafkaHandler<TEvent> where TEvent : BaseEvent
     {
-        string eventName = typeof(TEvent).Name;
-        if (string.IsNullOrEmpty(topic)) {
-            topic = eventName;
+        var eventName = typeof(TEvent).Name;
+        string topic = eventName;
+        if (!string.IsNullOrEmpty(topicPrefix)) {
+            topic = $"{topicPrefix}.{topic}";
         }
         
         string handlerName = typeof(THandler).Name;

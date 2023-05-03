@@ -25,7 +25,7 @@ public class TenantService : ITenantService
             SessionId = Guid.NewGuid(),
             TenantKey = _appSettings.BotTenantSettings.Key,
             Token = _appSettings.BotTenantSettings.Token
-        });
+        }, string.Empty);
     }
     
     public async Task InitBotTenantsFromDatabaseAsync()
@@ -37,7 +37,7 @@ public class TenantService : ITenantService
                 SessionId = Guid.NewGuid(),
                 TenantKey = botTenant.TenantKey,
                 Token = botTenant.Token
-            });
+            }, string.Empty);
         }
     }
 }

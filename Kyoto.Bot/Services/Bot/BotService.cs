@@ -48,7 +48,7 @@ public class BotService : IBotService
             SessionId = newSession.Id,
             Token = botTenant.TenantKey,
             TenantKey = botTenant.Token
-        });
+        }, session.TenantKey);
         
         await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
         {

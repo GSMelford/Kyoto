@@ -17,17 +17,13 @@ public class CommandHandler : IKafkaHandler<CommandEvent>
 
     public async Task HandleAsync(CommandEvent commandEvent)
     {
+        var session = commandEvent.GetSession();
         if (commandEvent.GlobalCommandType == GlobalCommandType.Start)
         {
-            await _kafkaProducer.ProduceAsync(new StartCommandEvent
+            await _kafkaProducer.ProduceAsync(new StartCommandEvent (session)
             {
-                UserFirstName = commandEvent.Message.FromUser!.FirstName,
-                SessionId = commandEvent.SessionId,
-                ChatId = commandEvent.Message.Chat.Id,
-                ExternalUserId = commandEvent.Message.FromUser!.Id,
-                MessageId = commandEvent.MessageId,
-                TenantKey = commandEvent.TenantKey
-            });
+                UserFirstName = commandEvent.Message.FromUser!.FirstName
+            }, session.TenantKey);
             
             _logger.LogInformation("Start command in progress. SessionId: {SessionId}", commandEvent.SessionId);
             return;

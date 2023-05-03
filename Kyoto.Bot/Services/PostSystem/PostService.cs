@@ -70,6 +70,6 @@ public class PostService : IPostService
             {
                 HandlerType = returnResponseDetails.HandlerType
             }
-        });
+        }, session.TenantKey);
     }
 }

@@ -31,11 +31,10 @@ var app = builder.Build();
 
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = appSettings.KafkaBootstrapServers};
-kafkaConsumerFactory.Subscribe<RequestEvent, RequestHandler>(consumerConfig);
 kafkaConsumerFactory.Subscribe<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Sender");
 
 var kafkaProducer = app.Services.GetRequiredService<IKafkaProducer<string>>();
-await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() });
+await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() }, string.Empty);
 
 app.MapGet("/", () => "Kyoto.Telegram.Sender 0.1");
 await app.RunAsync();

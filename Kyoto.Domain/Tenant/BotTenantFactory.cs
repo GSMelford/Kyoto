@@ -21,6 +21,11 @@ public class BotTenantFactory : IDisposable
     {
         return _botTenantModels[tenantKey];
     }
+
+    public bool IsExist(string tenantKey)
+    {
+        return _botTenantModels.ContainsKey(tenantKey);
+    }
     
     public void Dispose()
     {
