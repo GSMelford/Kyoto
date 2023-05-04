@@ -1,4 +1,4 @@
-namespace Kyoto.Bot.Abstractions.ChainOfResponsibility;
+namespace Kyoto.Bot.Core.Abstractions.ChainOfResponsibility;
 
 public interface IHandler<THandlerContext>
 {

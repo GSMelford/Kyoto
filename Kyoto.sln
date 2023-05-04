@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot", "Kyoto.Bot\Kyoto.Bot.csproj", "{A23C068E-6EA1-4E58-99A2-2C1286010683}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot.Factory", "Kyoto.Bot.Factory\Kyoto.Bot.Factory.csproj", "{A23C068E-6EA1-4E58-99A2-2C1286010683}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Workers", "Workers", "{13308AE5-435D-4552-B25F-58A59BF2A2C8}"
 EndProject
@@ -12,11 +12,19 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka", "Kyoto.Kafka\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Domain", "Kyoto.Domain\Kyoto.Domain.csproj", "{52A394DD-7106-43AE-9C3B-CB1449CE1E0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka.Event", "Kyoto.Kafka.Event\Kyoto.Kafka.Event.csproj", "{5B74433C-A68A-4903-A236-28C3675D3DCB}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Infrastructure", "Kyoto.Infrastructure\Kyoto.Infrastructure.csproj", "{8AF2056D-7289-4476-9014-C260A6C43F92}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Kafka.Events", "Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj", "{5B74433C-A68A-4903-A236-28C3675D3DCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Logger", "Kyoto.Logger\Kyoto.Logger.csproj", "{451CCDF2-387E-4AEA-A7AE-1DF5AB7CE263}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot.Client", "Kyoto.Bot.Client\Kyoto.Bot.Client.csproj", "{14ECE743-7EB3-4461-9566-5BDD1A2BC946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot", "Kyoto.Bot\Kyoto.Bot.csproj", "{24EFE4CD-7E52-4C6B-8E82-DDC4E6CBA5C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot.Infrastructure", "Kyoto.Bot.Infrastructure\Kyoto.Bot.Infrastructure.csproj", "{F486D088-2FEB-4C13-8060-49EA1DCD43AC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructures", "Infrastructures", "{E940EE84-B38F-43AF-9A6A-B034A5E54851}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Bot.Client.Infrastructure", "Kyoto.Bot.Client.Infrastructure\Kyoto.Bot.Client.Infrastructure.csproj", "{61522A8A-B513-46F0-A134-A90C115EA1E9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -48,17 +56,33 @@ Global
 		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5B74433C-A68A-4903-A236-28C3675D3DCB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{8AF2056D-7289-4476-9014-C260A6C43F92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{8AF2056D-7289-4476-9014-C260A6C43F92}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{8AF2056D-7289-4476-9014-C260A6C43F92}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{8AF2056D-7289-4476-9014-C260A6C43F92}.Release|Any CPU.Build.0 = Release|Any CPU
 		{451CCDF2-387E-4AEA-A7AE-1DF5AB7CE263}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{451CCDF2-387E-4AEA-A7AE-1DF5AB7CE263}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{451CCDF2-387E-4AEA-A7AE-1DF5AB7CE263}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{451CCDF2-387E-4AEA-A7AE-1DF5AB7CE263}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14ECE743-7EB3-4461-9566-5BDD1A2BC946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14ECE743-7EB3-4461-9566-5BDD1A2BC946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14ECE743-7EB3-4461-9566-5BDD1A2BC946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14ECE743-7EB3-4461-9566-5BDD1A2BC946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{24EFE4CD-7E52-4C6B-8E82-DDC4E6CBA5C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{24EFE4CD-7E52-4C6B-8E82-DDC4E6CBA5C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{24EFE4CD-7E52-4C6B-8E82-DDC4E6CBA5C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{24EFE4CD-7E52-4C6B-8E82-DDC4E6CBA5C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F486D088-2FEB-4C13-8060-49EA1DCD43AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F486D088-2FEB-4C13-8060-49EA1DCD43AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F486D088-2FEB-4C13-8060-49EA1DCD43AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F486D088-2FEB-4C13-8060-49EA1DCD43AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61522A8A-B513-46F0-A134-A90C115EA1E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61522A8A-B513-46F0-A134-A90C115EA1E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61522A8A-B513-46F0-A134-A90C115EA1E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61522A8A-B513-46F0-A134-A90C115EA1E9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
 		{50429C27-C80A-44B9-80B8-8C6C52D244B8} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
+		{14ECE743-7EB3-4461-9566-5BDD1A2BC946} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
+		{A23C068E-6EA1-4E58-99A2-2C1286010683} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
+		{F486D088-2FEB-4C13-8060-49EA1DCD43AC} = {E940EE84-B38F-43AF-9A6A-B034A5E54851}
+		{61522A8A-B513-46F0-A134-A90C115EA1E9} = {E940EE84-B38F-43AF-9A6A-B034A5E54851}
 	EndGlobalSection
 EndGlobal

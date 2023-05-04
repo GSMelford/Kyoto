@@ -5,22 +5,18 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <DockerDefaultTargetOS>Windows</DockerDefaultTargetOS>
+        <RootNamespace>Kyoto.Bot</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+      <ProjectReference Include="..\Kyoto.Bot.Infrastructure\Kyoto.Bot.Infrastructure.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
       <ProjectReference Include="..\Kyoto.Logger\Kyoto.Logger.csproj" />
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.13" />
       <PackageReference Include="TBot.Telegram.Dto" Version="0.4.3.11" />
     </ItemGroup>
 
