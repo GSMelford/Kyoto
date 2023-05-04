@@ -9,13 +9,13 @@ namespace Kyoto.Bot.StartUp;
 
 public static class AppExtensions
 {
-    public static void SubscribeToEvents(this WebApplication app, AppSettings appSettings)
+    public static async Task SubscribeToEventsAsync(this WebApplication app, AppSettings appSettings)
     {
         var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
         var consumerConfig = new ConsumerConfig{ BootstrapServers = appSettings.KafkaBootstrapServers };
         
-        kafkaConsumerFactory.Subscribe<RequestTenantEvent, RequestTenantHandler>(consumerConfig);
-        kafkaConsumerFactory.Subscribe<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Bot");
+        await kafkaConsumerFactory.SubscribeAsync<RequestTenantEvent, RequestTenantHandler>(consumerConfig);
+        await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Bot");
     }
 
     public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)

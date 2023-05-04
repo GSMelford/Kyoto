@@ -65,6 +65,9 @@ public class ExecutiveCommandService : IExecutiveCommandService
             if (executiveCommand.StepState == CommandStepState.RequestToAction)
             {
                 await commandStep.SendActionRequestAsync();
+                executiveCommand.SetStepState(CommandStepState.ProcessResponse);
+                await UpdateExecutiveCommandAsync(session, executiveCommand, commandContext);
+                break;
             }
 
             if (executiveCommand.StepState == CommandStepState.ProcessResponse)
@@ -73,7 +76,8 @@ public class ExecutiveCommandService : IExecutiveCommandService
                 if (commandStep.CommandContext.IsRetry)
                 {
                     executiveCommand.SetStep(commandStep.CommandContext.ToRetryStep!.Value);
-                    continue;
+                    await commandStep.SendRetryActionRequestAsync();
+                    break;
                 }
             }
             
@@ -81,9 +85,7 @@ public class ExecutiveCommandService : IExecutiveCommandService
             {
                 executiveCommand.IncreaseStep();
                 executiveCommand.ResetState();
-                executiveCommand.SetAdditionalData(commandContext.AdditionalData);
-                executiveCommand.SetStepState(CommandStepState.ProcessResponse);
-                await _executiveCommandRepository.UpdateAsync(session, executiveCommand);
+                await UpdateExecutiveCommandAsync(session, executiveCommand, commandContext);
             }
             else
             {
@@ -91,5 +93,11 @@ public class ExecutiveCommandService : IExecutiveCommandService
                 break;
             }
         }
+    }
+
+    private Task UpdateExecutiveCommandAsync(Session session, ExecutiveCommand executiveCommand, CommandContext commandContext)
+    {
+        executiveCommand.SetAdditionalData(commandContext.AdditionalData);
+        return _executiveCommandRepository.UpdateAsync(session, executiveCommand);
     }
 }

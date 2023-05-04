@@ -55,6 +55,20 @@ public class KafkaConsumerService : IKafkaConsumerService
                 }
             }
         }, _cancellationToken);
+        
+        WaitPartitions();
+    }
+
+    private void WaitPartitions()
+    {
+        for (var i = 0; i < 60; i++)
+        {
+            if (_consumer!.Assignment.Count != 0) {
+                break;
+            }
+            
+            Thread.Sleep(500);
+        }
     }
     
     protected virtual void OnReceived(ReceivedEventDetails e)

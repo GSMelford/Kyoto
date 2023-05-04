@@ -16,20 +16,17 @@ public class InitTenantHandler : IKafkaHandler<InitTenantEvent>
         _kafkaConsumerFactory = kafkaConsumerFactory;
     }
 
-    public Task HandleAsync(InitTenantEvent initTenantEvent)
+    public async Task HandleAsync(InitTenantEvent initTenantEvent)
     {
-        if (BotTenantFactory.Store.IsExist(initTenantEvent.TenantKey)) {
-            return Task.CompletedTask;
-        }
-        
-        var consumerConfig = new ConsumerConfig { BootstrapServers = _appSettings.KafkaBootstrapServers };
-        _kafkaConsumerFactory.Subscribe<RequestEvent, RequestHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
-        
-        BotTenantFactory.Store.AddOrUpdateTenant(
+        bool isAdd = BotTenantFactory.Store.AddOrUpdateTenant(
             BotTenantModel.Create(
                 initTenantEvent.TenantKey,
                 initTenantEvent.Token));
         
-        return Task.CompletedTask;
+        if (isAdd) 
+        {
+            var consumerConfig = new ConsumerConfig { BootstrapServers = _appSettings.KafkaBootstrapServers };
+            await _kafkaConsumerFactory.SubscribeAsync<RequestEvent, RequestHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
+        }
     }
 }

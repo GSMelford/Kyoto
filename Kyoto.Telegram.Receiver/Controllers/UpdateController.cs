@@ -18,7 +18,7 @@ public class UpdateController : ControllerBase
     }
 
     public async Task GetUpdate([FromBody, Required] UpdateDto updateDto)
-    {
+    { 
         Request.Headers.TryGetValue(TELEGRAM_TENANT_HEADER, out var tenantKey);
         await _updateService.HandleAsync(tenantKey.ToString(), updateDto.ToDomain());
     }

@@ -27,10 +27,12 @@ public class MessageDistributorService : IMessageDistributorService
                 GlobalCommandType = command!.Value
             }, tenantKey);
         }
-
-        await _kafkaProducer.ProduceAsync(new MessageEvent(session)
+        else
         {
-            Message = message
-        }, tenantKey);
+            await _kafkaProducer.ProduceAsync(new MessageEvent(session)
+            {
+                Message = message
+            }, tenantKey);
+        }
     }
 }

@@ -11,16 +11,18 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
 {
     private readonly ILogger<IKafkaConsumerFactory>? _logger;
     private readonly IServiceProvider _serviceProvider;
+    private readonly IKfakaTopicFactory _kfakaTopicFactory;
 
     private readonly Dictionary<string, IKafkaConsumerService> _consumers = new();
 
     public KafkaConsumerFactory(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
+        _kfakaTopicFactory = _serviceProvider.GetRequiredService<IKfakaTopicFactory>();
         _logger = _serviceProvider.GetService<ILogger<IKafkaConsumerFactory>>();
     } 
     
-    public void Subscribe<TEvent, THandler>(
+    public async Task SubscribeAsync<TEvent, THandler>(
         ConsumerConfig? config = null,
         string? topicPrefix = null,
         string? groupId = null,
@@ -37,14 +39,13 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
             groupId = handlerName;
         }
 
+        await _kfakaTopicFactory.CreateTopicIfNotExistAsync(topic, new Dictionary<string, string>{{"bootstrap.servers", config!.BootstrapServers}});
         if (!_consumers.ContainsKey(topic))
         {
             _consumers[topic] = BuildConsumer(topic, groupId, enableAutoCommit, config);
         }
-
-        _consumers[topic].Received += async (sender, args) => 
-            await KafkaConsumerOnReceived<TEvent, THandler>(sender, args);
         
+        _consumers[topic].Received += KafkaConsumerOnReceived<TEvent, THandler>;
         _logger?.LogInformation("Subscribed to {Event}: {Handler}", eventName, handlerName);
     }
 
@@ -60,7 +61,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
         return kafkaConsumerService;
     }
 
-    private async Task KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IKafkaHandler<TEvent> where TEvent : BaseEvent
+    private void KafkaConsumerOnReceived<TEvent, THandler>(object? _, ReceivedEventDetails e) where THandler : class, IKafkaHandler<TEvent> where TEvent : BaseEvent
     {
         var @event = JsonConvert.DeserializeObject<TEvent>(e.Message);
         
@@ -70,24 +71,24 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
             
         if (@event != null)
         {
-            if (method!.Invoke(handler, new object[] { @event }) is Task resultTask)
-            {
-                _logger?.LogInformation("{CommandHandler} started processing. SessionId: {SessionId}",
-                    nameof(THandler), @event.SessionId);
+            _logger?.LogInformation("{CommandHandler} started processing. SessionId: {SessionId}",
+                typeof(THandler).Name, @event.SessionId);
 
-                try
+            try
+            {
+                if (method!.Invoke(handler, new object[] { @event }) is Task task)
                 {
-                    await resultTask;
+                    task.Wait();
                 }
-                catch (Exception exception)
-                {
-                    _logger?.LogError(exception,"{CommandHandler} caught an exception. SessionId: {SessionId}",
-                        typeof(THandler).Name, @event.SessionId);
-                }
-                
-                _logger?.LogInformation("{CommandHandler} has been processed. SessionId: {SessionId}",
+            }
+            catch (Exception exception)
+            {
+                _logger?.LogError(exception,"{CommandHandler} caught an exception. SessionId: {SessionId}",
                     typeof(THandler).Name, @event.SessionId);
             }
+                
+            _logger?.LogInformation("{CommandHandler} has been processed. SessionId: {SessionId}",
+                typeof(THandler).Name, @event.SessionId);
         }
     }
     

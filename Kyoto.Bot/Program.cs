@@ -16,7 +16,7 @@ builder.Services
 builder.Logging.AddLogger(builder.Configuration, appSettings.KafkaBootstrapServers);
 var app = builder.Build();
 
-app.SubscribeToEvents(appSettings);
+await app.SubscribeToEventsAsync(appSettings);
 await app.Services.InitBotTenantsAsync();
 await app.Services.PrepareDatabaseAsync(appSettings.DatabaseSettings);
 app.MapGet("/", () => "Kyoto bot! 0.3");

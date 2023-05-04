@@ -12,9 +12,11 @@ public class BotTenantFactory : IDisposable
         _botTenantModels = new ConcurrentDictionary<string, BotTenantModel>();
     }
     
-    public void AddOrUpdateTenant(BotTenantModel botTenantModel)
+    public bool AddOrUpdateTenant(BotTenantModel botTenantModel)
     {
+        if (_botTenantModels.ContainsKey(botTenantModel.TenantKey)) return false;
         _botTenantModels.AddOrUpdate(botTenantModel.TenantKey, botTenantModel, (_, model) => model);
+        return true;
     }
 
     public BotTenantModel Get(string tenantKey)
@@ -22,11 +24,6 @@ public class BotTenantFactory : IDisposable
         return _botTenantModels[tenantKey];
     }
 
-    public bool IsExist(string tenantKey)
-    {
-        return _botTenantModels.ContainsKey(tenantKey);
-    }
-    
     public void Dispose()
     {
         _botTenantModels.Clear();

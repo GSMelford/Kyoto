@@ -18,24 +18,21 @@ public class InitTenantHandler : IKafkaHandler<InitTenantEvent>
         _kafkaConsumerFactory = kafkaConsumerFactory;
     }
     
-    public Task HandleAsync(InitTenantEvent initTenantEvent)
+    public async Task HandleAsync(InitTenantEvent initTenantEvent)
     {
-        if (BotTenantFactory.Store.IsExist(initTenantEvent.TenantKey)) {
-            return Task.CompletedTask;
-        }
-        
-        var consumerConfig = new ConsumerConfig { BootstrapServers = _appSettings.KafkaBootstrapServers };
-        
-        _kafkaConsumerFactory.Subscribe<CommandEvent, CommandHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
-        _kafkaConsumerFactory.Subscribe<StartCommandEvent, StartCommandHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
-        _kafkaConsumerFactory.Subscribe<MessageEvent, MessageHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
-        _kafkaConsumerFactory.Subscribe<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
-        
-        BotTenantFactory.Store.AddOrUpdateTenant(
+        bool isAdd = BotTenantFactory.Store.AddOrUpdateTenant(
             BotTenantModel.Create(
                 initTenantEvent.TenantKey,
                 initTenantEvent.Token));
         
-        return Task.CompletedTask;
+        if (isAdd)
+        {
+            var consumerConfig = new ConsumerConfig { BootstrapServers = _appSettings.KafkaBootstrapServers };
+        
+            await _kafkaConsumerFactory.SubscribeAsync<CommandEvent, CommandHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
+            await _kafkaConsumerFactory.SubscribeAsync<StartCommandEvent, StartCommandHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
+            await _kafkaConsumerFactory.SubscribeAsync<MessageEvent, MessageHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
+            await _kafkaConsumerFactory.SubscribeAsync<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig, topicPrefix: initTenantEvent.TenantKey);
+        }
     }
 }
