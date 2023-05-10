@@ -21,4 +21,8 @@
       <PackageReference Include="Serilog.Sinks.Graylog" Version="2.3.0" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -11,14 +11,14 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
 {
     private readonly ILogger<IKafkaConsumerFactory>? _logger;
     private readonly IServiceProvider _serviceProvider;
-    private readonly IKfakaTopicFactory _kfakaTopicFactory;
+    private readonly IKafkaTopicFactory _kafkaTopicFactory;
 
     private readonly Dictionary<string, IKafkaConsumerService> _consumers = new();
 
     public KafkaConsumerFactory(IServiceProvider serviceProvider)
     {
         _serviceProvider = serviceProvider;
-        _kfakaTopicFactory = _serviceProvider.GetRequiredService<IKfakaTopicFactory>();
+        _kafkaTopicFactory = _serviceProvider.GetRequiredService<IKafkaTopicFactory>();
         _logger = _serviceProvider.GetService<ILogger<IKafkaConsumerFactory>>();
     } 
     
@@ -39,7 +39,7 @@ public class KafkaConsumerFactory : IKafkaConsumerFactory
             groupId = handlerName;
         }
 
-        await _kfakaTopicFactory.CreateTopicIfNotExistAsync(topic, new Dictionary<string, string>{{"bootstrap.servers", config!.BootstrapServers}});
+        await _kafkaTopicFactory.CreateTopicIfNotExistAsync(topic, new Dictionary<string, string>{{"bootstrap.servers", config!.BootstrapServers}});
         if (!_consumers.ContainsKey(topic))
         {
             _consumers[topic] = BuildConsumer(topic, groupId, enableAutoCommit, config);

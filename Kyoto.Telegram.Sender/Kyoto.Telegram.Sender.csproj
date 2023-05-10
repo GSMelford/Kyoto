@@ -20,6 +20,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka.Handlers\Kyoto.Kafka.Handlers.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
       <ProjectReference Include="..\Kyoto.Logger\Kyoto.Logger.csproj" />
     </ItemGroup>

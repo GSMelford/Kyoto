@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
+      <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />
+    </ItemGroup>
+
+</Project>

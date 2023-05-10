@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net7.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Commands\Kyoto.Commands.csproj" />
+      <ProjectReference Include="..\Kyoto.Database\Kyoto.Database.csproj" />
+      <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
+      <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    </ItemGroup>
+
+</Project>

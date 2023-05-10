@@ -1,24 +1,48 @@
-using Kyoto.Bot.StartUp;
+using Kyoto.Bot;
+using Kyoto.DI;
+using Kyoto.Extensions;
 using Kyoto.Logger;
+using Kyoto.Services.Tenant;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddSettings(builder.Configuration, out var appSettings);
+
+//Infrastructure
 builder.Services
-    .AddSettings(builder.Configuration, out var appSettings)
-    .AddKafka(appSettings)
+    .AddKafka(appSettings.KafkaSettings)
     .AddDatabase(appSettings.DatabaseSettings)
+    .AddTenant(appSettings.BotTenantSettings);
+
+//Functional
+builder.Services
     .AddAuthorizationServices()
     .AddMenu()
-    .AddCommandServices()
+    .AddBot()
+    .AddProcessorServices()
+    .AddPostService()
+    .AddUser()
+    .AddFactoryCommands()
+    .AddGlobalCommands()
+    .AddExecutiveCommand()
     .AddPostServices()
-    .AddOtherServices();
+    .AddHttpServices();
 
-builder.Logging.AddLogger(builder.Configuration, appSettings.KafkaBootstrapServers);
+//KafkaEventSubscriber
+builder.Services
+    .AddTransient<IKafkaEventSubscriber, KafkaEventSubscriber>();
+
+//HttpServices
+builder.Services
+    .AddHttpServices();
+
+//Logging
+builder.Logging.AddLogger(builder.Configuration, appSettings.KafkaSettings);
+
 var app = builder.Build();
 
-await app.SubscribeToEventsAsync(appSettings);
-await app.Services.InitBotTenantsAsync();
 await app.Services.PrepareDatabaseAsync(appSettings.DatabaseSettings);
-app.MapGet("/", () => "Kyoto bot! 0.3");
+await app.Services.SubscribeToEventsAsync(appSettings.KafkaSettings);
+await app.Services.InitBotTenantsAsync();
 
 await app.RunAsync();

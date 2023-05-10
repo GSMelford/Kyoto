@@ -1,5 +1,4 @@
-﻿using Kyoto.Domain.Command;
-using Kyoto.Domain.Command.GlobalCommand;
+﻿using Kyoto.Domain.BotFactory.GlobalCommand;
 
 namespace Kyoto.Domain.Telegram.Types;
 
@@ -28,7 +27,7 @@ public class Message
             return false;
         }
 
-        command = GlobalCommandTypeExtension.Get(Text.Substring(commandEntity.Offset, commandEntity.Length));
+        command = Text.Substring(commandEntity.Offset, commandEntity.Length).Get();
         return true;
     }
 }

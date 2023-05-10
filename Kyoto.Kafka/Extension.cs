@@ -14,7 +14,7 @@ public static class Extension
     
     public static void AddKafkaConsumersFactory(this IServiceCollection serviceCollection)
     {
-        serviceCollection.AddSingleton<IKfakaTopicFactory, KfakaTopicFactory>();
+        serviceCollection.AddSingleton<IKafkaTopicFactory, KafkaTopicFactory>();
         serviceCollection.AddSingleton<IKafkaConsumerFactory, KafkaConsumerFactory>();
     }
 }

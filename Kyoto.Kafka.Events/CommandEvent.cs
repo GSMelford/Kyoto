@@ -1,4 +1,4 @@
-using Kyoto.Domain.Command.GlobalCommand;
+using Kyoto.Domain.BotFactory.GlobalCommand;
 using Kyoto.Domain.System;
 using Kyoto.Domain.Telegram.Types;
 

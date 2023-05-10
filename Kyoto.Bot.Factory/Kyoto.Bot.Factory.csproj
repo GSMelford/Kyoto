@@ -9,10 +9,15 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Kyoto.Bot.Infrastructure\Kyoto.Bot.Infrastructure.csproj" />
+      <ProjectReference Include="..\Kyoto.Commands\Kyoto.Commands.csproj" />
+      <ProjectReference Include="..\Kyoto.Database\Kyoto.Database.csproj" />
+      <ProjectReference Include="..\Kyoto.DI\Kyoto.DI.csproj" />
+      <ProjectReference Include="..\Kyoto.Extensions\Kyoto.Extensions.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj" />
+      <ProjectReference Include="..\Kyoto.Kafka.Handlers\Kyoto.Kafka.Handlers.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
       <ProjectReference Include="..\Kyoto.Logger\Kyoto.Logger.csproj" />
+      <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />
     </ItemGroup>
 
     <ItemGroup>

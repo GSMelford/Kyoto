@@ -1,4 +1,5 @@
 using Confluent.Kafka;
+using Kyoto.Domain.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;
@@ -8,17 +9,18 @@ namespace Kyoto.Logger;
 
 public static class Extensions
 {
-    public static void AddLogger(this ILoggingBuilder loggingBuilder, IConfiguration configuration, string bootstrapServers)
+    public static void AddLogger(this ILoggingBuilder loggingBuilder, IConfiguration configuration, KafkaSettings kafkaSettings, string topic = "kafka_bot_factory")
     {
         loggingBuilder.ClearProviders();
         loggingBuilder.AddConsole();
         loggingBuilder.AddSerilog(new LoggerConfiguration()
             .ReadFrom.Configuration(configuration)
             .WriteTo.Kafka(
-                bootstrapServers: bootstrapServers,
+                bootstrapServers: kafkaSettings.BootstrapServers,
                 formatter: new GraylogFormatter(),
                 securityProtocol: SecurityProtocol.Plaintext,
-                saslMechanism: SaslMechanism.Plain
+                saslMechanism: SaslMechanism.Plain,
+                topic: topic
             )
             .Enrich.WithThreadId()
             .Enrich.FromLogContext()
