@@ -1,7 +1,7 @@
 using Confluent.Kafka;
-using Kyoto.Domain.Settings;
 using Kyoto.Kafka;
 using Kyoto.Logger;
+using Kyoto.Settings;
 using Kyoto.Telegram.Receiver.Interfaces;
 using Kyoto.Telegram.Receiver.Services;
 

@@ -4,12 +4,12 @@ using Kyoto.Dal.BotFactory;
 using Kyoto.Dal.BotFactory.Repositories.Authorization;
 using Kyoto.Dal.BotFactory.Repositories.Tenant;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
-using Kyoto.Domain.Settings;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Services.BotFactory.Authorization;
 using Kyoto.Services.Tenant;
+using Kyoto.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kyoto.DI;

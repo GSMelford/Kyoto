@@ -7,9 +7,9 @@ namespace Kyoto.Kafka.Handlers;
 
 public class InitTenantHandler : IKafkaHandler<InitTenantEvent>
 {
-    private readonly IKafkaEventSubscriber _kafkaEventSubscriber;
+    private readonly IKafkaEventSubscriber? _kafkaEventSubscriber;
 
-    public InitTenantHandler(IKafkaEventSubscriber kafkaEventSubscriber)
+    public InitTenantHandler(IKafkaEventSubscriber? kafkaEventSubscriber = null)
     {
         _kafkaEventSubscriber = kafkaEventSubscriber;
     }
@@ -21,7 +21,7 @@ public class InitTenantHandler : IKafkaHandler<InitTenantEvent>
                 initTenantEvent.TenantKey,
                 initTenantEvent.Token));
         
-        if (isAdd)
+        if (isAdd && _kafkaEventSubscriber is not null)
         {
             await _kafkaEventSubscriber.SubscribeAsync(initTenantEvent.TenantKey);
         }

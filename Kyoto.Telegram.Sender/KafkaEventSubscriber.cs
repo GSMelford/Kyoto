@@ -1,7 +1,7 @@
-using Kyoto.Domain.Settings;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Services.Tenant;
+using Kyoto.Settings;
 using Kyoto.Telegram.Sender.KafkaHandlers;
 
 namespace Kyoto.Telegram.Sender;

@@ -1,10 +1,10 @@
 using Confluent.Kafka;
 using Kyoto.Dal;
-using Kyoto.Domain.Settings;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Handlers.BotFactory;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Settings;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kyoto.Extensions;

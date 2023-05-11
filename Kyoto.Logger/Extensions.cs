@@ -1,5 +1,5 @@
 using Confluent.Kafka;
-using Kyoto.Domain.Settings;
+using Kyoto.Settings;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Serilog;

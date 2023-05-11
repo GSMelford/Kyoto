@@ -1,7 +1,7 @@
-using Kyoto.Domain.Settings;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Settings;
 
 namespace Kyoto.Services.Tenant;
 

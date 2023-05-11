@@ -1,12 +1,12 @@
 using Kyoto.Domain.BotFactory.Bot;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
-using Kyoto.Domain.Settings;
 using Kyoto.Domain.System;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Services.BotFactory.PostSystem;
+using Kyoto.Settings;
 using TBot.Client.Parameters.Webhook;
 using TBot.Client.Requests.Webhook;
 
@@ -14,20 +14,20 @@ namespace Kyoto.Services.BotFactory.Bot;
 
 public class BotService : IBotService
 {
-    private readonly AppSettings _appSettings;
+    private readonly KyotoBotFactorySettings _kyotoBotFactorySettings;
     private readonly IBotRepository _botRepository;
     private readonly IPostService _postService;
     private readonly IKafkaProducer<string> _kafkaProducer;
     private readonly ITenantRepository _tenantRepository;
 
     public BotService(
-        AppSettings appSettings,
+        KyotoBotFactorySettings kyotoBotFactorySettings,
         IBotRepository botRepository,
         IPostService postService, 
         IKafkaProducer<string> kafkaProducer, 
         ITenantRepository tenantRepository)
     {
-        _appSettings = appSettings;
+        _kyotoBotFactorySettings = kyotoBotFactorySettings;
         _botRepository = botRepository;
         _postService = postService;
         _kafkaProducer = kafkaProducer;
@@ -53,7 +53,7 @@ public class BotService : IBotService
         
         await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
         {
-            Url = $"{_appSettings.BaseUrl}{_appSettings.ReceiverEndpoint}",
+            Url = $"{_kyotoBotFactorySettings.BaseUrl}{_kyotoBotFactorySettings.ReceiverEndpoint}",
             SecretToken = botTenant.TenantKey
         }).ToRequest());
 

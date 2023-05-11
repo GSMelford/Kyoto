@@ -1,6 +1,6 @@
 using Confluent.Kafka;
-using Kyoto.Domain.Settings;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Settings;
 
 namespace Kyoto.Services.Tenant;
 

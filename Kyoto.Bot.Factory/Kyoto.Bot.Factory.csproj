@@ -18,6 +18,7 @@
       <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />
       <ProjectReference Include="..\Kyoto.Logger\Kyoto.Logger.csproj" />
       <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />
+      <ProjectReference Include="..\Kyoto.Settings\Kyoto.Settings.csproj" />
     </ItemGroup>
 
     <ItemGroup>

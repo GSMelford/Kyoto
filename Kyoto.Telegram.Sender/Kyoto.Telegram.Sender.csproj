@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Kyoto.DI\Kyoto.DI.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka.Events\Kyoto.Kafka.Events.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka.Handlers\Kyoto.Kafka.Handlers.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka\Kyoto.Kafka.csproj" />

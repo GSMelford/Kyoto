@@ -1,4 +1,4 @@
-namespace Kyoto.Domain.Settings;
+namespace Kyoto.Settings;
 
 public class BotTenantSettings
 {

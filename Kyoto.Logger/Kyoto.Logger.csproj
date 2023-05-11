@@ -23,6 +23,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kyoto.Domain\Kyoto.Domain.csproj" />
+      <ProjectReference Include="..\Kyoto.Settings\Kyoto.Settings.csproj" />
     </ItemGroup>
 
 </Project>

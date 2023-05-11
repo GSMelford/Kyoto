@@ -30,6 +30,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.DI", "Kyoto.DI\Kyoto.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Extensions", "Kyoto.Extensions\Kyoto.Extensions.csproj", "{4C7A41A5-FC3F-40FF-84DB-982ED95AA7EA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Settings", "Kyoto.Settings\Kyoto.Settings.csproj", "{48DD2CB3-066E-4399-B016-0FF77A277D14}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -92,6 +94,10 @@ Global
 		{4C7A41A5-FC3F-40FF-84DB-982ED95AA7EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C7A41A5-FC3F-40FF-84DB-982ED95AA7EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C7A41A5-FC3F-40FF-84DB-982ED95AA7EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48DD2CB3-066E-4399-B016-0FF77A277D14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48DD2CB3-066E-4399-B016-0FF77A277D14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48DD2CB3-066E-4399-B016-0FF77A277D14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48DD2CB3-066E-4399-B016-0FF77A277D14}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{84A41CDB-6AF2-4B8E-9BEE-461A174F6291} = {13308AE5-435D-4552-B25F-58A59BF2A2C8}
