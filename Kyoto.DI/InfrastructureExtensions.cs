@@ -23,7 +23,7 @@ public static class InfrastructureExtensions
             .AddTransient<IAuthorizationService, AuthorizationService>();
     }
     
-    public static IServiceCollection AddDatabase(this IServiceCollection services, DatabaseSettings databaseSettings) 
+    public static IServiceCollection AddDatabaseBotFactory(this IServiceCollection services, DatabaseSettings databaseSettings) 
     {
         return services.AddScoped<IDatabaseContext, DatabaseBotFactoryContext>(
             _ => new DatabaseBotFactoryContext(databaseSettings.ToConnectionString()));

@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Kyoto.DI\Kyoto.DI.csproj" />
+      <ProjectReference Include="..\Kyoto.Extensions\Kyoto.Extensions.csproj" />
       <ProjectReference Include="..\Kyoto.Kafka.Handlers\Kyoto.Kafka.Handlers.csproj" />
       <ProjectReference Include="..\Kyoto.Logger\Kyoto.Logger.csproj" />
       <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />

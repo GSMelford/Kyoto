@@ -3,7 +3,7 @@ using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Services.ExecuteCommand;
 using Newtonsoft.Json;
 
-namespace Kyoto.Commands.BotRegistrationCommand;
+namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
 
 public class BotRegistrationTokenStep : BaseCommandStep
 {

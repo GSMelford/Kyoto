@@ -6,7 +6,7 @@ using Kyoto.Services.ExecuteCommand;
 using Kyoto.Services.HttpServices.BotRegistration;
 using Newtonsoft.Json;
 
-namespace Kyoto.Commands.BotRegistrationCommand;
+namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
 
 public class BotRegistrationConfirmNameStep : BaseCommandStep
 {

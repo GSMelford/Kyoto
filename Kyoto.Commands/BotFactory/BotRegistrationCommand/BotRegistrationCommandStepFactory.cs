@@ -1,6 +1,6 @@
 using Kyoto.Services.ExecuteCommand;
 
-namespace Kyoto.Commands.BotRegistrationCommand;
+namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
 
 public class BotRegistrationCommandStepFactory : BaseCommandStepFactory
 {

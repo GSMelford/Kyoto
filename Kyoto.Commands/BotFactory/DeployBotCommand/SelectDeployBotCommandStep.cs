@@ -7,7 +7,7 @@ using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Commands.DeployBotCommand;
+namespace Kyoto.Commands.BotFactory.DeployBotCommand;
 
 public class SelectDeployBotCommandStep : BaseCommandStep
 {
@@ -57,8 +57,8 @@ public class SelectDeployBotCommandStep : BaseCommandStep
         }
 
         var botName = CommandContext.CallbackQuery.Data!;
-        await _botService.ActivateBotAsync(CommandContext.Session, botName);
         await _postService.SendTextMessageAsync(CommandContext.Session, 
-            $"Bot {botName} is activated and ready to work!");
+            $"Let's start deploying the {botName}... 5, 4, 3, 2, 1!!");
+        await _botService.ActivateBotAsync(CommandContext.Session, botName);
     }
 }

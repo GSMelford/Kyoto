@@ -1,7 +1,7 @@
-using Kyoto.Commands.BotRegistrationCommand;
-using Kyoto.Commands.DeployBotCommand;
-using Kyoto.Commands.GlobalCommands;
-using Kyoto.Commands.RegistrationCommand;
+using Kyoto.Commands.BotFactory.BotRegistrationCommand;
+using Kyoto.Commands.BotFactory.DeployBotCommand;
+using Kyoto.Commands.BotFactory.GlobalCommands;
+using Kyoto.Commands.BotFactory.RegistrationCommand;
 using Kyoto.Dal.CommonRepositories.ExecuteCommandSystem;
 using Kyoto.Domain.BotFactory.GlobalCommand.Interfaces;
 using Kyoto.Domain.ExecutiveCommand.Interfaces;
@@ -27,7 +27,6 @@ public static class CommandExtensions
     {
         return services.AddTransient<IStartCommandService, StartCommandService>();
     }
-    
     
     public static IServiceCollection AddExecutiveCommand(this IServiceCollection services)
     {

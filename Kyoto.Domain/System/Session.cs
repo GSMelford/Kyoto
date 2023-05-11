@@ -31,4 +31,9 @@ public class Session
     {
         return new Session(Guid.NewGuid(), default, default, default, tenantKey);
     }
+    
+    public static Session CreatePersonalNew(string tenantKey, long chatId)
+    {
+        return new Session(Guid.NewGuid(), chatId, default, default, tenantKey);
+    }
 }

@@ -7,7 +7,9 @@ using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Settings;
+using TBot.Client.Parameters;
 using TBot.Client.Parameters.Webhook;
+using TBot.Client.Requests;
 using TBot.Client.Requests.Webhook;
 
 namespace Kyoto.Services.BotFactory.Bot;
@@ -42,7 +44,7 @@ public class BotService : IBotService
     public async Task ActivateBotAsync(Session session, string username)
     {
         var botTenant = await _tenantRepository.GetBotTenantAsync(session.ExternalUserId, username);
-        var newSession = Session.CreateNew(botTenant.TenantKey);
+        var newSession = Session.CreatePersonalNew(botTenant.TenantKey, session.ChatId);
         
         await _kafkaProducer.ProduceAsync(new InitTenantEvent
         {
@@ -57,6 +59,25 @@ public class BotService : IBotService
             SecretToken = botTenant.TenantKey
         }).ToRequest());
 
+        await Task.Delay(2000); //TODO: Deploying...
+        
+        await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = "Hello!👋\nYou activated me, now I can work with your clients 👨‍💻",
+            ChatId = session.ChatId
+        }).ToRequest());
+        
+        await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = "You can customize my functionality in the bot factory 💅",
+            ChatId = session.ChatId
+        }).ToRequest());
+        
         await _botRepository.SetActiveBotAsync(session.ExternalUserId, username);
+        await _postService.PostAsync(session, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = "Bot deployed successfully! 🤖🚀",
+            ChatId = session.ChatId
+        }).ToRequest());
     }
 }

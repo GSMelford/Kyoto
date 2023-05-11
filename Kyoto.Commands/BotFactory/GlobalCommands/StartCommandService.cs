@@ -5,7 +5,7 @@ using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.System;
 using Microsoft.Extensions.Logging;
 
-namespace Kyoto.Commands.GlobalCommands;
+namespace Kyoto.Commands.BotFactory.GlobalCommands;
 
 public class StartCommandService : IStartCommandService
 {

@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using Kyoto.DI;
+using Kyoto.Extensions;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Interfaces;
@@ -13,22 +14,22 @@ builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafka
 
 //Infrastructure
 builder.Services
-    .AddKafka(kafkaSettings)
-    .AddDatabase(databaseSettings);
+    .AddKafka(kafkaSettings);
 
 //Functional
 builder.Services
     .AddProcessorServices()
     .AddFactoryCommands()
     .AddExecutiveCommand()
-    .AddPostServices();
+    .AddPostService();
 
 //Logging
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
-
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
+
+await app.Services.InitBotTenantsAsync();
 await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitTenantHandler>(new ConsumerConfig { BootstrapServers = kafkaSettings.BootstrapServers });
 
 await app.RunAsync();

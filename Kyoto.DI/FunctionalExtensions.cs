@@ -19,15 +19,11 @@ public static class FunctionalExtensions
     public static IServiceCollection AddMenu(this IServiceCollection services)
     {
         return services
+            .AddTransient<MenuPanelPostService>()
             .AddTransient<IMenuRepository, MenuRepository>()
             .AddTransient<IMenuService, MenuService>();
     }
-    
-    public static IServiceCollection AddPostServices(this IServiceCollection services)
-    {
-        return services.AddTransient<MenuPanelPostService>();
-    }
-    
+
     public static IServiceCollection AddBot(this IServiceCollection services)
     {
         return services
