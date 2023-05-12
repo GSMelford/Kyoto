@@ -11,7 +11,7 @@ pipeline {
         stage("Build Kyoto Bot") {
             steps {
                 echo "====== Building image... ======"
-                sh "sudo docker build -t gsmelford/kyoto.bot:dev ."
+                sh "sudo docker build -t gsmelford/kyoto.bot.factory:dev ."
                 echo "====== Build completed ======"
             }
         }
@@ -22,10 +22,17 @@ pipeline {
                 echo "====== Build completed ======"
             }
         }
-         stage("Build Kyoto Bot Telegram Receiver") {
+        stage("Build Kyoto Bot Telegram Receiver") {
             steps {    
                 echo "====== Building image... ======"
                 sh "sudo docker build -f receiver.Dockerfile -t gsmelford/kyoto.telegram.receiver:dev ."
+                echo "====== Build completed ======"
+            }
+        }
+        stage("Build Kyoto Bot Client") {
+            steps {
+                echo "====== Building image... ======"
+                sh "sudo docker build -f client.Dockerfile -t gsmelford/kyoto.bot.client:dev ."
                 echo "====== Build completed ======"
             }
         }
