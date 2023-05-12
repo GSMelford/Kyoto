@@ -6,7 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Kyoto.Bot.Factory/Kyoto.Bot.Factory.csproj", "Kyoto.Bot.Factory/"]
-RUN dotnet restore "Workers/Kyoto.Bot.Factory/Kyoto.Bot.Factory.csproj"
+RUN dotnet restore "Kyoto.Bot.Factory/Kyoto.Bot.Factory.csproj"
 COPY . .
 WORKDIR "/src/Kyoto.Bot.Factory"
 RUN dotnet build "Kyoto.Bot.Factory.csproj" -c Release -o /app/build
