@@ -24,7 +24,9 @@ public class TenantService : ITenantService
         {
             SessionId = Guid.NewGuid(),
             TenantKey = _botTenantSettings.Key,
-            Token = _botTenantSettings.Token
+            Token = _botTenantSettings.Token,
+            IsFactory = true,
+            IsNew = true
         }, string.Empty);
     }
     

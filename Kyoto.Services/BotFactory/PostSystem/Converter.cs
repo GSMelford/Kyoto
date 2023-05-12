@@ -10,7 +10,6 @@ public static class Converter
         return new Request(
             baseRequest.Endpoint,
             baseRequest.Method,
-            baseRequest.Headers?.ToDictionary(x => x.Key, y => y.Value),
             baseRequest.Parameters?.ToDictionary(x => x.Key, y => y.Value?.ToString())!);
     }
 }

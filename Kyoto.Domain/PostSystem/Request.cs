@@ -4,18 +4,20 @@ public class Request
 {
     public string Endpoint { get; }
     public HttpMethod Method { get; }
-    public Dictionary<string, string>? Headers { get; }
     public Dictionary<string, string> Parameters { get; }
 
     public Request(
         string endpoint, 
         HttpMethod method, 
-        Dictionary<string, string>? headers,
         Dictionary<string, string> parameters)
     {
         Endpoint = endpoint;
         Method = method;
-        Headers = headers;
         Parameters = parameters;
     }
+
+    public static Request Create(string endpoint, HttpMethod method, Dictionary<string, string> parameters)
+    {
+        return new Request(endpoint, method, parameters);
+    } 
 }

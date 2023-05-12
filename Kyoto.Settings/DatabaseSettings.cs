@@ -8,8 +8,9 @@ public class DatabaseSettings
     public string Username { get; set; } = null!;
     public string Password { get; set; } = null!;
 
-    public string ToConnectionString()
+    public string ToConnectionString(string? tenantKey = null)
     {
-        return $"Host={Host};Port={Port};Database={Database};Username={Username};Password={Password};";
+        var database = string.IsNullOrEmpty(tenantKey) ? Database : $"{tenantKey}.{Database}";
+        return $"Host={Host};Port={Port};Database={database};Username={Username};Password={Password};";
     }
 }

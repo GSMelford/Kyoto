@@ -1,8 +1,9 @@
-using Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.BotFactory.Models;
+using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotFactory.User.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Dal.BotFactory.Repositories.BotUser;
+namespace Kyoto.Database.BotFactory.Repositories.BotUser;
 
 public class UserRepository : IUserRepository
 {

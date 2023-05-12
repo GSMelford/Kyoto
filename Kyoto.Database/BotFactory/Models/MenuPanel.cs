@@ -1,4 +1,6 @@
-namespace Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.CommonModels;
+
+namespace Kyoto.Database.BotFactory.Models;
 
 public class MenuPanel : BaseModel
 {

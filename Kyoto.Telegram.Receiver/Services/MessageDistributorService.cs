@@ -24,7 +24,7 @@ public class MessageDistributorService : IMessageDistributorService
             await _kafkaProducer.ProduceAsync(new CommandEvent(session)
             {
                 Message = message,
-                GlobalCommandType = command!.Value
+                CommandType = command!.Value
             }, tenantKey);
         }
         else

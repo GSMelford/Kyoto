@@ -1,6 +1,6 @@
-using Kyoto.Dal.BotFactory.Repositories.Bot;
-using Kyoto.Dal.BotFactory.Repositories.BotUser;
-using Kyoto.Dal.BotFactory.Repositories.Menu;
+using Kyoto.Database.BotFactory.Repositories.Bot;
+using Kyoto.Database.BotFactory.Repositories.BotUser;
+using Kyoto.Database.BotFactory.Repositories.Menu;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Kyoto.Domain.BotFactory.Menu.Interfaces;
 using Kyoto.Domain.BotFactory.User.Interfaces;

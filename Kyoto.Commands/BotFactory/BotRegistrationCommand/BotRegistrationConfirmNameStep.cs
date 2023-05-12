@@ -1,8 +1,9 @@
 using Kyoto.Domain.BotFactory.Bot;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
+using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors;
-using Kyoto.Services.ExecuteCommand;
+using Kyoto.Services.CommandSystem;
 using Kyoto.Services.HttpServices.BotRegistration;
 using Newtonsoft.Json;
 
@@ -30,39 +31,41 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
         _botRegistrationHttpService = botRegistrationHttpService;
     }
 
-    protected override async Task SetActionRequestAsync()
+    protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
         botModel = await _botRegistrationHttpService.GetBotInfoAsync(botModel);
-        await _postService.SendConfirmationMessageAsync(CommandContext.Session, BuildConfirmNameQuestion(botModel));
+        await _postService.SendConfirmationMessageAsync(Session, BuildConfirmNameQuestion(botModel));
         CommandContext.SetAdditionalData(JsonConvert.SerializeObject(botModel));
+        return CommandStepResult.CreateSuccessful();
     }
 
-    protected override async Task SetProcessResponseAsync()
+    protected override async Task<CommandStepResult> SetProcessResponseAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
         
         if (CommandContext.CallbackQuery!.Data == CallbackQueryButtons.Confirmation)
         {
-            await _postService.DeleteMessageAsync(CommandContext.Session);
-            await _postService.SendTextMessageAsync(CommandContext.Session, 
+            await _postService.DeleteMessageAsync(Session);
+            await _postService.SendTextMessageAsync(Session, 
                 $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Confirmation}");
             
-            await _botService.SaveAsync(CommandContext.Session, botModel);
-            await _postService.SendTextMessageAsync(CommandContext.Session, 
+            await _botService.SaveAsync(Session, botModel);
+            await _postService.SendTextMessageAsync(Session, 
                 "The bot has been successfully registered! 🪄🥰");
-            return;
+            return CommandStepResult.CreateSuccessful();
         }
-        
-        CommandContext.SetRetry();
+
+        return CommandStepResult.CreateRetry();
     }
 
-    protected override async Task SetRetryActionRequestAsync()
+    protected override async Task<CommandStepResult> SetRetryActionRequestAsync()
     {
         var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
         
-        await _postService.DeleteMessageAsync(CommandContext.Session);
-        await _postService.SendTextMessageAsync(CommandContext.Session, 
+        await _postService.DeleteMessageAsync(Session);
+        await _postService.SendTextMessageAsync(Session, 
             $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Cancel}");
+        return CommandStepResult.CreateSuccessful();
     }
 }

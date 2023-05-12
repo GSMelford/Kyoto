@@ -1,8 +1,9 @@
-using Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.BotFactory.Models;
+using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotFactory.Menu.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Dal.BotFactory.Repositories.Menu;
+namespace Kyoto.Database.BotFactory.Repositories.Menu;
 
 public class MenuRepository : IMenuRepository
 {

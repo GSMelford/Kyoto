@@ -1,12 +1,11 @@
+using Kyoto.Commands.BotClient;
+using Kyoto.Commands.BotFactory;
 using Kyoto.Commands.BotFactory.BotRegistrationCommand;
 using Kyoto.Commands.BotFactory.DeployBotCommand;
-using Kyoto.Commands.BotFactory.GlobalCommands;
 using Kyoto.Commands.BotFactory.RegistrationCommand;
-using Kyoto.Dal.CommonRepositories.ExecuteCommandSystem;
-using Kyoto.Domain.BotFactory.GlobalCommand.Interfaces;
-using Kyoto.Domain.ExecutiveCommand.Interfaces;
-using Kyoto.Services.BotFactory.ExecutiveCommand;
-using Kyoto.Services.ExecuteCommand;
+using Kyoto.Database.CommonRepositories.CommandSystem;
+using Kyoto.Domain.CommandSystem.Interfaces;
+using Kyoto.Services.CommandSystem;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kyoto.DI;
@@ -16,22 +15,23 @@ public static class CommandExtensions
     public static IServiceCollection AddFactoryCommands(this IServiceCollection services)
     {
         return services
-            .AddTransient<IExecutiveCommandService, FactoryExecutiveCommandService>()
+            .AddTransient<ICommandSet, BotFactoryCommandSet>()
             .AddTransient<ICommandStepFactory, RegistrationCommandStepFactory>()
             .AddTransient<ICommandStepFactory, BotRegistrationCommandStepFactory>()
-            .AddTransient<ICommandStepFactory, DeployBotCommandStepFactory>()
-            .AddTransient<IStartCommandService, StartCommandService>();
+            .AddTransient<ICommandStepFactory, DeployBotCommandStepFactory>();
     }
     
-    public static IServiceCollection AddGlobalCommands(this IServiceCollection services)
-    {
-        return services.AddTransient<IStartCommandService, StartCommandService>();
-    }
-    
-    public static IServiceCollection AddExecutiveCommand(this IServiceCollection services)
+    public static IServiceCollection AddClientCommands(this IServiceCollection services)
     {
         return services
-            .AddTransient<IExecutiveCommandFactory, ExecutiveCommandFactory>()
-            .AddTransient<IExecutiveCommandRepository, ExecutiveCommandRepository>();
+            .AddTransient<ICommandSet, BotClientCommandSet>();
+    }
+
+    public static IServiceCollection AddCommandSystem(this IServiceCollection services)
+    {
+        return services
+            .AddTransient<ICommandFactory, CommandFactory>()
+            .AddTransient<ICommandService, CommandService>()
+            .AddTransient<ICommandRepository, CommandRepository>();
     }
 }

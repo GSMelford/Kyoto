@@ -1,9 +1,10 @@
-using Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.BotFactory.Models;
+using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotFactory.Bot;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Dal.BotFactory.Repositories.Bot;
+namespace Kyoto.Database.BotFactory.Repositories.Bot;
 
 public class BotRepository : IBotRepository
 {

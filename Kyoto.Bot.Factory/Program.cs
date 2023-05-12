@@ -14,6 +14,7 @@ builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafka
 builder.Services
     .AddKafka(kafkaSettings)
     .AddDatabaseBotFactory(databaseSettings)
+    .AddBotFactoryDeployStatus()
     .AddTenant(botTenantSettings);
 
 //Functional
@@ -25,8 +26,7 @@ builder.Services
     .AddPostService()
     .AddUser()
     .AddFactoryCommands()
-    .AddGlobalCommands()
-    .AddExecutiveCommand();
+    .AddCommandSystem();
 
 //HttpServices
 builder.Services

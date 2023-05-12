@@ -1,6 +1,7 @@
 using Kyoto.Domain.BotFactory.Bot;
+using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
-using Kyoto.Services.ExecuteCommand;
+using Kyoto.Services.CommandSystem;
 using Newtonsoft.Json;
 
 namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
@@ -14,15 +15,16 @@ public class BotRegistrationTokenStep : BaseCommandStep
         _postService = postService;
     }
 
-    protected override Task SetActionRequestAsync()
-    {
-       return _postService.SendTextMessageAsync(CommandContext.Session, 
-           "🔑 First of all, generate and send us a bot token:");
+    protected override async Task<CommandStepResult> SetActionRequestAsync()
+    { 
+        await _postService.SendTextMessageAsync(Session,
+            "🔑 First of all, generate and send us a bot token:");
+       return CommandStepResult.CreateSuccessful();
     }
 
-    protected override Task SetProcessResponseAsync()
+    protected override Task<CommandStepResult> SetProcessResponseAsync()
     {
         CommandContext.SetAdditionalData(JsonConvert.SerializeObject(BotModel.CreateWithOnlyToken(CommandContext.Message!.Text!)));
-        return Task.CompletedTask;
+        return Task.FromResult(CommandStepResult.CreateSuccessful());
     }
 }

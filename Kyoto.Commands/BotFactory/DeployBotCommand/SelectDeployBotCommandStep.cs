@@ -1,7 +1,8 @@
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
+using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Services.BotFactory.PostSystem;
-using Kyoto.Services.ExecuteCommand;
+using Kyoto.Services.CommandSystem;
 using TBot.Client.Parameters;
 using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
@@ -22,13 +23,13 @@ public class SelectDeployBotCommandStep : BaseCommandStep
         _postService = postService;
     }
 
-    protected override async Task SetActionRequestAsync()
+    protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
         var keyboard = new InlineKeyboardMarkup();
-        var botList = await _botRepository.GetBotListAsync(CommandContext.Session.ExternalUserId);
+        var botList = await _botRepository.GetBotListAsync(Session.ExternalUserId);
         
         if (!botList.Any()) {
-            await _postService.SendTextMessageAsync(CommandContext.Session, "You don't have bots yet. Register first!");
+            await _postService.SendTextMessageAsync(Session, "You don't have bots yet. Register first!");
         }
         
         foreach (var botName in botList)
@@ -40,25 +41,28 @@ public class SelectDeployBotCommandStep : BaseCommandStep
             });
         }
 
-        await _postService.PostAsync(CommandContext.Session, new SendMessageRequest(new SendMessageParameters
+        await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
             Text = "Choose the bot you want to run:",
             ReplyMarkup = keyboard,
-            ChatId = CommandContext.Session.ChatId
+            ChatId = Session.ChatId
         }).ToRequest());
+        
+        return CommandStepResult.CreateSuccessful();
     }
 
-    protected override async Task SetProcessResponseAsync()
+    protected override async Task<CommandStepResult> SetProcessResponseAsync()
     {
         if (CommandContext.CallbackQuery is null)
         {
-            CommandContext.SetRetry();
-            return;
+            return CommandStepResult.CreateRetry();
         }
 
         var botName = CommandContext.CallbackQuery.Data!;
-        await _postService.SendTextMessageAsync(CommandContext.Session, 
-            $"Let's start deploying the {botName}... 5, 4, 3, 2, 1!!");
-        await _botService.ActivateBotAsync(CommandContext.Session, botName);
+        await _postService.SendTextMessageAsync(Session, 
+            $"🪄 Let's start deploying the {botName}... 5, 4, 3, 2, 1!!💥");
+        await _botService.ActivateBotAsync(Session, botName);
+        
+        return CommandStepResult.CreateSuccessful();
     }
 }

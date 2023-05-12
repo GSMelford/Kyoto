@@ -1,12 +1,16 @@
 using Confluent.Kafka;
-using Kyoto.Dal;
-using Kyoto.Dal.BotFactory;
-using Kyoto.Dal.BotFactory.Repositories.Authorization;
-using Kyoto.Dal.BotFactory.Repositories.Tenant;
+using Kyoto.Database;
+using Kyoto.Database.BotClient;
+using Kyoto.Database.BotFactory;
+using Kyoto.Database.BotFactory.Repositories.Authorization;
+using Kyoto.Database.BotFactory.Repositories.Tenant;
+using Kyoto.Database.CommonRepositories.Deploy;
+using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka;
 using Kyoto.Kafka.Interfaces;
+using Kyoto.Services.BotClient.Deploy;
 using Kyoto.Services.BotFactory.Authorization;
 using Kyoto.Services.Tenant;
 using Kyoto.Settings;
@@ -29,6 +33,12 @@ public static class InfrastructureExtensions
             _ => new DatabaseBotFactoryContext(databaseSettings.ToConnectionString()));
     }
     
+    public static IServiceCollection AddDatabaseBotClient(this IServiceCollection services, DatabaseSettings databaseSettings) 
+    {
+        return services.AddScoped<IDatabaseContext, DatabaseBotClientContext>(
+            _ => new DatabaseBotClientContext(databaseSettings.ToConnectionString()));
+    }
+    
     public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings kafkaSettings)
     {
         services.AddKafkaProducer<string>(new ProducerConfig { BootstrapServers = kafkaSettings.BootstrapServers });
@@ -47,5 +57,22 @@ public static class InfrastructureExtensions
                 return new TenantService(kafkaProducer, botTenantSettings, tenantRepository);
             })
             .AddTransient<ITenantRepository, TenantRepository>();
+    }
+
+    public static IServiceCollection AddDeploy(this IServiceCollection services)
+    {
+        return services
+            .AddTransient<IDeployService, DeployService>()
+            .AddTransient<IDeployRepository, DeployRepository>();
+    }
+    
+    public static IServiceCollection AddBotFactoryDeployStatus(this IServiceCollection services)
+    {
+        return services.AddTransient<IDeployStatusService, Kyoto.Services.BotFactory.DeployStatus.DeployStatusService>();
+    }
+    
+    public static IServiceCollection AddBotClientDeployStatus(this IServiceCollection services)
+    {
+        return services.AddTransient<IDeployStatusService, DeployStatusService>();
     }
 }

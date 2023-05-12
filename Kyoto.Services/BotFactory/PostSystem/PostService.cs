@@ -8,7 +8,6 @@ using TBot.Client.Parameters;
 using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
-using ReturnResponseDetails = Kyoto.Domain.PostSystem.ReturnResponseDetails;
 
 namespace Kyoto.Services.BotFactory.PostSystem;
 
@@ -30,16 +29,16 @@ public class PostService : IPostService
         }).ToRequest());
     }
     
-    public Task SendTextMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
+    public Task SendTextMessageAsync(Session session, string text)
     {
         return PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
             ChatId = session.ChatId
-        }).ToRequest(), returnResponseDetails);
+        }).ToRequest());
     }
     
-    public Task SendConfirmationMessageAsync(Session session, string text, ReturnResponseDetails? returnResponseDetails = null)
+    public Task SendConfirmationMessageAsync(Session session, string text)
     {
         return PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
@@ -56,21 +55,16 @@ public class PostService : IPostService
                     Text = CallbackQueryButtons.Cancel,
                     CallbackData = CallbackQueryButtons.Cancel
                 })
-        }).ToRequest(), returnResponseDetails);
+        }).ToRequest());
     }
     
-    public async Task PostAsync(Session session, Request request, ReturnResponseDetails? returnResponseDetails = null)
+    public async Task PostAsync(Session session, Request request)
     {
         await _kafkaProducer.ProduceAsync(new RequestEvent (session)
         {
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
-            Headers = request.Headers,
-            Parameters = request.Parameters,
-            ReturnResponse = returnResponseDetails is null ? null : new ResponseMessageReturn
-            {
-                HandlerType = returnResponseDetails.HandlerType
-            }
+            Parameters = request.Parameters
         }, session.TenantKey);
     }
 }

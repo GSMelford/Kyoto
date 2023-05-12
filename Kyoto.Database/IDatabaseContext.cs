@@ -1,7 +1,8 @@
+using Kyoto.Database.CommonModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace Kyoto.Dal;
+namespace Kyoto.Database;
 
 public interface IDatabaseContext
 {

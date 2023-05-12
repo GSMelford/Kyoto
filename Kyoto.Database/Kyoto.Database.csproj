@@ -4,7 +4,7 @@
         <TargetFramework>net7.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <RootNamespace>Kyoto.Dal</RootNamespace>
+        <RootNamespace>Kyoto.Database</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
@@ -22,8 +22,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="BotClient\" />
-      <Folder Include="CommonRepositories\" />
+      <Folder Include="Migrations\" />
     </ItemGroup>
 
 </Project>

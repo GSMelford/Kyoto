@@ -2,7 +2,7 @@ using Kyoto.Domain.Tenant;
 using Kyoto.Domain.Tenant.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Dal.BotFactory.Repositories.Tenant;
+namespace Kyoto.Database.BotFactory.Repositories.Tenant;
 
 public class TenantRepository : ITenantRepository
 {

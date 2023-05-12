@@ -1,4 +1,6 @@
-namespace Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.CommonModels;
+
+namespace Kyoto.Database.BotFactory.Models;
 
 public class ExternalUser : BaseModel
 {
@@ -8,5 +10,4 @@ public class ExternalUser : BaseModel
     public string Username { get; set; } = null!;
     
     public MenuPanel? MenuPanel { get; set; }
-    public ICollection<Bot> Bots { get; set; } = new List<Bot>();
 }

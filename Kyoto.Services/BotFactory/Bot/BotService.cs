@@ -50,34 +50,14 @@ public class BotService : IBotService
         {
             SessionId = newSession.Id,
             Token = botTenant.Token,
-            TenantKey = botTenant.TenantKey
+            TenantKey = botTenant.TenantKey,
+            OwnerExternalUserId = session.ChatId
         }, string.Empty);
         
         await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
         {
             Url = $"{_kyotoBotFactorySettings.BaseUrl}{_kyotoBotFactorySettings.ReceiverEndpoint}",
             SecretToken = botTenant.TenantKey
-        }).ToRequest());
-
-        await Task.Delay(2000); //TODO: Deploying...
-        
-        await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = "Hello!👋\nYou activated me, now I can work with your clients 👨‍💻",
-            ChatId = session.ChatId
-        }).ToRequest());
-        
-        await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = "You can customize my functionality in the bot factory 💅",
-            ChatId = session.ChatId
-        }).ToRequest());
-        
-        await _botRepository.SetActiveBotAsync(session.ExternalUserId, username);
-        await _postService.PostAsync(session, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = "Bot deployed successfully! 🤖🚀",
-            ChatId = session.ChatId
         }).ToRequest());
     }
 }

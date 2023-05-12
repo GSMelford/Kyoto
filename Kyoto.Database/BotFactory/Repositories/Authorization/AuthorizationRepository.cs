@@ -1,8 +1,9 @@
-using Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.BotFactory.Models;
+using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
 using User = Kyoto.Domain.BotFactory.Authorization.User;
 
-namespace Kyoto.Dal.BotFactory.Repositories.Authorization;
+namespace Kyoto.Database.BotFactory.Repositories.Authorization;
 
 public class AuthorizationRepository : IAuthorizationRepository
 {

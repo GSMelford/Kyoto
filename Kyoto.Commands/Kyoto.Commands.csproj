@@ -14,8 +14,4 @@
       <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.13" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BotFactory\" />
-    </ItemGroup>
-
 </Project>

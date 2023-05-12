@@ -1,4 +1,4 @@
-using Kyoto.Services.ExecuteCommand;
+using Kyoto.Services.CommandSystem;
 
 namespace Kyoto.Commands.BotFactory.RegistrationCommand;
 

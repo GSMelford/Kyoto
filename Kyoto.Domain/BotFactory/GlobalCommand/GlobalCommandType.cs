@@ -2,7 +2,7 @@ namespace Kyoto.Domain.BotFactory.GlobalCommand;
 
 public enum GlobalCommandType
 {
-    Start,
+    Registration,
     NotFound
 }
 
@@ -12,7 +12,7 @@ public static class GlobalCommandTypeExtension
     {
         return value switch
         {
-            "/start" => GlobalCommandType.Start,
+            "/start" => GlobalCommandType.Registration,
             _ => GlobalCommandType.NotFound
         };
     }

@@ -1,12 +1,12 @@
-using Kyoto.Dal.BotFactory.Models;
+using Kyoto.Database.BotFactory.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Dal.BotFactory;
+namespace Kyoto.Database.BotFactory;
 
-public class DatabaseBotFactoryContext : BaseDatabaseContextContext
+public class DatabaseBotFactoryContext : BaseDatabaseContext
 {
     public DbSet<User>? Users { get; set; }
-    public DbSet<ExternalUser>? TelegramUsers { get; set; }
+    public DbSet<ExternalUser>? ExternalUsers { get; set; }
     public DbSet<Bot>? Bots { get; set; }
     public DbSet<MenuPanel>? MenuPanels { get; set; }
 

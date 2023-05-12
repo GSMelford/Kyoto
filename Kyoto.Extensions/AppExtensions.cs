@@ -1,9 +1,8 @@
 using Confluent.Kafka;
-using Kyoto.Dal;
+using Kyoto.Database;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Handlers.BotFactory;
-using Kyoto.Kafka.Handlers.BotFactory.GlobalCommandHandlers;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,7 +21,7 @@ public static class AppExtensions
         await kafkaConsumerFactory.SubscribeAsync<MessageEvent, MessageHandler>(consumerConfig, topicPrefix: tenantKey);
         await kafkaConsumerFactory.SubscribeAsync<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig, topicPrefix: tenantKey);
         await kafkaConsumerFactory.SubscribeAsync<CommandEvent, CommandHandler>(consumerConfig, topicPrefix: tenantKey);
-        await kafkaConsumerFactory.SubscribeAsync<StartCommandEvent, StartCommandHandler>(consumerConfig, topicPrefix: tenantKey);
+        await kafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(consumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Factory");
     }
 
     public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)

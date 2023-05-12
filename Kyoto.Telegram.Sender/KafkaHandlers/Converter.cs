@@ -9,8 +9,7 @@ public static class Converter
     {
         return RequestModel.Create(
             requestEvent.Endpoint, 
-            requestEvent.HttpMethod, 
-            requestEvent.Headers,
+            requestEvent.HttpMethod,
             requestEvent.Parameters);
     }
 }

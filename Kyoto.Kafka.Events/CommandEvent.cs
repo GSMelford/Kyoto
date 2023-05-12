@@ -6,7 +6,7 @@ namespace Kyoto.Kafka.Event;
 
 public class CommandEvent : BaseSessionEvent
 {
-    public GlobalCommandType GlobalCommandType { get; set; } 
+    public GlobalCommandType CommandType { get; set; } 
     public Message Message { get; set; } = null!;
     
     public CommandEvent()
