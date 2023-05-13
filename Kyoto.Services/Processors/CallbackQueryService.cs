@@ -16,6 +16,6 @@ public class CallbackQueryService : ICallbackQueryService
     
     public Task ProcessAsync(Session session, CallbackQuery callbackQuery)
     {
-        return _commandService.ProcessCommandAsync(session, callbackQuery);
+        return _commandService.ProcessCommandAsync(session, callbackQuery.Data!, callbackQuery: callbackQuery);
     }
 }

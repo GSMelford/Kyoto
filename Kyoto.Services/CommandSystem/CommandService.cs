@@ -25,16 +25,6 @@ public class CommandService : ICommandService
         _commandSet = commandSet;
     }
 
-    public Task ProcessCommandAsync(Session session, CallbackQuery callbackQuery)
-    {
-        return ProcessCommandAsync(session, callbackQuery.Data!, callbackQuery.Message, callbackQuery);
-    }
-    
-    public Task ProcessCommandAsync(Session session, Message message)
-    {
-        return ProcessCommandAsync(session, message.Text!, message: message);
-    }
-
     public async Task ProcessCommandAsync(
         Session session, 
         string commandName,

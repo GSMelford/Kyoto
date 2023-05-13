@@ -72,7 +72,7 @@ public class DeployBotFactoryRepository : BaseDeployRepository
             {
                 Text = "🚀 Deploy bot",
                 IsCommand = true,
-                Code = CommandCodes.DeleteBot,
+                Code = CommandCodes.DeployBot,
                 Index = 0,
                 Line = 1,
                 IsEnable = true

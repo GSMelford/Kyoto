@@ -53,11 +53,5 @@ public class BotService : IBotService
             TenantKey = botTenant.TenantKey,
             OwnerExternalUserId = session.ChatId
         }, string.Empty);
-        
-        await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
-        {
-            Url = $"{_kyotoBotFactorySettings.BaseUrl}{_kyotoBotFactorySettings.ReceiverEndpoint}",
-            SecretToken = botTenant.TenantKey
-        }).ToRequest());
     }
 }

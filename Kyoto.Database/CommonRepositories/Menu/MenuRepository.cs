@@ -14,13 +14,12 @@ public class MenuRepository : IMenuRepository
         _databaseContext = databaseContext;
     }
 
-    public async Task<bool> IsMenuPanelButtonAsync(string name)
+    public async Task<bool> IsMenuPanelAsync(string name)
     {
-        var menuButtonDal = await _databaseContext.Set<MenuButton>()
-            .Include(x=>x.MenuPanel)
-            .FirstOrDefaultAsync(x => x.Text == name && x.MenuPanel != null);
+        var menuPanelDal = await _databaseContext.Set<MenuPanel>()
+            .FirstOrDefaultAsync(x => x.Name == name);
 
-        return menuButtonDal is not null;
+        return menuPanelDal is not null;
     }
     
     public async Task<Kyoto.Domain.Menu.MenuPanel> GetMenuPanelAsync(string menuPanelName)
@@ -30,5 +29,21 @@ public class MenuRepository : IMenuRepository
             .FirstAsync(x => x.Name == menuPanelName);
 
         return menuPanelDal.ToDomain();
+    }
+    
+    public async Task<bool> IsMenuButtonAsync(string menuButtonText)
+    {
+        var menuButtonDal = await _databaseContext.Set<MenuButton>()
+            .FirstOrDefaultAsync(x => x.Text == menuButtonText);
+
+        return menuButtonDal is not null;
+    }
+    
+    public async Task<string> GetMenuButtonCodeAsync(string menuButtonText)
+    {
+        var menuPanelDal = await _databaseContext.Set<MenuButton>()
+            .FirstAsync(x => x.Text == menuButtonText);
+
+        return menuPanelDal.Code;
     }
 }

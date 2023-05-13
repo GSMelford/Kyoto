@@ -1,5 +1,6 @@
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.Deploy;
+using Kyoto.Domain.System;
 using Kyoto.Domain.Tenant;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
@@ -11,11 +12,13 @@ public class InitClientTenantHandler : IKafkaHandler<InitTenantEvent>
 {
     private readonly IKafkaEventSubscriber _kafkaEventSubscriber;
     private readonly IDeployService _deployService;
+    private readonly IKafkaProducer<string> _kafkaProducer;
 
-    public InitClientTenantHandler(IKafkaEventSubscriber kafkaEventSubscriber, IDeployService deployService)
+    public InitClientTenantHandler(IKafkaEventSubscriber kafkaEventSubscriber, IDeployService deployService, IKafkaProducer<string> kafkaProducer)
     {
         _kafkaEventSubscriber = kafkaEventSubscriber;
         _deployService = deployService;
+        _kafkaProducer = kafkaProducer;
     }
 
     public async Task HandleAsync(InitTenantEvent initTenantEvent)
@@ -33,6 +36,9 @@ public class InitClientTenantHandler : IKafkaHandler<InitTenantEvent>
                 TenantKey = initTenantEvent.TenantKey,
                 TemplateMessages = "TemplateMessagesClient.json"
             });
+            
+            await _kafkaProducer.ProduceAsync(new DeployStatusEvent(
+                Session.CreatePersonalNew(initTenantEvent.TenantKey, initTenantEvent.OwnerExternalUserId)), string.Empty);
         }
     }
 }

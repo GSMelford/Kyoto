@@ -19,7 +19,16 @@ public class MessageService : IMessageService
 
     public async Task ProcessAsync(Session session, Message message)
     {
-        await _commandService.ProcessCommandAsync(session, message);
+        var text = message.Text!; 
+        var (isExist, command) = await _menuService.TryGetMenuCommandCodeIfExists(session, text);
+
+        if (isExist) {
+            await _commandService.ProcessCommandAsync(session, command, message);
+        }
+        else {
+            await _commandService.ProcessCommandAsync(session, text, message);
+        }
+        
         await _menuService.SendMenuIfExistsAsync(session, message.Text!);
     }
 }

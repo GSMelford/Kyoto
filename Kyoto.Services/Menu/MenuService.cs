@@ -21,16 +21,27 @@ public class MenuService : IMenuService
         _postService = postService;
     }
 
+    public async Task<(bool, string)> TryGetMenuCommandCodeIfExists(Session session, string menuButtonText)
+    {
+        if (await _menuRepository.IsMenuButtonAsync(menuButtonText))
+        {
+            var code = await _menuRepository.GetMenuButtonCodeAsync(menuButtonText);
+            return (true, code);
+        }
+
+        return (false, string.Empty);
+    }
+    
     public async Task SendHomeMenuAsync(Session session)
     {
         var menuPanel = await _menuRepository.GetMenuPanelAsync(MenuPanelConstants.HomeMenuPanel);
         await SendMenuAsync(session, menuPanel);
     }
     
-    public async Task SendMenuIfExistsAsync(Session session, string menuPanelName)
+    public async Task SendMenuIfExistsAsync(Session session, string menuButtonText)
     {
-        var tempMenuPanelName = menuPanelName.Replace($"{MenuPanelConstants.Back} - ", "");
-        if (!await _menuRepository.IsMenuPanelButtonAsync(tempMenuPanelName))
+        var tempMenuPanelName = menuButtonText.Replace($"{MenuPanelConstants.Back}", "");
+        if (!await _menuRepository.IsMenuPanelAsync(tempMenuPanelName))
             return;
 
         var menuPanel = await _menuRepository.GetMenuPanelAsync(tempMenuPanelName);
@@ -47,7 +58,7 @@ public class MenuService : IMenuService
             var maxIndex = menuPanel.MenuButtons.Where(x=>x.Line == i).Max(x=>x.Index) + 1;
             for (int j = 0; j < maxIndex; j++)
             {
-                var menuButton = menuPanel.MenuButtons.First(x => x.Line == i && x.Index == i);
+                var menuButton = menuPanel.MenuButtons.First(x => x.Line == i && x.Index == j);
                 if (menuButton.IsEnable)
                 {
                     keyboard.Add(new KeyboardButton

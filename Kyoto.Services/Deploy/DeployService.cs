@@ -21,6 +21,13 @@ public class DeployService : IDeployService
     public async Task DeployAsync(InitTenantInfo initTenantInfo)
     {
         await _databaseContext.MigrateAsync(_databaseSettings.ToConnectionString(initTenantInfo.TenantKey));
-        await _deployRepository.InitDatabaseAsync(initTenantInfo);
+        try
+        {
+            await _deployRepository.InitDatabaseAsync(initTenantInfo);
+        }
+        catch (Exception e)
+        {
+            //
+        }
     }
 }
