@@ -41,7 +41,6 @@ public class KafkaConsumerService : IKafkaConsumerService
                     if (consumeResult is null)
                         continue;
                     
-                    
                     var receivedEventArgs = new ReceivedEventDetails(
                         consumeResult.Topic.Split(".").First(),
                         consumeResult.Topic.Split(".").Last(),

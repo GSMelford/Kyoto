@@ -1,12 +1,13 @@
 using Confluent.Kafka;
+using Kyoto.Bot.Client;
 using Kyoto.DI;
 using Kyoto.Extensions;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Logger;
+using Kyoto.Services.Tenant;
 using Kyoto.Settings;
-using InitTenantHandler = Kyoto.Bot.Client.KafkaHandlers.InitTenantHandler;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,10 +16,10 @@ builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafka
 
 //Infrastructure
 builder.Services
-    .AddDeploy()
     .AddDatabaseBotClient(databaseSettings)
-    .AddBotClientDeployStatus()
-    .AddKafka(kafkaSettings);
+    .AddBotClientDeploy()
+    .AddKafka(kafkaSettings)
+    .AddTransient<IKafkaEventSubscriber, KafkaEventSubscriber>();
 
 //Functional
 builder.Services
@@ -26,18 +27,19 @@ builder.Services
     .AddProcessorServices()
     .AddCommandSystem()
     .AddClientCommands()
-    .AddPostService();
+    .AddPostService()
+    .AddTemplateMessage();
 
 //Logging
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
+
+await app.Services.SendRequestBotTenantsAsync();
+
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
-
-await app.Services.InitBotTenantsAsync();
-
-var consumerConfig = new ConsumerConfig { BootstrapServers = kafkaSettings.BootstrapServers };
-await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitTenantHandler>(consumerConfig);
+var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};
 await kafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(consumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Client");
+await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitClientTenantHandler>(consumerConfig);
 
 await app.RunAsync();

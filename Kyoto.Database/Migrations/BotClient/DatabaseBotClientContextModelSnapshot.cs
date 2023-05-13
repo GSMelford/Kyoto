@@ -22,53 +22,6 @@ namespace Kyoto.Database.Migrations.BotClient
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("Kyoto.Database.BotClient.Models.PostEvent", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("ModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EventMessages");
-                });
-
-            modelBuilder.Entity("Kyoto.Database.BotClient.Models.PreparedPost", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<DateTime?>("CreationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("ModificationTime")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<Guid>("PostEventId")
-                        .HasColumnType("uuid");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PostEventId");
-
-                    b.ToTable("PreparedMessages");
-                });
-
             modelBuilder.Entity("Kyoto.Database.CommonModels.Command", b =>
                 {
                     b.Property<Guid>("Id")
@@ -108,15 +61,316 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.ToTable("Commands");
                 });
 
-            modelBuilder.Entity("Kyoto.Database.BotClient.Models.PreparedPost", b =>
+            modelBuilder.Entity("Kyoto.Database.CommonModels.ExternalUser", b =>
                 {
-                    b.HasOne("Kyoto.Database.BotClient.Models.PostEvent", "PostEvent")
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("MenuPanelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<long>("PrivateId")
+                        .HasColumnType("bigint");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuPanelId");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("ExternalUsers");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButton", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Index")
+                        .HasColumnType("integer");
+
+                    b.Property<bool>("IsCommand")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsEnable")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("Line")
+                        .HasColumnType("integer");
+
+                    b.Property<Guid>("MenuPanelId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MenuPanelId");
+
+                    b.ToTable("MenuButtons");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuPanel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MenuPanels");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.PostEvent", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("EventMessages");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.PreparedMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Message")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("PostEventId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PostEventId");
+
+                    b.ToTable("PreparedMessages");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.SystemStatus", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SystemStatuses");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.TemplateMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("TemplateMessageTypeId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TemplateMessageTypeId");
+
+                    b.ToTable("TemplateMessages");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.TemplateMessageType", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<int>("Code")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TemplateMessageTypes");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.User", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Phone")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("User");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.ExternalUser", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.MenuPanel", "MenuPanel")
+                        .WithMany()
+                        .HasForeignKey("MenuPanelId");
+
+                    b.HasOne("Kyoto.Database.CommonModels.User", "User")
+                        .WithOne("TelegramUser")
+                        .HasForeignKey("Kyoto.Database.CommonModels.ExternalUser", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuPanel");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButton", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.MenuPanel", "MenuPanel")
+                        .WithMany("Buttons")
+                        .HasForeignKey("MenuPanelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MenuPanel");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.PreparedMessage", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.PostEvent", "PostEvent")
                         .WithMany()
                         .HasForeignKey("PostEventId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PostEvent");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.TemplateMessage", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.TemplateMessageType", "TemplateMessageType")
+                        .WithMany()
+                        .HasForeignKey("TemplateMessageTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("TemplateMessageType");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuPanel", b =>
+                {
+                    b.Navigation("Buttons");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.User", b =>
+                {
+                    b.Navigation("TelegramUser");
                 });
 #pragma warning restore 612, 618
         }

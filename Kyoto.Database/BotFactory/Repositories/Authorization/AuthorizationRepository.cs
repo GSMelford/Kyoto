@@ -16,7 +16,7 @@ public class AuthorizationRepository : IAuthorizationRepository
 
     public async Task SaveUserAsync(User user)
     {
-        var userDal = new Models.User
+        var userDal = new CommonModels.User
         {
             Id = user.Id,
             FirstName = user.FirstName,

@@ -1,11 +1,11 @@
-using Kyoto.Domain.BotFactory.Menu;
+using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
 namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
 
 public class BotRegistrationCommandStepFactory : BaseCommandStepFactory
 {
-    public override string CommandName => MenuButtons.BotManagementButtons.RegisterNewBot;
+    public override string CommandName => CommandCodes.BotRegistration;
 
     protected override List<Type> CommandStepTypes { get; set; } = new ()
     {

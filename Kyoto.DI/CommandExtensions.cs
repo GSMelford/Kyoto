@@ -2,7 +2,7 @@ using Kyoto.Commands.BotClient;
 using Kyoto.Commands.BotFactory;
 using Kyoto.Commands.BotFactory.BotRegistrationCommand;
 using Kyoto.Commands.BotFactory.DeployBotCommand;
-using Kyoto.Commands.BotFactory.RegistrationCommand;
+using Kyoto.Commands.Common.RegistrationCommand;
 using Kyoto.Database.CommonRepositories.CommandSystem;
 using Kyoto.Domain.CommandSystem.Interfaces;
 using Kyoto.Services.CommandSystem;

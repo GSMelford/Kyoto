@@ -15,6 +15,6 @@ public class CommandHandler : IKafkaHandler<CommandEvent>
 
     public Task HandleAsync(CommandEvent commandEvent)
     {
-        return _commandService.ProcessCommandAsync(commandEvent.GetSession(), Enum.GetName(commandEvent.CommandType)!);
+        return _commandService.ProcessCommandAsync(commandEvent.GetSession(), commandEvent.Name, message: commandEvent.Message);
     }
 }

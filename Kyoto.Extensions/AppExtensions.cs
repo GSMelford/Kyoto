@@ -11,27 +11,15 @@ namespace Kyoto.Extensions;
 
 public static class AppExtensions
 {
-    public static async Task SubscribeToEventsAsync(this IServiceProvider serviceProvider, KafkaSettings kafkaSettings, string tenantKey)
+    public static async Task SubscribeToRequestTenantEventAsync(this IServiceProvider serviceProvider, KafkaSettings kafkaSettings)
     {
         var kafkaConsumerFactory = serviceProvider.GetRequiredService<IKafkaConsumerFactory>();
         var consumerConfig = new ConsumerConfig{ BootstrapServers = kafkaSettings.BootstrapServers };
         
         await kafkaConsumerFactory.SubscribeAsync<RequestTenantEvent, RequestTenantHandler>(consumerConfig);
-        await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Factory");
-        await kafkaConsumerFactory.SubscribeAsync<MessageEvent, MessageHandler>(consumerConfig, topicPrefix: tenantKey);
-        await kafkaConsumerFactory.SubscribeAsync<CallbackQueryEvent, CallbackQueryHandler>(consumerConfig, topicPrefix: tenantKey);
-        await kafkaConsumerFactory.SubscribeAsync<CommandEvent, CommandHandler>(consumerConfig, topicPrefix: tenantKey);
-        await kafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(consumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Factory");
     }
 
-    public static async Task PrepareDatabaseAsync(this IServiceProvider serviceProvider, DatabaseSettings databaseSettings)
-    {
-        using var scope = serviceProvider.CreateScope();
-        var databaseContext = scope.ServiceProvider.GetRequiredService<IDatabaseContext>();
-        await databaseContext.MigrateAsync(databaseSettings.ToConnectionString());
-    }
-    
-    public static async Task InitBotTenantsAsync(this IServiceProvider serviceProvider)
+    public static async Task SendRequestBotTenantsAsync(this IServiceProvider serviceProvider)
     {
         using var scope = serviceProvider.CreateScope();
         var kafkaProducer = scope.ServiceProvider.GetRequiredService<IKafkaProducer<string>>();

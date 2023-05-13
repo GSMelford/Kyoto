@@ -1,6 +1,8 @@
+using Kyoto.Domain.Deploy;
+
 namespace Kyoto.Domain.BotClient.Deploy.Interfaces;
 
 public interface IDeployService
 {
-    Task DeployAsync(string tenant, bool isNew);
+    Task DeployAsync(InitTenantInfo initTenantInfo);
 }

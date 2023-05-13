@@ -1,3 +1,4 @@
+using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.Telegram.Types;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
@@ -7,12 +8,10 @@ namespace Kyoto.Telegram.Receiver.Services;
 
 public class MessageDistributorService : IMessageDistributorService
 {
-    private readonly ILogger<IMessageDistributorService> _logger;
     private readonly IKafkaProducer<string> _kafkaProducer;
 
-    public MessageDistributorService(ILogger<IMessageDistributorService> logger, IKafkaProducer<string> kafkaProducer)
+    public MessageDistributorService(IKafkaProducer<string> kafkaProducer)
     {
-        _logger = logger;
         _kafkaProducer = kafkaProducer;
     }
 
@@ -24,7 +23,7 @@ public class MessageDistributorService : IMessageDistributorService
             await _kafkaProducer.ProduceAsync(new CommandEvent(session)
             {
                 Message = message,
-                CommandType = command!.Value
+                Name = ConvertCommand(command!)
             }, tenantKey);
         }
         else
@@ -34,5 +33,14 @@ public class MessageDistributorService : IMessageDistributorService
                 Message = message
             }, tenantKey);
         }
+    }
+
+    private static string ConvertCommand(string command)
+    {
+        return command switch
+        {
+            "/start" => CommandCodes.Registration,
+            _ => throw new ArgumentOutOfRangeException(nameof(command), command, null)
+        };
     }
 }

@@ -26,7 +26,7 @@ public class TenantService : ITenantService
             TenantKey = _botTenantSettings.Key,
             Token = _botTenantSettings.Token,
             IsFactory = true,
-            IsNew = true
+            NewlyCreated = true
         }, string.Empty);
     }
     

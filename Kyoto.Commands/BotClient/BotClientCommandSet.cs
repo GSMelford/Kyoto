@@ -4,5 +4,8 @@ namespace Kyoto.Commands.BotClient;
 
 public class BotClientCommandSet : BaseCommandSet
 {
-    protected override List<string> Commands { get; set; } = new ();
+    protected override List<string> Commands { get; set; } = new ()
+    {
+        "/start"
+    };
 }

@@ -9,6 +9,7 @@ using Kyoto.Services.Tenant;
 using Kyoto.Settings;
 using Kyoto.Telegram.Sender;
 using Kyoto.Telegram.Sender.Interfaces;
+using Kyoto.Telegram.Sender.KafkaHandlers;
 using Kyoto.Telegram.Sender.Services;
 using TBot.Client.AspNet;
 
@@ -29,7 +30,7 @@ var app = builder.Build();
 
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};
-await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitTenantHandler>(consumerConfig, groupId: $"{nameof(InitTenantHandler)}-Sender");
+await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitSenderTenantHandler>(consumerConfig);
 
 var kafkaProducer = app.Services.GetRequiredService<IKafkaProducer<string>>();
 await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() }, string.Empty);

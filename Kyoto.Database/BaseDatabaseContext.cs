@@ -9,6 +9,12 @@ public class BaseDatabaseContext : DbContext, IDatabaseContext
     private string _connectionString;
     
     public DbSet<Command>? Commands { get; set; }
+    public DbSet<ExternalUser>? ExternalUsers { get; set; }
+    public DbSet<TemplateMessage>? TemplateMessages { get; set; }
+    public DbSet<TemplateMessageType>? TemplateMessageTypes { get; set; }
+    public DbSet<MenuPanel>? MenuPanels { get; set; }
+    public DbSet<MenuButton>? MenuButtons { get; set; }
+    public DbSet<SystemStatus>? SystemStatuses { get; set; }
 
     public BaseDatabaseContext(string connectionString)
     {
