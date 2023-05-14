@@ -20,7 +20,6 @@ public class KafkaEventSubscriber : BaseKafkaEventSubscriber
         await KafkaConsumerFactory.SubscribeAsync<MessageEvent, MessageHandler>(ConsumerConfig, topicPrefix: tenantKey);
         await KafkaConsumerFactory.SubscribeAsync<CallbackQueryEvent, CallbackQueryHandler>(ConsumerConfig, topicPrefix: tenantKey);
         await KafkaConsumerFactory.SubscribeAsync<CommandEvent, CommandHandler>(ConsumerConfig, topicPrefix: tenantKey);
-        await KafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitFactoryTenantHandler>(ConsumerConfig);
         await KafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(ConsumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Factory");
     }
 }

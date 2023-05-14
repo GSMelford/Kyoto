@@ -2,6 +2,7 @@ using Confluent.Kafka;
 using Kyoto.DI;
 using Kyoto.Kafka;
 using Kyoto.Kafka.Event;
+using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Logger;
 using Kyoto.Services.Tenant;
@@ -38,6 +39,7 @@ await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitSenderTenantHandl
 
 var kafkaProducer = app.Services.GetRequiredService<IKafkaProducer<string>>();
 await kafkaProducer.ProduceAsync(new RequestTenantEvent { SessionId = Guid.NewGuid() }, string.Empty);
+await kafkaConsumerFactory.SubscribeAsync<RemoveTenantEvent, RemoveTenantHandler>(consumerConfig, groupId: $"{nameof(RemoveTenantHandler)}-Sender");
 
 app.MapGet("/", () => "Kyoto.Telegram.Sender 0.1");
 await app.RunAsync();

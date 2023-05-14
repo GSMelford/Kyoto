@@ -20,7 +20,7 @@ public static class Extensions
                 formatter: new GraylogFormatter(),
                 securityProtocol: SecurityProtocol.Plaintext,
                 saslMechanism: SaslMechanism.Plain,
-                topic: topic
+                topic: $"{topic}.logs"
             )
             .Enrich.WithThreadId()
             .Enrich.FromLogContext()

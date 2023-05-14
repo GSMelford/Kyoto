@@ -1,4 +1,3 @@
-using Kyoto.Database.BotFactory.Models;
 using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotFactory.Bot;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
@@ -36,26 +35,20 @@ public class BotRepository : IBotRepository
         return bot.Id;
     }
     
-    public async Task<List<string>> GetBotListAsync(long externalId)
+    public async Task<List<string>> GetBotListAsync(long externalId, bool isEnable)
     {
         return await _databaseContext.Set<Models.Bot>()
             .Include(x => x.ExternalUser)
-            .Where(x => x.ExternalUser.PrivateId == externalId)
+            .Where(x => x.ExternalUser.PrivateId == externalId && x.IsEnable == isEnable)
             .Select(x => x.Username)
             .ToListAsync();
     }
-
-    public async Task SetActiveBotAsync(long externalId, string name)
+    
+    public async Task SetEnableStatusBotAsync(long externalId, string name, bool isEnable)
     {
         var bot = await GetBotAsync(externalId, name);
-        bot!.IsEnable = true;
+        bot!.IsEnable = isEnable;
         await _databaseContext.SaveChangesAsync();
-    }
-
-    public async Task<bool> IsBotActiveAsync(long externalId, string name)
-    {
-        var bot = await GetBotAsync(externalId, name);
-        return bot!.IsEnable;
     }
 
     private Task<Models.Bot?> GetBotAsync(long externalId, string name)

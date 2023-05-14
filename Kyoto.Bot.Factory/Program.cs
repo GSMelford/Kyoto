@@ -4,6 +4,7 @@ using Kyoto.DI;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Extensions;
 using Kyoto.Kafka.Event;
+using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Logger;
 using Kyoto.Services.Tenant;
@@ -48,6 +49,7 @@ var app = builder.Build();
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};
 await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitFactoryTenantHandler>(consumerConfig);
+await kafkaConsumerFactory.SubscribeAsync<RemoveTenantEvent, RemoveTenantHandler>(consumerConfig, groupId: $"{nameof(RemoveTenantHandler)}-Factory");
 
 await app.Services.SubscribeToRequestTenantEventAsync(kafkaSettings);
 await app.Services.SendRequestBotTenantsAsync();

@@ -26,19 +26,20 @@ public class TenantService : ITenantService
             TenantKey = _botTenantSettings.Key,
             Token = _botTenantSettings.Token,
             IsFactory = true,
-            NewlyCreated = true
+            IsAutomaticInitialization = true
         }, string.Empty);
     }
     
     public async Task InitBotTenantsFromDatabaseAsync()
     {
-        await foreach (var botTenant in _tenantRepository.GetAllTenantsAsync())
+        await foreach (var botTenant in _tenantRepository.GetAllActiveTenantsAsync())
         {
             await _kafkaProducer.ProduceAsync(new InitTenantEvent
             {
                 SessionId = Guid.NewGuid(),
                 TenantKey = botTenant.TenantKey,
-                Token = botTenant.Token
+                Token = botTenant.Token,
+                IsAutomaticInitialization = true
             }, string.Empty);
         }
     }

@@ -5,5 +5,6 @@ namespace Kyoto.Domain.BotFactory.Bot.Interfaces;
 public interface IBotService
 {
     Task ActivateBotAsync(Session session, string username);
+    Task DeactivateBotAsync(Session session, string username);
     Task<Guid> SaveAsync(Session session, BotModel botModel);
 }

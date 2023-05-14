@@ -18,6 +18,12 @@ public class BotTenantFactory : IDisposable
         _botTenantModels.AddOrUpdate(botTenantModel.TenantKey, botTenantModel, (_, model) => model);
         return true;
     }
+    
+    public void RemoveTenant(string tenantKey)
+    {
+        if (!_botTenantModels.ContainsKey(tenantKey)) return;
+        _botTenantModels.Remove(tenantKey, out _);
+    }
 
     public BotTenantModel Get(string tenantKey)
     {

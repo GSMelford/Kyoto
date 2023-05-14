@@ -36,9 +36,12 @@ public class InitClientTenantHandler : IKafkaHandler<InitTenantEvent>
                 TenantKey = initTenantEvent.TenantKey,
                 TemplateMessages = "TemplateMessagesClient.json"
             });
-            
-            await _kafkaProducer.ProduceAsync(new DeployStatusEvent(
-                Session.CreatePersonalNew(initTenantEvent.TenantKey, initTenantEvent.OwnerExternalUserId)), string.Empty);
+
+            if (!initTenantEvent.IsAutomaticInitialization)
+            {
+                await _kafkaProducer.ProduceAsync(new DeployStatusEvent(
+                    Session.CreatePersonalNew(initTenantEvent.TenantKey, initTenantEvent.OwnerExternalUserId)), string.Empty);
+            }
         }
     }
 }

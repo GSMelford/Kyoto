@@ -13,9 +13,10 @@ public class TenantRepository : ITenantRepository
         _databaseContext = databaseContext;
     }
 
-    public IAsyncEnumerable<BotTenant> GetAllTenantsAsync()
+    public IAsyncEnumerable<BotTenant> GetAllActiveTenantsAsync()
     {
         return _databaseContext.Set<Models.Bot>()
+            .Where(x => x.IsEnable == true)
             .Select(x => BotTenant.Create(x.Username, x.Token))
             .AsAsyncEnumerable();
     }

@@ -62,9 +62,14 @@ public class CommandService : ICommandService
             
             if (command.State == CommandState.RequestToAction)
             {
-                await commandStep.SendActionRequestAsync();
+                var result = await commandStep.SendActionRequestAsync();
                 command.SetState(CommandState.ProcessResponse);
                 await UpdateCommandAsync(session, command, commandContext);
+
+                if (result.IsInterrupt) {
+                    await _commandRepository.RemoveAsync(session);
+                }
+                
                 break;
             }
 
@@ -74,9 +79,12 @@ public class CommandService : ICommandService
                 
                 if (result.IsRetry)
                 {
-                    command.SetStep(result.ToRetryStep!.Value);
-                    await commandStep.SendRetryActionRequestAsync();
-                    break;
+                    command.SetStep(result.ToRetryStep ?? command.Step);
+                    result = await commandStep.SendRetryActionRequestAsync();
+                }
+                
+                if (result.IsInterrupt) {
+                    await _commandRepository.RemoveAsync(session);
                 }
             }
             

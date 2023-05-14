@@ -33,10 +33,10 @@ public class DeployBotFactoryStatusService : IDeployStatusService
     public async Task Notify(Session session)
     {
         string newTenant = session.TenantKey;
-        await _botRepository.SetActiveBotAsync(session.ChatId, session.TenantKey);
+        await _botRepository.SetEnableStatusBotAsync(session.ChatId, session.TenantKey, true);
         var newSession = Session.CreatePersonalNew(_botTenantSettings.Key, session.ChatId);
         
-        await _postService.PostAsync(newSession, new SetWebhookRequest(new SetWebhookParameters
+        await _postService.PostAsync(session, new SetWebhookRequest(new SetWebhookParameters
         {
             Url = $"{_kyotoBotFactorySettings.BaseUrl}{_kyotoBotFactorySettings.ReceiverEndpoint}",
             SecretToken = newTenant

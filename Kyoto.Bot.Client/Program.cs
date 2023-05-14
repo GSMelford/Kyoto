@@ -39,6 +39,7 @@ var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};
 await kafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(consumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Client");
 await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitClientTenantHandler>(consumerConfig);
+await kafkaConsumerFactory.SubscribeAsync<RemoveTenantEvent, RemoveTenantHandler>(consumerConfig, groupId: $"{nameof(RemoveTenantHandler)}-Client");
 
 await app.Services.SendRequestBotTenantsAsync();
 

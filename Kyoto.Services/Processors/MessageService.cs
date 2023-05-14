@@ -19,6 +19,10 @@ public class MessageService : IMessageService
 
     public async Task ProcessAsync(Session session, Message message)
     {
+        if (string.IsNullOrEmpty(message.Text)) {
+            return;
+        }
+        
         var text = message.Text!; 
         var (isExist, command) = await _menuService.TryGetMenuCommandCodeIfExists(session, text);
 
