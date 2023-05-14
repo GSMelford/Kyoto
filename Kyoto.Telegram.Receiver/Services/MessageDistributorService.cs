@@ -40,6 +40,7 @@ public class MessageDistributorService : IMessageDistributorService
         return command switch
         {
             "/start" => CommandCodes.Registration,
+            "/cancel" => CommandCodes.Cancel,
             _ => throw new ArgumentOutOfRangeException(nameof(command), command, null)
         };
     }

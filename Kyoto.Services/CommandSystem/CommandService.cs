@@ -25,6 +25,13 @@ public class CommandService : ICommandService
         _commandSet = commandSet;
     }
 
+    public async Task<string> CancelCommandAsync(Session session)
+    {
+        var command = await _commandRepository.GetAsync(session);
+        await _commandRepository.RemoveAsync(session);
+        return command.Name;
+    }
+    
     public async Task ProcessCommandAsync(
         Session session, 
         string commandName,

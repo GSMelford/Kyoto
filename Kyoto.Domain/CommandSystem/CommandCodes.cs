@@ -7,4 +7,5 @@ public static class CommandCodes
     public const string DeployBot = "DeployBot";
     public const string DeleteBot = "DeleteBot";
     public const string DisableBot = "DisableBot";
+    public const string Cancel = "CancelCommand";
 }

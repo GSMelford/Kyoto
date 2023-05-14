@@ -5,6 +5,7 @@ namespace Kyoto.Domain.CommandSystem.Interfaces;
 
 public interface ICommandService
 {
+    Task<string> CancelCommandAsync(Session session);
     public Task ProcessCommandAsync(
         Session session,
         string commandName,
