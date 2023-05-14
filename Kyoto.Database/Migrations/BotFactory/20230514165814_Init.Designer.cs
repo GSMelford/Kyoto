@@ -9,10 +9,10 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Kyoto.Database.BotFactory.Migrations
+namespace Kyoto.Database.Migrations.BotFactory
 {
     [DbContext(typeof(DatabaseBotFactoryContext))]
-    [Migration("20230513134528_Init")]
+    [Migration("20230514165814_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -46,6 +46,9 @@ namespace Kyoto.Database.BotFactory.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeployed")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean");

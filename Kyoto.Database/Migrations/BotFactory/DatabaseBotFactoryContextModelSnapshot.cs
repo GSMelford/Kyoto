@@ -8,7 +8,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
-namespace Kyoto.Database.BotFactory.Migrations
+namespace Kyoto.Database.Migrations.BotFactory
 {
     [DbContext(typeof(DatabaseBotFactoryContext))]
     partial class DatabaseBotFactoryContextModelSnapshot : ModelSnapshot
@@ -43,6 +43,9 @@ namespace Kyoto.Database.BotFactory.Migrations
                     b.Property<string>("FirstName")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<bool>("IsDeployed")
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean");

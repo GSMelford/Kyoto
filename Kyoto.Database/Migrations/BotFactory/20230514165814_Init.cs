@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Kyoto.Database.BotFactory.Migrations
+namespace Kyoto.Database.Migrations.BotFactory
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -181,6 +181,7 @@ namespace Kyoto.Database.BotFactory.Migrations
                     SupportsInlineQueries = table.Column<bool>(type: "boolean", nullable: false),
                     Token = table.Column<string>(type: "text", nullable: false),
                     IsEnable = table.Column<bool>(type: "boolean", nullable: false),
+                    IsDeployed = table.Column<bool>(type: "boolean", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
