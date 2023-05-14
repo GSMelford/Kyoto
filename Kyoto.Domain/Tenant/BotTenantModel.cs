@@ -15,4 +15,9 @@ public class BotTenantModel
     {
         return new BotTenantModel(tenantKey, token);
     }
+    
+    public static BotTenantModel Create(string tenantKey)
+    {
+        return new BotTenantModel(tenantKey, string.Empty);
+    }
 }

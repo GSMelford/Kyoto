@@ -1,20 +1,27 @@
 using Kyoto.Domain.Processors.Interfeces;
+using Kyoto.Domain.Tenant;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kyoto.Kafka.Handlers.BotFactory;
 
 public class MessageHandler : IKafkaHandler<MessageEvent>
 {
-    private readonly IMessageService _messageService;
+    private readonly IServiceProvider _serviceProvider;
 
-    public MessageHandler(IMessageService messageService)
+    public MessageHandler(IServiceProvider serviceProvider)
     {
-        _messageService = messageService;
+        _serviceProvider = serviceProvider;
     }
 
-    public Task HandleAsync(MessageEvent messageEvent)
+    public async Task HandleAsync(MessageEvent messageEvent)
     {
-        return _messageService.ProcessAsync(messageEvent.GetSession(), messageEvent.Message);
+        using (CurrentBotTenant.SetBotTenant(BotTenantModel.Create(messageEvent.TenantKey)))
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var messageService = scope.ServiceProvider.GetRequiredService<IMessageService>(); 
+            await messageService.ProcessAsync(messageEvent.GetSession(), messageEvent.Message);
+        }
     }
 }

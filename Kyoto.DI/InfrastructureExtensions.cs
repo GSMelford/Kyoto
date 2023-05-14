@@ -8,6 +8,7 @@ using Kyoto.Database.BotFactory.Repositories.Deploy;
 using Kyoto.Database.BotFactory.Repositories.Tenant;
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
+using Kyoto.Domain.Tenant;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka;
 using Kyoto.Kafka.Interfaces;
@@ -39,7 +40,7 @@ public static class InfrastructureExtensions
     public static IServiceCollection AddDatabaseBotClient(this IServiceCollection services, DatabaseSettings databaseSettings) 
     {
         return services.AddScoped<IDatabaseContext, DatabaseBotClientContext>(
-            _ => new DatabaseBotClientContext(databaseSettings.ToConnectionString()));
+            _ => new DatabaseBotClientContext(databaseSettings.ToConnectionString(CurrentBotTenant.BotTenant?.TenantKey)));
     }
     
     public static IServiceCollection AddKafka(this IServiceCollection services, KafkaSettings kafkaSettings)

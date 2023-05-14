@@ -92,4 +92,9 @@ public class BaseDatabaseContext : DbContext, IDatabaseContext
     {
         ChangeTracker.Clear();
     }
+
+    public new async Task DisposeAsync()
+    {
+        await base.DisposeAsync();
+    }
 }

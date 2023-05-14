@@ -19,4 +19,5 @@ public interface IDatabaseContext
     void RemoveRange<TEntity>(IEnumerable<TEntity> entities) where TEntity : BaseModel;
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     void DetachAll();
+    Task DisposeAsync();
 }

@@ -35,11 +35,11 @@ builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
 
-await app.Services.SendRequestBotTenantsAsync();
-
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};
 await kafkaConsumerFactory.SubscribeAsync<DeployStatusEvent, DeployStatusHandler>(consumerConfig, groupId: $"{nameof(DeployStatusHandler)}-Client");
 await kafkaConsumerFactory.SubscribeAsync<InitTenantEvent, InitClientTenantHandler>(consumerConfig);
+
+await app.Services.SendRequestBotTenantsAsync();
 
 await app.RunAsync();

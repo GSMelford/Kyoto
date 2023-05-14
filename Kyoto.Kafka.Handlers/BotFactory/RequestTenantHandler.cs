@@ -1,6 +1,9 @@
+using Kyoto.Domain.Processors.Interfeces;
+using Kyoto.Domain.Tenant;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Kyoto.Kafka.Handlers.BotFactory;
@@ -16,7 +19,7 @@ public class RequestTenantHandler : IKafkaHandler<RequestTenantEvent>
         _tenantService = tenantService;
     }
 
-    public async Task HandleAsync(RequestTenantEvent @event)
+    public async Task HandleAsync(RequestTenantEvent requestTenantEvent)
     {
         await _tenantService.InitMainBotTenantAsync();
 
