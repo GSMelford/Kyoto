@@ -2,7 +2,6 @@ using Confluent.Kafka;
 using Kyoto.DI;
 using Kyoto.Kafka;
 using Kyoto.Kafka.Event;
-using Kyoto.Kafka.Handlers;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Logger;
 using Kyoto.Services.Tenant;
@@ -16,6 +15,7 @@ using TBot.Client.AspNet;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafkaSettings);
+builder.Services.AddSettings<KyotoBotSenderSettings>(builder.Configuration, out var kyotoBotSenderSettings);
 
 builder.Services.AddTransient<IRequestService, RequestService>();
 builder.Services.AddKafkaProducer<string>(new ProducerConfig { BootstrapServers = kafkaSettings.BootstrapServers });
@@ -24,7 +24,11 @@ builder.Services.AddTransient<IKafkaEventSubscriber, KafkaEventSubscriber>();
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 builder.Services.AddTelegramTBot();
-builder.Services.AddTBotRedisLimiter("localhost,password=password,defaultDatabase=0");
+
+if (kyotoBotSenderSettings.IsLimiterEnable)
+{
+    builder.Services.AddTBotRedisLimiter("localhost,password=password,defaultDatabase=0"); 
+}
 
 var app = builder.Build();
 
