@@ -23,7 +23,8 @@ public class InitFactoryTenantHandler : IKafkaHandler<InitTenantEvent>
         var isNew = BotTenantFactory.Store.AddOrUpdateTenant(
             BotTenantModel.Create(
                 initTenantEvent.TenantKey,
-                initTenantEvent.Token));
+                initTenantEvent.Token,
+                initTenantEvent.IsFactory));
 
         if (isNew && initTenantEvent.IsFactory)
         {
@@ -31,7 +32,7 @@ public class InitFactoryTenantHandler : IKafkaHandler<InitTenantEvent>
             await _deployService.DeployAsync(new InitTenantInfo
             {
                 TenantKey = initTenantEvent.TenantKey,
-                TemplateMessages = "TemplateMessagesFactory.json"
+                TemplateMessages = "TemplateMessages.json"
             });
         }
     }

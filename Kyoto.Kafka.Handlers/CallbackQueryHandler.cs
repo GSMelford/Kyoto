@@ -4,7 +4,7 @@ using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Kyoto.Kafka.Handlers.BotFactory;
+namespace Kyoto.Kafka.Handlers;
 
 public class CallbackQueryHandler : IKafkaHandler<CallbackQueryEvent>
 {

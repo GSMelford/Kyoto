@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "StartMessage",
+    "Code": "1",
+    "Description": "",
+    "Text": "Hello!"
+  },
+  {
+    "Name": "ThankRegistering",
+    "Code": "2",
+    "Description": "",
+    "Text": "Thank you for registering, {FirstName}!"
+  },
+  {
+    "Name": "AboutBot",
+    "Code": "3",
+    "Description": "",
+    "Text": "I am botik"
+  },
+  {
+    "Name": "RetryRegistration",
+    "Code": "4",
+    "Description": "",
+    "Text": "You need to share a contact to continue!"
+  }
+]

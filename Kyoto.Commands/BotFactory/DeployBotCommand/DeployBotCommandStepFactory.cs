@@ -5,7 +5,7 @@ namespace Kyoto.Commands.BotFactory.DeployBotCommand;
 
 public class DeployBotCommandStepFactory : BaseCommandStepFactory
 {
-    public override string CommandName => CommandCodes.DeployBot;
+    public override string CommandName => CommandCodes.BotManagement.DeployBot;
 
     protected override List<Type> CommandStepTypes { get; set; } = new ()
     {

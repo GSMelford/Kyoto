@@ -16,7 +16,7 @@ public class InitSenderTenantHandler : IKafkaHandler<InitTenantEvent>
     
     public async Task HandleAsync(InitTenantEvent initTenantEvent)
     {
-        if (BotTenantFactory.Store.AddOrUpdateTenant(BotTenantModel.Create(initTenantEvent.TenantKey, initTenantEvent.Token)))
+        if (BotTenantFactory.Store.AddOrUpdateTenant(BotTenantModel.Create(initTenantEvent.TenantKey, initTenantEvent.Token, initTenantEvent.IsFactory)))
         {
             await _kafkaEventSubscriber.SubscribeAsync(initTenantEvent.TenantKey);
         }

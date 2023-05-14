@@ -29,6 +29,11 @@ public class BotTenantFactory : IDisposable
     {
         return _botTenantModels[tenantKey];
     }
+    
+    public string GetFactoryTenant()
+    {
+        return _botTenantModels.First(x=>x.Value.IsFactory).Key;
+    }
 
     public void Dispose()
     {

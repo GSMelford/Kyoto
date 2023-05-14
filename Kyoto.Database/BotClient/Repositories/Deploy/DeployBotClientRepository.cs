@@ -7,4 +7,9 @@ public class DeployBotClientRepository : BaseDeployRepository
     public DeployBotClientRepository(IDatabaseContext databaseContext) : base(databaseContext)
     {
     }
+    
+    protected override Task InitMenuAsync()
+    {
+        return Task.CompletedTask; //TODO: Menus
+    }
 }

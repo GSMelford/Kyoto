@@ -5,7 +5,7 @@ namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
 
 public class BotRegistrationCommandStepFactory : BaseCommandStepFactory
 {
-    public override string CommandName => CommandCodes.BotRegistration;
+    public override string CommandName => CommandCodes.BotManagement.BotRegistration;
 
     protected override List<Type> CommandStepTypes { get; set; } = new ()
     {

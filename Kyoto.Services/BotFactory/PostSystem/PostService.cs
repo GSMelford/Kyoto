@@ -2,6 +2,7 @@ using Kyoto.Domain.PostSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors;
 using Kyoto.Domain.System;
+using Kyoto.Domain.Tenant;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Interfaces;
 using TBot.Client.Parameters;
@@ -60,11 +61,21 @@ public class PostService : IPostService
     
     public async Task PostAsync(Session session, Request request)
     {
-        await _kafkaProducer.ProduceAsync(new RequestEvent (session)
+        await _kafkaProducer.ProduceAsync(new RequestEvent(session)
         {
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
             Parameters = request.Parameters
         }, session.TenantKey);
+    }
+    
+    public async Task PostBehalfOfFactoryAsync(Session session, Request request)
+    {
+        await _kafkaProducer.ProduceAsync(new RequestEvent(session)
+        {
+            Endpoint = request.Endpoint,
+            HttpMethod = request.Method,
+            Parameters = request.Parameters
+        }, BotTenantFactory.Store.GetFactoryTenant());
     }
 }

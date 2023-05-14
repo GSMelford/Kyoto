@@ -1,6 +1,7 @@
 using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.Deploy;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using TemplateMessage = Kyoto.Database.CommonModels.TemplateMessage;
 
@@ -15,9 +16,23 @@ public abstract class BaseDeployRepository : IDeployRepository
         DatabaseContext = databaseContext;
     }
 
-    public virtual async Task InitDatabaseAsync(InitTenantInfo initTenantInfo)
+    public async Task InitDatabaseAsync(InitTenantInfo initTenantInfo)
     {
+        var status = await DatabaseContext.Set<SystemStatus>()
+            .FirstOrDefaultAsync(x=>x.Name == "Database");
+        
+        if (status?.Status == "Initialized") {
+            return;
+        }
+        
+        await InitMenuAsync();
         await TemplateMessagesAsync(initTenantInfo.TemplateMessages);
+        
+        await DatabaseContext.SaveAsync(new SystemStatus
+        {
+            Name = "Database",
+            Status = "Initialized"
+        });
     }
 
     private async Task TemplateMessagesAsync(string templateMessageFileName)
@@ -31,14 +46,16 @@ public abstract class BaseDeployRepository : IDeployRepository
             {
                 TemplateMessageType = new TemplateMessageType
                 {
-                    Name = templateMessage["TemplateMessageTypeName"]!.ToString(),
-                    Code = int.Parse(templateMessage["TemplateMessageTypeCode"]!.ToString()),
-                    Description = templateMessage["TemplateMessageTypeDescription"]!.ToString()
+                    Name = templateMessage["Name"]!.ToString(),
+                    Code = int.Parse(templateMessage["Code"]!.ToString()),
+                    Description = templateMessage["Description"]!.ToString()
                 },
-                Text = templateMessage["TemplateMessageText"]!.ToString()
+                Text = templateMessage["Text"]!.ToString()
             };
 
             await DatabaseContext.SaveAsync(startMessage);
         }
     }
+
+    protected abstract Task InitMenuAsync();
 }

@@ -16,6 +16,7 @@ builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafka
 
 //Infrastructure
 builder.Services
+    .AddAuthorizationServices()
     .AddDatabaseBotClient(databaseSettings)
     .AddBotClientDeploy()
     .AddKafka(kafkaSettings)

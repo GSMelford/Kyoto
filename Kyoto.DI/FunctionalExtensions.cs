@@ -8,6 +8,7 @@ using Kyoto.Domain.Menu.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors.Interfeces;
 using Kyoto.Domain.TemplateMessage;
+using Kyoto.Services.BotClient.TemplateMessage;
 using Kyoto.Services.BotFactory.Bot;
 using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Services.Menu;
@@ -51,6 +52,8 @@ public static class FunctionalExtensions
 
     public static IServiceCollection AddTemplateMessage(this IServiceCollection services)
     {
-        return services.AddTransient<ITemplateMessageRepository, TemplateMessageRepository>();
+        return services
+            .AddTransient<ITemplateMessageService, TemplateMessageService>()
+            .AddTransient<ITemplateMessageRepository, TemplateMessageRepository>();
     }
 }

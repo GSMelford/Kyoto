@@ -8,9 +8,9 @@ public class BotFactoryCommandSet : BaseCommandSet
     protected override List<string> Commands { get; set; } = new ()
     {
         CommandCodes.Registration,
-        CommandCodes.DeleteBot,
-        CommandCodes.BotRegistration,
-        CommandCodes.DeployBot,
-        CommandCodes.DisableBot
+        CommandCodes.BotManagement.DeleteBot,
+        CommandCodes.BotManagement.BotRegistration,
+        CommandCodes.BotManagement.DeployBot,
+        CommandCodes.BotManagement.DisableBot
     };
 }

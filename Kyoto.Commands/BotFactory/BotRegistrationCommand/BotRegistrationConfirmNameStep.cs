@@ -1,6 +1,8 @@
 using Kyoto.Domain.BotFactory.Bot;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Kyoto.Domain.CommandSystem;
+using Kyoto.Domain.Menu;
+using Kyoto.Domain.Menu.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors;
 using Kyoto.Services.CommandSystem;
@@ -13,6 +15,7 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
 {
     private readonly IPostService _postService;
     private readonly IBotService _botService;
+    private readonly IMenuRepository _menuRepository;
 
     private readonly BotRegistrationHttpService _botRegistrationHttpService;
 
@@ -24,11 +27,13 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
     public BotRegistrationConfirmNameStep(
         IPostService postService, 
         IBotService botService, 
-        BotRegistrationHttpService botRegistrationHttpService)
+        BotRegistrationHttpService botRegistrationHttpService,
+        IMenuRepository menuRepository)
     {
         _postService = postService;
         _botService = botService;
         _botRegistrationHttpService = botRegistrationHttpService;
+        _menuRepository = menuRepository;
     }
 
     protected override async Task<CommandStepResult> SetActionRequestAsync()
@@ -53,6 +58,11 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
             await _botService.SaveAsync(Session, botModel);
             await _postService.SendTextMessageAsync(Session, 
                 "The bot has been successfully registered! 🪄🥰");
+            
+            await _menuRepository.EnableMenuAsync(MenuPanelConstants.BotFeaturesMenuPanel);
+            await _postService.SendTextMessageAsync(Session, 
+                "Now you can go to the menu: 🪄 Features of the bot.\nAnd customize your bot!");
+            
             return CommandStepResult.CreateSuccessful();
         }
 

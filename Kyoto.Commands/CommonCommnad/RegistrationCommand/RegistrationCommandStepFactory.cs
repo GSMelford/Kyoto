@@ -1,7 +1,7 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
-namespace Kyoto.Commands.Common.RegistrationCommand;
+namespace Kyoto.Commands.CommonCommnad.RegistrationCommand;
 
 public class RegistrationCommandStepFactory : BaseCommandStepFactory
 {
