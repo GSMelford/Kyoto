@@ -2,25 +2,25 @@
   {
     "Name": "StartMessage",
     "Code": "1",
-    "Description": "",
+    "Description": "Welcome to the new user",
     "Text": "Hello!"
   },
   {
     "Name": "ThankRegistering",
     "Code": "2",
-    "Description": "",
+    "Description": "Thank you for registering",
     "Text": "Thank you for registering, {FirstName}!"
   },
   {
     "Name": "AboutBot",
     "Code": "3",
-    "Description": "",
+    "Description": "Information about Telegram bot",
     "Text": "I am botik"
   },
   {
     "Name": "RetryRegistration",
     "Code": "4",
-    "Description": "",
+    "Description": "Message in case of non-sending contact by the client",
     "Text": "You need to share a contact to continue!"
   }
 ]

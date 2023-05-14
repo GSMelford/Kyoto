@@ -28,6 +28,12 @@ public class TemplateMessageHandler : IKafkaHandler<TemplateMessageEvent>
                     templateMessageEvent.GetSession(),
                     templateMessageEvent.Type);
             }
+            else
+            {
+                await templateMessageService.UpdateTemplateMessageAsync(
+                    templateMessageEvent.Type,
+                    templateMessageEvent.Text!);
+            }
         }
     }
 }

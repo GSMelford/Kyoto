@@ -35,7 +35,7 @@ public class BotRepository : IBotRepository
         return bot.Id;
     }
     
-    public async Task<List<string>> GetBotListAsync(long externalId, bool isEnable)
+    public async Task<List<string>> GetBotsAsync(long externalId, bool isEnable)
     {
         return await _databaseContext.Set<Models.Bot>()
             .Include(x => x.ExternalUser)
@@ -44,10 +44,20 @@ public class BotRepository : IBotRepository
             .ToListAsync();
     }
     
-    public async Task SetEnableStatusBotAsync(long externalId, string name, bool isEnable)
+    public async Task<List<string>> GetDeployedBotsAsync(long externalId)
+    {
+        return await _databaseContext.Set<Models.Bot>()
+            .Include(x => x.ExternalUser)
+            .Where(x => x.ExternalUser.PrivateId == externalId && x.IsDeployed == true)
+            .Select(x => x.Username)
+            .ToListAsync();
+    }
+    
+    public async Task SetBotStatusesAsync(long externalId, string name, bool isEnable, bool? isDeployed = null)
     {
         var bot = await GetBotAsync(externalId, name);
         bot!.IsEnable = isEnable;
+        bot.IsDeployed = isDeployed ?? bot.IsDeployed;
         await _databaseContext.SaveChangesAsync();
     }
 

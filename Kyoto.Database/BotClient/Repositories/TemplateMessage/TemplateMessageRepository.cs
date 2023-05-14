@@ -23,4 +23,18 @@ public class TemplateMessageRepository : ITemplateMessageRepository
         
         return templateMessageTypeDal.ToDomain();
     }
+    
+    public async Task UpdateAsync(
+        TemplateMessageTypeValue templateMessageTypeValue,
+        string newText)
+    {
+        var templateMessageTypeDal = await _databaseContext
+            .Set<TemplateMessageDal>()
+            .Include(x=>x.TemplateMessageType)
+            .FirstAsync(x => x.TemplateMessageType.Code == (int)templateMessageTypeValue);
+
+        templateMessageTypeDal.Text = newText;
+        _databaseContext.Update(templateMessageTypeDal);
+        await _databaseContext.SaveChangesAsync();
+    }
 }

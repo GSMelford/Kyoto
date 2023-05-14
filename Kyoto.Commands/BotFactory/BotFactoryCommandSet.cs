@@ -11,6 +11,7 @@ public class BotFactoryCommandSet : BaseCommandSet
         CommandCodes.BotManagement.DeleteBot,
         CommandCodes.BotManagement.BotRegistration,
         CommandCodes.BotManagement.DeployBot,
-        CommandCodes.BotManagement.DisableBot
+        CommandCodes.BotManagement.DisableBot,
+        CommandCodes.BotFeatures.SetRegistration
     };
 }

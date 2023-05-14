@@ -53,6 +53,7 @@ public class MenuRepository : IMenuRepository
             .FirstAsync(x => x.Text == menuButtonText);
 
         menuPanelDal.IsEnable = true;
-        await _databaseContext.SaveAsync(menuPanelDal);
+        _databaseContext.Update(menuPanelDal);
+        await _databaseContext.SaveChangesAsync();
     }
 }

@@ -11,6 +11,8 @@ public class SetRegistrationCommandStepFactory : BaseCommandStepFactory
     protected override List<Type> CommandStepTypes { get; set; } = new()
     {
         typeof(SelectBotCommandStep),
-        typeof(ChangeHelloMessageCommandStep)
+        typeof(ChangeHelloMessageCommandStep),
+        typeof(ChangeThanksRegistrationMessageCommandStep),
+        typeof(ChangeRetryRegistrationMessageCommandStep)
     };
 }

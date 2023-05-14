@@ -26,7 +26,7 @@ public class DeployBotCommandStep : BaseCommandStep
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
         var keyboard = new InlineKeyboardMarkup();
-        var botList = await _botRepository.GetBotListAsync(Session.ExternalUserId, false);
+        var botList = await _botRepository.GetBotsAsync(Session.ExternalUserId, false);
         
         if (!botList.Any()) {
             await _postService.SendTextMessageAsync(Session, "You have no inactive bots");

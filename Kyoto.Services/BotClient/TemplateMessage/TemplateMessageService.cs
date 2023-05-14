@@ -23,8 +23,15 @@ public class TemplateMessageService : ITemplateMessageService
         var templateMessage = await _templateMessageRepository.GetAsync(type);
         await _postService.PostBehalfOfFactoryAsync(session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = $"Now you have.\nMessage type: {templateMessage.Code}.\nText: {templateMessage.Text}",
+            Text = $"Message type: {Enum.GetName(templateMessage.Code)}.\n" +
+                   $"Message description: {templateMessage.Description}\n" +
+                   $"Text: {templateMessage.Text}",
             ChatId = session.ChatId
         }).ToRequest());
+    }
+
+    public async Task UpdateTemplateMessageAsync(TemplateMessageTypeValue type, string newText)
+    {
+        await _templateMessageRepository.UpdateAsync(type, newText);
     }
 }

@@ -13,4 +13,5 @@ public class Bot : BaseModel
     public bool SupportsInlineQueries { get; set; }
     public string Token { get; set; } = null!;
     public bool IsEnable { get; set; }
+    public bool IsDeployed { get; set; }
 }

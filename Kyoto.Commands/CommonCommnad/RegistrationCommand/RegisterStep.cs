@@ -51,10 +51,7 @@ public class RegisterStep : BaseCommandStep
         await _postService.SendTextMessageAsync(Session,
             templateMessage.Text.Replace("{FirstName}", CommandContext.Message.FromUser!.FirstName));
         
-        templateMessage = await _templateRepository.GetAsync(TemplateMessageTypeValue.AboutBot);
-        await _postService.SendTextMessageAsync(Session, templateMessage.Text);
         await _menuService.SendHomeMenuAsync(Session);
-        
         return CommandStepResult.CreateSuccessful();
     }
     

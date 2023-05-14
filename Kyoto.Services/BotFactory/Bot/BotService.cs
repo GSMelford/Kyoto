@@ -55,7 +55,7 @@ public class BotService : IBotService
     public async Task DeactivateBotAsync(Session session, string username)
     {
         var botTenant = await _tenantRepository.GetBotTenantAsync(session.ExternalUserId, username);
-        await _botRepository.SetEnableStatusBotAsync(session.ExternalUserId, botTenant.TenantKey, false);
+        await _botRepository.SetBotStatusesAsync(session.ExternalUserId, botTenant.TenantKey, false);
         
         var newSession = Session.CreatePersonalNew(botTenant.TenantKey, session.ChatId);
         await _postService.PostAsync(newSession, new DeleteWebhookRequest(new DeleteWebhookParameters()).ToRequest());

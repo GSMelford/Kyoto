@@ -24,8 +24,7 @@ public class SelectBotCommandStep : BaseCommandStep
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
         var keyboard = new InlineKeyboardMarkup();
-        var bots = await _botRepository.GetBotListAsync(Session.ExternalUserId, false);
-        bots.AddRange(await _botRepository.GetBotListAsync(Session.ExternalUserId, true));
+        var bots = await _botRepository.GetDeployedBotsAsync(Session.ExternalUserId);
         
         if (!bots.Any()) {
             await _postService.SendTextMessageAsync(Session, "You haven't registered any bot yet.%0ABlock: 🏗 Register a new bot");

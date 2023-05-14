@@ -71,7 +71,7 @@ public class PostService : IPostService
     
     public async Task PostBehalfOfFactoryAsync(Session session, Request request)
     {
-        await _kafkaProducer.ProduceAsync(new RequestEvent(session)
+        await _kafkaProducer.ProduceAsync(new RequestEvent(Session.CreatePersonalNew(BotTenantFactory.Store.GetFactoryTenant(), session.ChatId))
         {
             Endpoint = request.Endpoint,
             HttpMethod = request.Method,
