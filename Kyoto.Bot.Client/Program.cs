@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using Kyoto.Bot.Client;
+using Kyoto.Bot.Client.Middlewares;
 using Kyoto.DI;
 using Kyoto.Extensions;
 using Kyoto.Kafka.Event;
@@ -16,6 +17,7 @@ builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafka
 
 //Infrastructure
 builder.Services
+    .AddControllers().Services
     .AddAuthorizationServices()
     .AddDatabaseBotClient(databaseSettings)
     .AddBotClientDeploy()
@@ -35,6 +37,9 @@ builder.Services
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
+app.UseRouting();
+app.MapControllers();
+app.UseMiddleware<TenantIdentifierMiddleware>();
 
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};

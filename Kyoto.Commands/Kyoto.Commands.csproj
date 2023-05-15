@@ -7,6 +7,8 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Kyoto.Dto\Kyoto.Dto.csproj" />
+      <ProjectReference Include="..\Kyoto.Extensions\Kyoto.Extensions.csproj" />
       <ProjectReference Include="..\Kyoto.Services\Kyoto.Services.csproj" />
     </ItemGroup>
 

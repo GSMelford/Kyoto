@@ -1,7 +1,6 @@
 using Confluent.Kafka;
 using Kyoto.Bot.Factory;
 using Kyoto.DI;
-using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Extensions;
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
@@ -23,6 +22,7 @@ builder.Services
     .AddDatabaseBotFactory(databaseSettings, botTenantSettings.Key)
     .AddBotFactoryDeploy()
     .AddTenant(botTenantSettings)
+    .AddRequestService()
     .AddTransient<IKafkaEventSubscriber, KafkaEventSubscriber>();
 
 //Functional

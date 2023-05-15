@@ -1,7 +1,8 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
+using Kyoto.Domain.RequestSystem;
 using Kyoto.Domain.TemplateMessage;
-using Kyoto.Kafka.Interfaces;
+using Kyoto.Settings;
 
 namespace Kyoto.Commands.BotFactory.SetRegistrationCommand;
 
@@ -11,8 +12,8 @@ public class ChangeRetryRegistrationMessageCommandStep : BaseChangeMessageComman
     
     protected override TemplateMessageTypeValue TemplateMessageType => TemplateMessageTypeValue.RetryRegistration;
     
-    public ChangeRetryRegistrationMessageCommandStep(IPostService postService, IKafkaProducer<string> kafkaProducer) 
-        : base(postService, kafkaProducer)
+    public ChangeRetryRegistrationMessageCommandStep(IPostService postService, KyotoBotFactorySettings kyotoBotFactorySettings, IRequestService requestService) 
+        : base(postService, kyotoBotFactorySettings, requestService)
     {
         _postService = postService;
     }

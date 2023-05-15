@@ -8,6 +8,7 @@ using Kyoto.Database.BotFactory.Repositories.Deploy;
 using Kyoto.Database.BotFactory.Repositories.Tenant;
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
+using Kyoto.Domain.RequestSystem;
 using Kyoto.Domain.Tenant;
 using Kyoto.Domain.Tenant.Interfaces;
 using Kyoto.Kafka;
@@ -16,6 +17,7 @@ using Kyoto.Services.BotClient.Deploy;
 using Kyoto.Services.BotFactory.Authorization;
 using Kyoto.Services.BotFactory.DeployStatus;
 using Kyoto.Services.Deploy;
+using Kyoto.Services.RequestSystem;
 using Kyoto.Services.Tenant;
 using Kyoto.Settings;
 using Microsoft.Extensions.DependencyInjection;
@@ -77,5 +79,10 @@ public static class InfrastructureExtensions
             .AddTransient<IDeployService, DeployService>()
             .AddTransient<IDeployStatusService, DeployBotClientStatusService>()
             .AddTransient<IDeployRepository, DeployBotClientRepository>();
+    }
+    
+    public static IServiceCollection AddRequestService(this IServiceCollection services)
+    {
+        return services.AddHttpClient<IRequestService, RequestService>().Services;
     }
 }

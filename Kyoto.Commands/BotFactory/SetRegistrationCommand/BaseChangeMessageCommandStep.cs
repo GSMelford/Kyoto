@@ -1,52 +1,68 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
+using Kyoto.Domain.RequestSystem;
 using Kyoto.Domain.TemplateMessage;
-using Kyoto.Kafka.Event;
-using Kyoto.Kafka.Interfaces;
+using Kyoto.Dto.TemplateMessageSystem;
+using Kyoto.Extensions;
 using Kyoto.Services.CommandSystem;
+using Kyoto.Settings;
 
 namespace Kyoto.Commands.BotFactory.SetRegistrationCommand;
 
 public abstract class BaseChangeMessageCommandStep : BaseCommandStep
 {
     private readonly IPostService _postService;
-    private readonly IKafkaProducer<string> _kafkaProducer;
+    private readonly KyotoBotFactorySettings _kyotoBotFactorySettings;
+    private readonly IRequestService _requestService;
+
+    private const string TEMPLATE_MESSAGE_ENDPOINT = "/api/template-message";
+    
     protected abstract TemplateMessageTypeValue TemplateMessageType { get; }
     protected virtual string AdditionalText { get; } = string.Empty;
-    
-    public BaseChangeMessageCommandStep(IPostService postService, IKafkaProducer<string> kafkaProducer)
+
+    protected BaseChangeMessageCommandStep(
+        IPostService postService,
+        KyotoBotFactorySettings kyotoBotFactorySettings,
+        IRequestService requestService)
     {
         _postService = postService;
-        _kafkaProducer = kafkaProducer;
+        _kyotoBotFactorySettings = kyotoBotFactorySettings;
+        _requestService = requestService;
     }
 
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
-        string tenantKey = CommandContext.AdditionalData!;
-        await _kafkaProducer.ProduceAsync(new TemplateMessageEvent (Domain.System.Session.CreatePersonalNew(tenantKey, Session.ChatId))
-        {
-            Action = TemplateMessageEventAction.Send,
-            Type = TemplateMessageType
-        }, tenantKey);
-        
+        var tenantKey = CommandContext.AdditionalData!;
+        var templateMessageDto = await _requestService.SendAsync<TemplateMessageDto>(
+            new RequestCreator(HttpMethod.Get, _kyotoBotFactorySettings.ClientBaseUrl + TEMPLATE_MESSAGE_ENDPOINT)
+                .AddTenantHeader(tenantKey)
+                .AddParameters(new Dictionary<string, string> { { "type", ((int)TemplateMessageType).ToString() } })
+                .Create());
+
+        await _postService.SendTextMessageAsync(Session, $"Code: {templateMessageDto.Code}\nDescription: {templateMessageDto.Description}\nText: {templateMessageDto.Text}");
         await _postService.SendTextMessageAsync(Session, $"{AdditionalText}✍️ Enter new text:");
         return CommandStepResult.CreateSuccessful();
     }
 
     protected override async Task<CommandStepResult> SetProcessResponseAsync()
     {
-        string tenantKey = CommandContext.AdditionalData!;
+        var tenantKey = CommandContext.AdditionalData!;
         var newText = CommandContext.Message!.Text!;
-        await _postService.SendTextMessageAsync(Session, "⏩ Your new text looks like this: ");
-        await _postService.SendTextMessageAsync(Session, newText);
+
+        var isSuccess = await _requestService.SendWithStatusCodeAsync(new RequestCreator(HttpMethod.Patch, _kyotoBotFactorySettings.ClientBaseUrl + TEMPLATE_MESSAGE_ENDPOINT)
+                .AddTenantHeader(tenantKey)
+                .AddParameters(new Dictionary<string, string>
+                {
+                    { "type", ((int)TemplateMessageType).ToString() },
+                    { "text", newText }
+                }).Create());
+
+        if (!isSuccess) {
+            await _postService.SendTextMessageAsync(Session, "😨 Something went wrong.");
+            return CommandStepResult.CreateInterrupt();
+        }
         
-        await _kafkaProducer.ProduceAsync(new TemplateMessageEvent (Domain.System.Session.CreatePersonalNew(tenantKey, Session.ChatId))
-        {
-            Action = TemplateMessageEventAction.Update,
-            Type = TemplateMessageType,
-            Text = newText
-        }, CommandContext.AdditionalData!);
-        
+        await _postService.SendTextMessageAsync(Session, "🎉 The text has been updated!");
         return CommandStepResult.CreateSuccessful();
     }
 }
