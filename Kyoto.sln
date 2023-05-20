@@ -34,9 +34,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Settings", "Kyoto.Set
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Dto", "Kyoto.Dto\Kyoto.Dto.csproj", "{4FFA1922-32E2-4101-A4BA-6405B783CAD6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Services.Tests", "Kyoto.Services.Tests\Kyoto.Services.Tests.csproj", "{37BDA9C0-16DB-47DC-A01F-9D7EB61F9AC2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Service.Tests", "Kyoto.Service.Tests\Kyoto.Service.Tests.csproj", "{37BDA9C0-16DB-47DC-A01F-9D7EB61F9AC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Commands.Tests", "Kyoto.Commands.Tests\Kyoto.Commands.Tests.csproj", "{78935CBE-56B6-4CFE-9604-3575F8443EBC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kyoto.Command.Tests", "Kyoto.Command.Tests\Kyoto.Command.Tests.csproj", "{78935CBE-56B6-4CFE-9604-3575F8443EBC}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{C92494E9-DF8B-4E04-8D77-17C0A5AE27F7}"
 EndProject
