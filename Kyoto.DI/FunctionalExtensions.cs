@@ -1,17 +1,20 @@
-using Kyoto.Database.BotClient.Repositories.TemplateMessage;
 using Kyoto.Database.BotFactory.Repositories.Bot;
 using Kyoto.Database.BotFactory.Repositories.BotUser;
 using Kyoto.Database.CommonRepositories.Menu;
+using Kyoto.Database.CommonRepositories.PreparedMessage;
+using Kyoto.Database.CommonRepositories.TemplateMessage;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Kyoto.Domain.BotFactory.User.Interfaces;
 using Kyoto.Domain.Menu.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
+using Kyoto.Domain.PreparedMessagesSystem;
 using Kyoto.Domain.Processors.Interfeces;
 using Kyoto.Domain.TemplateMessage;
 using Kyoto.Services.BotClient.TemplateMessage;
 using Kyoto.Services.BotFactory.Bot;
 using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Services.Menu;
+using Kyoto.Services.PreparedMessagesSystem;
 using Kyoto.Services.Processors;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -55,5 +58,12 @@ public static class FunctionalExtensions
         return services
             .AddTransient<ITemplateMessageService, TemplateMessageService>()
             .AddTransient<ITemplateMessageRepository, TemplateMessageRepository>();
+    }
+    
+    public static IServiceCollection AddPreparedMessages(this IServiceCollection services)
+    {
+        return services
+            .AddTransient<IPreparedMessagesRepository, PreparedMessagesRepository>()
+            .AddTransient<IPreparedMessagesService, PreparedMessagesService>();
     }
 }

@@ -1,9 +1,10 @@
 using Kyoto.Database.CommonModels;
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.Deploy;
+using Kyoto.Domain.PreparedMessagesSystem;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
-using TemplateMessage = Kyoto.Database.CommonModels.TemplateMessage;
+using PostEvent = Kyoto.Database.CommonModels.PostEvent;
 
 namespace Kyoto.Database.CommonRepositories.Deploy;
 
@@ -26,7 +27,8 @@ public abstract class BaseDeployRepository : IDeployRepository
         }
         
         await InitMenuAsync();
-        await TemplateMessagesAsync(initTenantInfo.TemplateMessages);
+        await InitTemplateMessagesAsync(initTenantInfo.TemplateMessages);
+        await InitPostEventAsync();
         
         await DatabaseContext.SaveAsync(new SystemStatus
         {
@@ -35,14 +37,14 @@ public abstract class BaseDeployRepository : IDeployRepository
         });
     }
 
-    private async Task TemplateMessagesAsync(string templateMessageFileName)
+    private async Task InitTemplateMessagesAsync(string templateMessageFileName)
     {
         var templateMessages = 
             await File.ReadAllTextAsync(Path.Combine("KnowledgeBase", templateMessageFileName));
         
         foreach (var templateMessage in JToken.Parse(templateMessages))
         {
-            var startMessage = new TemplateMessage
+            var startMessage = new CommonModels.TemplateMessage
             {
                 TemplateMessageType = new TemplateMessageType
                 {
@@ -57,5 +59,16 @@ public abstract class BaseDeployRepository : IDeployRepository
         }
     }
 
+    private Task InitPostEventAsync()
+    {
+        var postEvent = new PostEvent
+        {
+            Code = PostEventCode.Time,
+            Name = "Message by time"
+        };
+        
+        return DatabaseContext.SaveAsync(postEvent);
+    }
+    
     protected abstract Task InitMenuAsync();
 }

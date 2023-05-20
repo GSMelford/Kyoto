@@ -9,11 +9,38 @@ using Kyoto.Kafka.Interfaces;
 using Kyoto.Logger;
 using Kyoto.Services.Tenant;
 using Kyoto.Settings;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSettings<DatabaseSettings>(builder.Configuration, out var databaseSettings);
 builder.Services.AddSettings<KafkaSettings>(builder.Configuration, out var kafkaSettings);
+
+builder.Services.AddSwaggerGen(options =>
+{
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Version = "v1",
+        Title = "Kyoto Bot Client API"
+    });
+    
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "Bearer"
+                },
+                Name = "Bearer",
+                In = ParameterLocation.Header
+            },
+            Array.Empty<string>()
+        }
+    });
+});
 
 //Infrastructure
 builder.Services
@@ -31,15 +58,21 @@ builder.Services
     .AddCommandSystem()
     .AddClientCommands()
     .AddPostService()
+    .AddPreparedMessages()
     .AddTemplateMessage();
 
 //Logging
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+app.UseStaticFiles();
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI();
 app.MapControllers();
 app.UseMiddleware<TenantIdentifierMiddleware>();
+
 
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};

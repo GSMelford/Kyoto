@@ -7,7 +7,7 @@ namespace Kyoto.Services.CommandSystem;
 public abstract class BaseCommandStep : ICommandStep
 {
     protected Session Session { get; private set; } = null!;
-    protected CommandContext CommandContext { get; private set; } = null!;
+    public CommandContext CommandContext { get; private set; } = null!;
     
     public void SetSession(Session session)
     {

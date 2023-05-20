@@ -19,6 +19,4 @@ public class AuthorizationService : IAuthorizationService
     {
         return _authorizationRepository.SaveUserAsync(user);
     }
-    
-    
 }

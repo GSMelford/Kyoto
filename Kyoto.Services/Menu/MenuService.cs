@@ -21,7 +21,7 @@ public class MenuService : IMenuService
         _postService = postService;
     }
 
-    public async Task<(bool, string)> TryGetMenuCommandCodeIfExists(Session session, string menuButtonText)
+    public async Task<(bool, string)> TryGetMenuCommandCodeAsync(string menuButtonText)
     {
         if (await _menuRepository.IsMenuButtonAsync(menuButtonText))
         {

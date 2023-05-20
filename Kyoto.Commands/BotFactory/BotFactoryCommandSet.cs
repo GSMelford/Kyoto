@@ -12,6 +12,7 @@ public class BotFactoryCommandSet : BaseCommandSet
         CommandCodes.BotManagement.BotRegistration,
         CommandCodes.BotManagement.DeployBot,
         CommandCodes.BotManagement.DisableBot,
-        CommandCodes.BotFeatures.SetRegistration
+        CommandCodes.BotFeatures.SetRegistration,
+        CommandCodes.BotFeatures.AddNewsletter
     };
 }

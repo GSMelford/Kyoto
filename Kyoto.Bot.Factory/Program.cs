@@ -35,6 +35,7 @@ builder.Services
     .AddUser()
     .AddFactoryCommands()
     .AddCommandSystem()
+    .AddPreparedMessages()
     .AddTemplateMessage();
 
 //HttpServices
@@ -45,6 +46,7 @@ builder.Services
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);
 
 var app = builder.Build();
+AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 var kafkaConsumerFactory = app.Services.GetRequiredService<IKafkaConsumerFactory>();
 var consumerConfig = new ConsumerConfig{BootstrapServers = kafkaSettings.BootstrapServers};

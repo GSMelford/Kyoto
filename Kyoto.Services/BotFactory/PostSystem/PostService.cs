@@ -68,14 +68,4 @@ public class PostService : IPostService
             Parameters = request.Parameters
         }, session.TenantKey);
     }
-    
-    public async Task PostBehalfOfFactoryAsync(Session session, Request request)
-    {
-        await _kafkaProducer.ProduceAsync(new RequestEvent(Session.CreatePersonalNew(BotTenantFactory.Store.GetFactoryTenant(), session.ChatId))
-        {
-            Endpoint = request.Endpoint,
-            HttpMethod = request.Method,
-            Parameters = request.Parameters
-        }, BotTenantFactory.Store.GetFactoryTenant());
-    }
 }

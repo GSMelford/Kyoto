@@ -37,7 +37,7 @@ public static class HomePanel
                     IsCommand = true,
                     Index = 1,
                     Line = 1,
-                    IsEnable = false
+                    IsEnable = true
                 },
                 new ()
                 {

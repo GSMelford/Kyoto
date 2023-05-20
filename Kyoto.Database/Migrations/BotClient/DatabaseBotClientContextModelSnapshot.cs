@@ -70,9 +70,6 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid?>("MenuPanelId")
-                        .HasColumnType("uuid");
-
                     b.Property<DateTime?>("ModificationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -88,12 +85,46 @@ namespace Kyoto.Database.Migrations.BotClient
 
                     b.HasKey("Id");
 
-                    b.HasIndex("MenuPanelId");
-
                     b.HasIndex("UserId")
                         .IsUnique();
 
                     b.ToTable("ExternalUsers");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.Feedback", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid?>("ExternalUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("StarCount")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("UserExternalId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalUserId");
+
+                    b.ToTable("Feedbacks");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButton", b =>
@@ -165,6 +196,9 @@ namespace Kyoto.Database.Migrations.BotClient
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<int>("Code")
+                        .HasColumnType("integer");
+
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
@@ -180,6 +214,36 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.ToTable("EventMessages");
                 });
 
+            modelBuilder.Entity("Kyoto.Database.CommonModels.PreOrderService", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Comment")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ExternalUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ServiceId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalUserId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("PreOrderServices");
+                });
+
             modelBuilder.Entity("Kyoto.Database.CommonModels.PreparedMessage", b =>
                 {
                     b.Property<Guid>("Id")
@@ -189,8 +253,7 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.Property<DateTime?>("CreationTime")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("Message")
-                        .IsRequired()
+                    b.Property<string>("KeyWords")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("ModificationTime")
@@ -199,11 +262,47 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.Property<Guid>("PostEventId")
                         .HasColumnType("uuid");
 
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("TimeToSend")
+                        .HasColumnType("timestamp with time zone");
+
                     b.HasKey("Id");
 
                     b.HasIndex("PostEventId");
 
                     b.ToTable("PreparedMessages");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.Service", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Services");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.SystemStatus", b =>
@@ -315,19 +414,22 @@ namespace Kyoto.Database.Migrations.BotClient
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.ExternalUser", b =>
                 {
-                    b.HasOne("Kyoto.Database.CommonModels.MenuPanel", "MenuPanel")
-                        .WithMany()
-                        .HasForeignKey("MenuPanelId");
-
                     b.HasOne("Kyoto.Database.CommonModels.User", "User")
                         .WithOne("TelegramUser")
                         .HasForeignKey("Kyoto.Database.CommonModels.ExternalUser", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("MenuPanel");
-
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.Feedback", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.ExternalUser", "ExternalUser")
+                        .WithMany()
+                        .HasForeignKey("ExternalUserId");
+
+                    b.Navigation("ExternalUser");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButton", b =>
@@ -339,6 +441,25 @@ namespace Kyoto.Database.Migrations.BotClient
                         .IsRequired();
 
                     b.Navigation("MenuPanel");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.PreOrderService", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.ExternalUser", "ExternalUser")
+                        .WithMany()
+                        .HasForeignKey("ExternalUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Kyoto.Database.CommonModels.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExternalUser");
+
+                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.PreparedMessage", b =>

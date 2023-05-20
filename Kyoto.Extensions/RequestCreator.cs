@@ -17,8 +17,8 @@ public class RequestCreator
     
     public RequestCreator SetBody(string body)
     {
-        _httpRequestMessage.Content!.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         _httpRequestMessage.Content = new StringContent(body);
+        _httpRequestMessage.Content!.Headers.ContentType = new MediaTypeHeaderValue("application/json");
         return this;
     }
 

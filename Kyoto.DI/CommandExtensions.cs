@@ -1,5 +1,6 @@
 using Kyoto.Commands.BotClient;
 using Kyoto.Commands.BotFactory;
+using Kyoto.Commands.BotFactory.AddNewsletterCommand;
 using Kyoto.Commands.BotFactory.BotRegistrationCommand;
 using Kyoto.Commands.BotFactory.DeployBotCommand;
 using Kyoto.Commands.BotFactory.DisableBotCommand;
@@ -22,7 +23,8 @@ public static class CommandExtensions
             .AddTransient<ICommandStepFactory, BotRegistrationCommandStepFactory>()
             .AddTransient<ICommandStepFactory, DeployBotCommandStepFactory>()
             .AddTransient<ICommandStepFactory, DisableBotCommandStepFactory>()
-            .AddTransient<ICommandStepFactory, SetRegistrationCommandStepFactory>();
+            .AddTransient<ICommandStepFactory, SetRegistrationCommandStepFactory>()
+            .AddTransient<ICommandStepFactory, AddNewsletterCommandStepFactory>();
     }
     
     public static IServiceCollection AddClientCommands(this IServiceCollection services)

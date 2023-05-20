@@ -23,9 +23,4 @@
       <ProjectReference Include="..\Kyoto.Settings\Kyoto.Settings.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="BotClient\Models\" />
-      <Folder Include="BotClient\Repositories\Deploy\MenuPanels\" />
-    </ItemGroup>
-
 </Project>

@@ -27,7 +27,7 @@ public class SelectBotCommandStep : BaseCommandStep
         var bots = await _botRepository.GetDeployedBotsAsync(Session.ExternalUserId);
         
         if (!bots.Any()) {
-            await _postService.SendTextMessageAsync(Session, "You haven't registered any bot yet.%0ABlock: 🏗 Register a new bot");
+            await _postService.SendTextMessageAsync(Session, "You haven't deployed any bot yet.%0ABlock: 🤖⚙️ Bot management");
             return CommandStepResult.CreateInterrupt();
         }
         
