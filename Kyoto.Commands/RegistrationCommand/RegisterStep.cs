@@ -10,7 +10,7 @@ using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Commands.CommonCommnad.RegistrationCommand;
+namespace Kyoto.Commands.RegistrationCommand;
 
 public class RegisterStep : BaseCommandStep
 {

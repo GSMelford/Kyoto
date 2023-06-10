@@ -59,7 +59,8 @@ builder.Services
     .AddClientCommands()
     .AddPostService()
     .AddPreparedMessages()
-    .AddTemplateMessage();
+    .AddTemplateMessage()
+    .AddFeedback();
 
 //Logging
 builder.Logging.AddLogger(builder.Configuration, kafkaSettings);

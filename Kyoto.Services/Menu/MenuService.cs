@@ -58,8 +58,12 @@ public class MenuService : IMenuService
             var maxIndex = menuPanel.MenuButtons.Where(x=>x.Line == i).Max(x=>x.Index) + 1;
             for (int j = 0; j < maxIndex; j++)
             {
-                var menuButton = menuPanel.MenuButtons.First(x => x.Line == i && x.Index == j);
-                if (menuButton.IsEnable)
+                var i1 = i;
+                var j1 = j;
+                
+                var menuButtons = menuPanel.MenuButtons.Where(x => x.Line == i1 && x.Index == j1);
+                var menuButton = menuButtons.FirstOrDefault(x => x.IsEnable);
+                if (menuButton is not null)
                 {
                     keyboard.Add(new KeyboardButton
                     {

@@ -6,8 +6,10 @@ using Kyoto.Database.BotFactory;
 using Kyoto.Database.BotFactory.Repositories.Authorization;
 using Kyoto.Database.BotFactory.Repositories.Deploy;
 using Kyoto.Database.BotFactory.Repositories.Tenant;
+using Kyoto.Database.Repositories.Feedback;
 using Kyoto.Domain.BotClient.Deploy.Interfaces;
 using Kyoto.Domain.BotFactory.Authorization.Interfaces;
+using Kyoto.Domain.FeedbackSystem;
 using Kyoto.Domain.RequestSystem;
 using Kyoto.Domain.Tenant;
 using Kyoto.Domain.Tenant.Interfaces;
@@ -17,6 +19,7 @@ using Kyoto.Services.BotClient.Deploy;
 using Kyoto.Services.BotFactory.Authorization;
 using Kyoto.Services.BotFactory.DeployStatus;
 using Kyoto.Services.Deploy;
+using Kyoto.Services.FeedbackSystem;
 using Kyoto.Services.RequestSystem;
 using Kyoto.Services.Tenant;
 using Kyoto.Settings;
@@ -84,5 +87,12 @@ public static class InfrastructureExtensions
     public static IServiceCollection AddRequestService(this IServiceCollection services)
     {
         return services.AddHttpClient<IRequestService, RequestService>().Services;
+    }
+    
+    public static IServiceCollection AddFeedback(this IServiceCollection services)
+    {
+        return services
+            .AddTransient<IFeedbackService, FeedbackService>()
+            .AddTransient<IFeedbackRepository, FeedbackRepository>();
     }
 }

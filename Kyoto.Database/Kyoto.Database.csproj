@@ -23,4 +23,8 @@
       <ProjectReference Include="..\Kyoto.Settings\Kyoto.Settings.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Repositories\" />
+    </ItemGroup>
+
 </Project>

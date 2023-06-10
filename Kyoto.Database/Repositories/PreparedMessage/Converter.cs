@@ -1,6 +1,6 @@
 using Kyoto.Domain.PreparedMessagesSystem;
 
-namespace Kyoto.Database.CommonRepositories.PreparedMessage;
+namespace Kyoto.Database.Repositories.PreparedMessage;
 
 public static class Converter
 {

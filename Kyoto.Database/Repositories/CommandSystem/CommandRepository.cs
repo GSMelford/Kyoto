@@ -3,7 +3,7 @@ using Kyoto.Domain.CommandSystem.Interfaces;
 using Kyoto.Domain.System;
 using Microsoft.EntityFrameworkCore;
 
-namespace Kyoto.Database.CommonRepositories.CommandSystem;
+namespace Kyoto.Database.Repositories.CommandSystem;
 
 public class CommandRepository : ICommandRepository
 {

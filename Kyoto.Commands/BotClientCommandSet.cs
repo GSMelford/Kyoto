@@ -7,6 +7,7 @@ public class BotClientCommandSet : BaseCommandSet
 {
     protected override List<string> Commands { get; set; } = new ()
     {
-        CommandCodes.Registration
+        CommandCodes.Registration,
+        CommandCodes.Client.SendFeedback
     };
 }

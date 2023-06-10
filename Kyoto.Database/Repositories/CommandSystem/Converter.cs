@@ -1,6 +1,6 @@
 using Kyoto.Domain.CommandSystem;
 
-namespace Kyoto.Database.CommonRepositories.CommandSystem;
+namespace Kyoto.Database.Repositories.CommandSystem;
 
 public static class Converter
 {

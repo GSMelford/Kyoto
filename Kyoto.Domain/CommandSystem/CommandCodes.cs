@@ -16,6 +16,8 @@ public static class CommandCodes
         public const string RemoveNewsletter = "RemoveNewsletter";
         public const string SetRegistration = "SetRegistration";
         public const string EnableCollectFeedback = "EnableCollectFeedback";
+        public const string DisableCollectFeedback = "DisableCollectFeedback";
+        public const string ShowFeedbacks = "ShowFeedbacks";
         public const string SetFaq = "SetFaq";
         public const string GetStatistics = "GetStatistics";
     }
@@ -24,6 +26,13 @@ public static class CommandCodes
     {
         public const string Complaints = "AddComplaints";
         public const string Suggestions = "AddSuggestions";
+    }
+    
+    public static class Client
+    {
+        public const string SendFeedback = "SendFeedback";
+        public const string GetFaq = "GetFaq";
+        public const string PreOrderService = "PreOrderService";
     }
     
     public const string Registration = "Registration";

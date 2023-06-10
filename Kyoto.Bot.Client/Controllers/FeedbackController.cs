@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Kyoto.Domain.FeedbackSystem;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,18 +9,28 @@ namespace Kyoto.Bot.Client.Controllers;
 [Route("api/feedback")]
 public class FeedbackController : ControllerBase
 {
+    private readonly IFeedbackService _feedbackService;
+    private readonly IFeedbackRepository _feedbackRepository;
+
+    public FeedbackController(IFeedbackService feedbackService, IFeedbackRepository feedbackRepository)
+    {
+        _feedbackService = feedbackService;
+        _feedbackRepository = feedbackRepository;
+    }
+
     [HttpPost]
     //[Authorize]
     public Task SetEnableStatus([FromQuery, Required] bool isEnable)
     {
-        return Task.CompletedTask;
+        return _feedbackService.SetFeedbackStatusAsync(isEnable);
     }
     
     //[Authorize]
     [HttpGet("list")]
-    public Task<FeedbackDto> GetFeedbacks([FromQuery, Required] int offset, [FromQuery] int limit = 5)
+    public async Task<FeedbackSet> GetFeedbacks([FromQuery, Required] int offset, [FromQuery] int limit = 5)
     {
-        return Task.FromResult(new FeedbackDto());
+        var feedbackSet = await _feedbackRepository.GetFeedbackSetAsync(offset, limit);
+        return feedbackSet;
     }
     
     //[Authorize]
@@ -28,11 +39,6 @@ public class FeedbackController : ControllerBase
     {
         return Task.FromResult(new RatingDto());
     }
-}
-
-public class FeedbackDto
-{
-    
 }
 
 public class RatingDto

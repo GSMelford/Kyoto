@@ -69,7 +69,7 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
                 Sticker = "CAACAgIAAxUAAWSEa3MKyIkhZRmAabutnAfxiyuFAAJLBwACRvusBJjCZeijaQ8uLwQ"
             }).ToRequest());
             
-            await _menuRepository.EnableMenuAsync(MenuPanelConstants.BotFeaturesMenuPanel);
+            await _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.BotFeaturesMenuPanel);
             await _postService.SendTextMessageAsync(Session, 
                 "Тепер Вам доступне меню\\: *🪄 Функції бота*");
             

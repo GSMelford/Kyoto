@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MenuButton = Kyoto.Database.CommonModels.MenuButton;
 using MenuPanel = Kyoto.Database.CommonModels.MenuPanel;
 
-namespace Kyoto.Database.CommonRepositories.Menu;
+namespace Kyoto.Database.Repositories.Menu;
 
 public class MenuRepository : IMenuRepository
 {
@@ -47,12 +47,12 @@ public class MenuRepository : IMenuRepository
         return menuPanelDal.Code;
     }
     
-    public async Task EnableMenuAsync(string menuButtonText)
+    public async Task SetMenuButtonStatusAsync(string menuButtonText, bool isEnable = true)
     {
         var menuPanelDal = await _databaseContext.Set<MenuButton>()
             .FirstAsync(x => x.Text == menuButtonText);
 
-        menuPanelDal.IsEnable = true;
+        menuPanelDal.IsEnable = isEnable;
         _databaseContext.Update(menuPanelDal);
         await _databaseContext.SaveChangesAsync();
     }

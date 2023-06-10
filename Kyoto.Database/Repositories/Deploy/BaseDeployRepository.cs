@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json.Linq;
 using PostEvent = Kyoto.Database.CommonModels.PostEvent;
 
-namespace Kyoto.Database.CommonRepositories.Deploy;
+namespace Kyoto.Database.Repositories.Deploy;
 
 public abstract class BaseDeployRepository : IDeployRepository
 {

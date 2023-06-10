@@ -1,6 +1,6 @@
 using TemplateMessageDal = Kyoto.Database.CommonModels.TemplateMessage;
 
-namespace Kyoto.Database.CommonRepositories.TemplateMessage;
+namespace Kyoto.Database.Repositories.TemplateMessage;
 
 public static class Converter
 {

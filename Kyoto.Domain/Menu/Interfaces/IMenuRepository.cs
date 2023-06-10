@@ -6,5 +6,5 @@ public interface IMenuRepository
     Task<MenuPanel> GetMenuPanelAsync(string menuPanelName);
     Task<bool> IsMenuButtonAsync(string menuButtonText);
     Task<string> GetMenuButtonCodeAsync(string menuButtonText);
-    Task EnableMenuAsync(string menuButtonText);
+    Task SetMenuButtonStatusAsync(string menuButtonText, bool isEnable = true);
 }

@@ -4,8 +4,8 @@ namespace Kyoto.Services.CommandSystem;
 
 public abstract class BaseCommandStepFactory : ICommandStepFactory
 {
-    protected abstract List<Type> CommandStepTypes { get; set; }
     public abstract string CommandName { get; }
+    protected abstract List<Type> CommandStepTypes { get; set; }
     
     public virtual Type GetCommandStep(int step)
     {

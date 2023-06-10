@@ -13,10 +13,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="CommonCommnad\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <PackageReference Include="TBot.Telegram.Client" Version="0.4.5.21" />
     </ItemGroup>
 

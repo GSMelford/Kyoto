@@ -1,4 +1,5 @@
-using Kyoto.Database.CommonRepositories.Deploy;
+using Kyoto.Database.BotClient.Repositories.Deploy.MenuPanels;
+using Kyoto.Database.Repositories.Deploy;
 
 namespace Kyoto.Database.BotClient.Repositories.Deploy;
 
@@ -10,6 +11,7 @@ public class DeployBotClientRepository : BaseDeployRepository
     
     protected override Task InitMenuAsync()
     {
-        return Task.CompletedTask; //TODO: Menus
+        var homeMenuPanel = HomePanel.Get();
+        return DatabaseContext.SaveAsync(homeMenuPanel);
     }
 }

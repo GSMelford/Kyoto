@@ -1,8 +1,8 @@
 using Kyoto.Database.BotFactory.Repositories.Bot;
 using Kyoto.Database.BotFactory.Repositories.BotUser;
-using Kyoto.Database.CommonRepositories.Menu;
-using Kyoto.Database.CommonRepositories.PreparedMessage;
-using Kyoto.Database.CommonRepositories.TemplateMessage;
+using Kyoto.Database.Repositories.Menu;
+using Kyoto.Database.Repositories.PreparedMessage;
+using Kyoto.Database.Repositories.TemplateMessage;
 using Kyoto.Domain.BotFactory.Bot.Interfaces;
 using Kyoto.Domain.BotFactory.User.Interfaces;
 using Kyoto.Domain.Menu.Interfaces;

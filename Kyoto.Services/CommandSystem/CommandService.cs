@@ -88,10 +88,11 @@ public class CommandService : ICommandService
                 {
                     command.SetStep(result.ToRetryStep ?? command.Step);
                     result = await commandStep.SendRetryActionRequestAsync();
-                }
-                
-                if (result.IsInterrupt) {
-                    await _commandRepository.RemoveAsync(session);
+                    if (result.IsInterrupt) {
+                        await _commandRepository.RemoveAsync(session);
+                    }
+                    await UpdateCommandAsync(session, command, commandContext);
+                    break;
                 }
             }
             

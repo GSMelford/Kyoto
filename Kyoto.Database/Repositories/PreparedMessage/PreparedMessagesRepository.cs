@@ -2,7 +2,7 @@ using Kyoto.Domain.PreparedMessagesSystem;
 using Microsoft.EntityFrameworkCore;
 using PostEventDal = Kyoto.Database.CommonModels.PostEvent;
 
-namespace Kyoto.Database.CommonRepositories.PreparedMessage;
+namespace Kyoto.Database.Repositories.PreparedMessage;
 
 public class PreparedMessagesRepository : IPreparedMessagesRepository
 {

@@ -43,7 +43,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "🗣️ Увімкнути збір відгуків",
+                    Text = MenuPanelConstants.Button.EnableCollectFeedback,
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.EnableCollectFeedback,
                     Index = 0,
@@ -52,10 +52,28 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
+                    Text = MenuPanelConstants.Button.DisableCollectFeedback,
+                    IsCommand = true,
+                    Code = CommandCodes.BotFeatures.DisableCollectFeedback,
+                    Index = 0,
+                    Line = 2,
+                    IsEnable = false
+                },
+                new ()
+                {
+                    Text = "📃 Показати відгуки",
+                    IsCommand = true,
+                    Code = CommandCodes.BotFeatures.ShowFeedbacks,
+                    Index = 1,
+                    Line = 2,
+                    IsEnable = true
+                },
+                new ()
+                {
                     Text = "🙋‍♂️ Встановити FAQ",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.SetFaq,
-                    Index = 1,
+                    Index = 2,
                     Line = 2,
                     IsEnable = true
                 },
@@ -64,7 +82,7 @@ public static class BotFeaturesMenuPanel
                     Text = "ℹ️ Отримати статистику",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.GetStatistics,
-                    Index = 2,
+                    Index = 3,
                     Line = 2,
                     IsEnable = true
                 },

@@ -17,7 +17,7 @@ public class BaseDatabaseContext : DbContext, IDatabaseContext
     public DbSet<SystemStatus>? SystemStatuses { get; set; }
     public DbSet<PostEvent>? EventMessages { get; set; }
     public DbSet<PreparedMessage>? PreparedMessages { get; set; }
-    public DbSet<Feedback>? Feedbacks { get; set; }
+    public DbSet<CommonModels.Feedback>? Feedbacks { get; set; }
     public DbSet<PreOrderService>? PreOrderServices { get; set; }
     public DbSet<Service>? Services { get; set; }
 

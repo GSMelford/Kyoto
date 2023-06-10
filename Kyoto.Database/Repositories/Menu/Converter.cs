@@ -1,6 +1,6 @@
 using Kyoto.Domain.Menu;
 
-namespace Kyoto.Database.CommonRepositories.Menu;
+namespace Kyoto.Database.Repositories.Menu;
 
 public static class Converter
 {

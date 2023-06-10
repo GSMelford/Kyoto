@@ -1,5 +1,5 @@
 using Kyoto.Database.BotFactory.Repositories.Deploy.MenuPanels;
-using Kyoto.Database.CommonRepositories.Deploy;
+using Kyoto.Database.Repositories.Deploy;
 
 namespace Kyoto.Database.BotFactory.Repositories.Deploy;
 
