@@ -1,11 +1,10 @@
-using Kyoto.Commands.BotClient;
-using Kyoto.Commands.BotFactory;
-using Kyoto.Commands.BotFactory.AddNewsletterCommand;
-using Kyoto.Commands.BotFactory.BotRegistrationCommand;
-using Kyoto.Commands.BotFactory.DeployBotCommand;
-using Kyoto.Commands.BotFactory.DisableBotCommand;
-using Kyoto.Commands.BotFactory.SetRegistrationCommand;
+using Kyoto.Commands;
+using Kyoto.Commands.AddNewsletterCommand;
+using Kyoto.Commands.BotRegistrationCommand;
 using Kyoto.Commands.CommonCommnad.RegistrationCommand;
+using Kyoto.Commands.DeployBotCommand;
+using Kyoto.Commands.DisableBotCommand;
+using Kyoto.Commands.SetRegistrationCommand;
 using Kyoto.Database.CommonRepositories.CommandSystem;
 using Kyoto.Domain.CommandSystem.Interfaces;
 using Kyoto.Services.CommandSystem;

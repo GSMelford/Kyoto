@@ -7,7 +7,7 @@ using Kyoto.Extensions;
 using Kyoto.Services.CommandSystem;
 using Kyoto.Settings;
 
-namespace Kyoto.Commands.BotFactory.SetRegistrationCommand;
+namespace Kyoto.Commands.SetRegistrationCommand;
 
 public abstract class BaseChangeMessageCommandStep : BaseCommandStep
 {

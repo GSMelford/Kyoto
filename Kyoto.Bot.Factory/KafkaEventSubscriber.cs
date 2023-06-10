@@ -1,6 +1,5 @@
 using Kyoto.Kafka.Event;
 using Kyoto.Kafka.Handlers;
-using Kyoto.Kafka.Handlers.BotFactory;
 using Kyoto.Kafka.Interfaces;
 using Kyoto.Services.Tenant;
 using Kyoto.Settings;

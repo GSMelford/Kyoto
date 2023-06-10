@@ -3,7 +3,7 @@ using Kyoto.Domain.RequestSystem;
 using Kyoto.Domain.TemplateMessage;
 using Kyoto.Settings;
 
-namespace Kyoto.Commands.BotFactory.SetRegistrationCommand;
+namespace Kyoto.Commands.SetRegistrationCommand;
 
 public class ChangeThanksRegistrationMessageCommandStep : BaseChangeMessageCommandStep
 {

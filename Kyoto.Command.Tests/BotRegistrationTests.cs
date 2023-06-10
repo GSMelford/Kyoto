@@ -1,4 +1,4 @@
-using Kyoto.Commands.BotFactory.BotRegistrationCommand;
+using Kyoto.Commands.BotRegistrationCommand;
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.System;

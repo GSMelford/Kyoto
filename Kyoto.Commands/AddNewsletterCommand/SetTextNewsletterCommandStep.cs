@@ -1,16 +1,12 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
-using Kyoto.Domain.PreparedMessagesSystem;
 using Kyoto.Extensions;
 using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Services.CommandSystem;
-using Newtonsoft.Json;
 using TBot.Client.Parameters;
-using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
-using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Commands.BotFactory.AddNewsletterCommand;
+namespace Kyoto.Commands.AddNewsletterCommand;
 
 public class SetTextNewsletterCommandStep : BaseCommandStep
 {
@@ -25,7 +21,7 @@ public class SetTextNewsletterCommandStep : BaseCommandStep
     {
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "What message do you want to set? Write it (you can use text MarkdownV2):",
+            Text = "🤔 What message do you want to set?\nWrite it (you can use text MarkdownV2 😋):",
             ChatId = Session.ChatId,
             //ParseMode
         }).ToRequest());

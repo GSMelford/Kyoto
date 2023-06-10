@@ -1,6 +1,6 @@
 using Kyoto.Domain.PreparedMessagesSystem;
 
-namespace Kyoto.Commands.BotFactory.AddNewsletterCommand;
+namespace Kyoto.Commands.AddNewsletterCommand;
 
 public class NewsletterData
 {

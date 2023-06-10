@@ -2,7 +2,7 @@ using Kyoto.Commands.CommonSteps;
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
-namespace Kyoto.Commands.BotFactory.SetRegistrationCommand;
+namespace Kyoto.Commands.SetRegistrationCommand;
 
 public class SetRegistrationCommandStepFactory : BaseCommandStepFactory
 {

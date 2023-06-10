@@ -9,7 +9,11 @@ namespace Kyoto.Logger;
 
 public static class Extensions
 {
-    public static void AddLogger(this ILoggingBuilder loggingBuilder, IConfiguration configuration, KafkaSettings kafkaSettings, string topic = "kafka_bot_factory")
+    public static void AddLogger(
+        this ILoggingBuilder loggingBuilder, 
+        IConfiguration configuration, 
+        KafkaSettings kafkaSettings, 
+        string topic = "kafka_bot_factory")
     {
         loggingBuilder.ClearProviders();
         loggingBuilder.AddConsole();

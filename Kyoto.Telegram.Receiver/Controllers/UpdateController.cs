@@ -10,7 +10,7 @@ namespace Kyoto.Telegram.Receiver.Controllers;
 public class UpdateController : ControllerBase
 {
     private readonly IUpdateService _updateService;
-    private const string TELEGRAM_TENANT_HEADER = "X-Telegram-Bot-Api-Secret-Token";
+    private const string TelegramTenantHeader = "X-Telegram-Bot-Api-Secret-Token";
 
     public UpdateController(IUpdateService updateService)
     {
@@ -19,7 +19,7 @@ public class UpdateController : ControllerBase
 
     public async Task GetUpdate([FromBody, Required] UpdateDto updateDto)
     { 
-        Request.Headers.TryGetValue(TELEGRAM_TENANT_HEADER, out var tenantKey);
+        Request.Headers.TryGetValue(TelegramTenantHeader, out var tenantKey);
         await _updateService.HandleAsync(tenantKey.ToString(), updateDto.ToDomain());
     }
 }

@@ -4,7 +4,7 @@ namespace Kyoto.Bot.Client.Middlewares;
 
 public class TenantIdentifierMiddleware
 {
-    private const string TENANT_KEY = "Tenant";
+    private const string TenantKey = "Tenant";
     private readonly RequestDelegate _next;
     
     public TenantIdentifierMiddleware(RequestDelegate next)
@@ -14,7 +14,7 @@ public class TenantIdentifierMiddleware
     
     public async Task InvokeAsync(HttpContext context)
     {
-        context.Request.Headers.TryGetValue(TENANT_KEY, out var tenantKey);
+        context.Request.Headers.TryGetValue(TenantKey, out var tenantKey);
         if (string.IsNullOrEmpty(tenantKey)) 
         {
             await _next(context);

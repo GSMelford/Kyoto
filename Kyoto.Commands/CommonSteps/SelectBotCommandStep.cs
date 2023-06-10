@@ -42,7 +42,7 @@ public class SelectBotCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Choose the bot:",
+            Text = "🤖 Choose the bot:",
             ReplyMarkup = keyboard,
             ChatId = Session.ChatId
         }).ToRequest());

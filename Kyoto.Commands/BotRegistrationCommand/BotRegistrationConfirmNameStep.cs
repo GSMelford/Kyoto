@@ -5,11 +5,12 @@ using Kyoto.Domain.Menu;
 using Kyoto.Domain.Menu.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors;
+using Kyoto.Extensions;
 using Kyoto.Services.CommandSystem;
 using Kyoto.Services.HttpServices.BotRegistration;
 using Newtonsoft.Json;
 
-namespace Kyoto.Commands.BotFactory.BotRegistrationCommand;
+namespace Kyoto.Commands.BotRegistrationCommand;
 
 public class BotRegistrationConfirmNameStep : BaseCommandStep
 {
@@ -38,10 +39,10 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
 
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
-        var botModel = JsonConvert.DeserializeObject<BotModel>(CommandContext.AdditionalData!)!;
-        botModel = await _botRegistrationHttpService.GetBotInfoAsync(botModel);
+        var botModel = CommandContext.AdditionalData!.ToObject<BotModel>();
+        botModel = await _botRegistrationHttpService.EnrichBotInfoAsync(botModel);
         await _postService.SendConfirmationMessageAsync(Session, BuildConfirmNameQuestion(botModel));
-        CommandContext.SetAdditionalData(JsonConvert.SerializeObject(botModel));
+        CommandContext.SetAdditionalData(botModel.ToJson());
         return CommandStepResult.CreateSuccessful();
     }
 

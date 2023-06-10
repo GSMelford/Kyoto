@@ -2,7 +2,7 @@ using Kyoto.Commands.CommonSteps;
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
-namespace Kyoto.Commands.BotFactory.AddNewsletterCommand;
+namespace Kyoto.Commands.AddNewsletterCommand;
 
 public class AddNewsletterCommandStepFactory : BaseCommandStepFactory
 {

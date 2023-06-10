@@ -7,7 +7,7 @@ using Kyoto.Extensions;
 using Kyoto.Services.CommandSystem;
 using Kyoto.Settings;
 
-namespace Kyoto.Commands.BotFactory.AddNewsletterCommand;
+namespace Kyoto.Commands.AddNewsletterCommand;
 
 public class SetUpNewsletterEventCommandStep : BaseCommandStep
 {
@@ -34,7 +34,7 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
         if (newsletterData.PostEventCode == PostEventCode.Time)
         {
             await _postService.SendTextMessageAsync(Session,
-                "Please write the time when you want to send this message in the format 00:00 :");
+                "⌚ Please write the time when you want to send this message in the format 00:00 :");
         }
         
         return CommandStepResult.CreateSuccessful();
@@ -70,7 +70,7 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
             }
         }
         
-        await _postService.SendTextMessageAsync(Session, "Prepared message added!");
+        await _postService.SendTextMessageAsync(Session, "Prepared message added! 🎉");
         return CommandStepResult.CreateSuccessful();
     }
 

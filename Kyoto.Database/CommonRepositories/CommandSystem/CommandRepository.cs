@@ -40,7 +40,7 @@ public class CommandRepository : ICommandRepository
     {
         var commandDal = await GetAsync(session.ExternalUserId);
 
-        commandDal!.Step = (int)command.Step;
+        commandDal!.Step = command.Step;
         commandDal.State = (int)command.State;
         commandDal.AdditionalData = command.AdditionalData;
         

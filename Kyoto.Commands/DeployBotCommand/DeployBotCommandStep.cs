@@ -8,28 +8,28 @@ using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
 using TBot.Client.Requests;
 
-namespace Kyoto.Commands.BotFactory.DisableBotCommand;
+namespace Kyoto.Commands.DeployBotCommand;
 
-public class DisableBotCommandStep : BaseCommandStep
+public class DeployBotCommandStep : BaseCommandStep
 {
+    private readonly IBotService _botService;
     private readonly IBotRepository _botRepository;
     private readonly IPostService _postService;
-    private readonly IBotService _botService;
 
-    public DisableBotCommandStep(IBotRepository botRepository, IPostService postService, IBotService botService)
+    public DeployBotCommandStep(IBotRepository botRepository, IBotService botService, IPostService postService)
     {
+        _botService = botService;
         _botRepository = botRepository;
         _postService = postService;
-        _botService = botService;
     }
 
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
         var keyboard = new InlineKeyboardMarkup();
-        var botList = await _botRepository.GetBotsAsync(Session.ExternalUserId, true);
+        var botList = await _botRepository.GetBotsAsync(Session.ExternalUserId, false);
         
         if (!botList.Any()) {
-            await _postService.SendTextMessageAsync(Session, "You have no active bots at the moment");
+            await _postService.SendTextMessageAsync(Session, "You have no inactive bots");
             return CommandStepResult.CreateInterrupt();
         }
         
@@ -44,7 +44,7 @@ public class DisableBotCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Select a bot to deactivate:",
+            Text = "Choose the bot you want to run:",
             ReplyMarkup = keyboard,
             ChatId = Session.ChatId
         }).ToRequest());
@@ -61,9 +61,9 @@ public class DisableBotCommandStep : BaseCommandStep
 
         var botName = CommandContext.CallbackQuery.Data!;
         await _postService.SendTextMessageAsync(Session, 
-            $"😴 Shutting down the {botName}... Beeb Beeb Beeb...");
+            $"🪄 Let's start deploying the {botName}... 5, 4, 3, 2, 1!!💥");
+        await _botService.ActivateBotAsync(Session, botName);
         
-        await _botService.DeactivateBotAsync(Session, botName);
         return CommandStepResult.CreateSuccessful();
     }
 }

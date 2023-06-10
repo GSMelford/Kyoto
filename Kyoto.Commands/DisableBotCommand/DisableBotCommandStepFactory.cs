@@ -1,7 +1,7 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
-namespace Kyoto.Commands.BotFactory.DisableBotCommand;
+namespace Kyoto.Commands.DisableBotCommand;
 
 public class DisableBotCommandStepFactory : BaseCommandStepFactory
 {

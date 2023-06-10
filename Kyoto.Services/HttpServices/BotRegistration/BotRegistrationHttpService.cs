@@ -15,7 +15,7 @@ public class BotRegistrationHttpService
         _httpClient = httpClient;
     }
 
-    public async Task<BotModel> GetBotInfoAsync(BotModel botModel)
+    public async Task<BotModel> EnrichBotInfoAsync(BotModel botModel)
     {
         var response = await _httpClient.SendAsync(new HttpRequestMessage(HttpMethod.Get, $"{API_URL}{botModel.Token}/getMe"));
         var botInfo = JsonConvert.DeserializeObject<BotInfoDto>(await response.Content.ReadAsStringAsync())!.BotInfoResult;

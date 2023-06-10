@@ -5,6 +5,7 @@ public class PreparedMessage
     public PostEventCode PostEventCode { get; private set; }
     public string Text { get; private set; } = null!;
     public DateTime? TimeToSend { get; private set; }
+    public string KeyWords { get; set; }
 
     public PreparedMessage(PostEventCode postEventCode, string text, DateTime? timeToSend)
     {

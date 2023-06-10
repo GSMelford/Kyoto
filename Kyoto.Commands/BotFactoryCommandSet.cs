@@ -1,7 +1,7 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Services.CommandSystem;
 
-namespace Kyoto.Commands.BotFactory;
+namespace Kyoto.Commands;
 
 public class BotFactoryCommandSet : BaseCommandSet
 {

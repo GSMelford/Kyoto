@@ -24,7 +24,8 @@ public class PreparedMessagesRepository : IPreparedMessagesRepository
         {
             Text = preparedMessage.Text,
             PostEvent = await _databaseContext.Set<PostEventDal>().FirstAsync(x=>x.Code == preparedMessage.PostEventCode),
-            TimeToSend = preparedMessage.TimeToSend
+            TimeToSend = preparedMessage.TimeToSend,
+            KeyWords = preparedMessage.KeyWords
         });
     }
 
