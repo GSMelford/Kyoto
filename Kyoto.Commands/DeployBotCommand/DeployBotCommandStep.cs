@@ -6,7 +6,9 @@ using Kyoto.Services.CommandSystem;
 using TBot.Client.Parameters;
 using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
+using TBot.Client.Parameters.Stickers;
 using TBot.Client.Requests;
+using TBot.Client.Requests.Stickers;
 
 namespace Kyoto.Commands.DeployBotCommand;
 
@@ -29,7 +31,7 @@ public class DeployBotCommandStep : BaseCommandStep
         var botList = await _botRepository.GetBotsAsync(Session.ExternalUserId, false);
         
         if (!botList.Any()) {
-            await _postService.SendTextMessageAsync(Session, "You have no inactive bots");
+            await _postService.SendTextMessageAsync(Session, "У вас немає неактивних ботів");
             return CommandStepResult.CreateInterrupt();
         }
         
@@ -44,7 +46,7 @@ public class DeployBotCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Choose the bot you want to run:",
+            Text = "Виберіть бота, якого хочете запустити:",
             ReplyMarkup = keyboard,
             ChatId = Session.ChatId
         }).ToRequest());
@@ -61,9 +63,15 @@ public class DeployBotCommandStep : BaseCommandStep
 
         var botName = CommandContext.CallbackQuery.Data!;
         await _postService.SendTextMessageAsync(Session, 
-            $"🪄 Let's start deploying the {botName}... 5, 4, 3, 2, 1!!💥");
-        await _botService.ActivateBotAsync(Session, botName);
+            $"🪄 Давайте почнемо розгортати {botName.Replace("_", "\\_")}\\.\\.\\. 5, 4, 3, 2, 1\\!\\!💥");
         
+        await _postService.PostAsync(Session, new SendStickerRequest(new SendStickersParameters
+        {
+            ChatId = Session.ChatId,
+            Sticker = "CAACAgIAAxUAAWSEa3MbIwyXgtrb283Zou093NxIAAIyBwACRvusBCB5MwG6VA_qLwQ"
+        }).ToRequest());
+        
+        await _botService.ActivateBotAsync(Session, botName);
         return CommandStepResult.CreateSuccessful();
     }
 }

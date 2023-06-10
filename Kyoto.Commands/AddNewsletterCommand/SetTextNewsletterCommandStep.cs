@@ -21,9 +21,8 @@ public class SetTextNewsletterCommandStep : BaseCommandStep
     {
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "🤔 What message do you want to set?\nWrite it (you can use text MarkdownV2 😋):",
-            ChatId = Session.ChatId,
-            //ParseMode
+            Text = "🤔 Яке повідомлення ви хочете встановити?\nНапишіть це (ви можете використовувати текст MarkdownV2 😋):",
+            ChatId = Session.ChatId
         }).ToRequest());
         
         return CommandStepResult.CreateSuccessful();

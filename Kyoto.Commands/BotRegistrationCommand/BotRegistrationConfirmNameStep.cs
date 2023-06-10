@@ -6,9 +6,12 @@ using Kyoto.Domain.Menu.Interfaces;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Domain.Processors;
 using Kyoto.Extensions;
+using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Services.CommandSystem;
 using Kyoto.Services.HttpServices.BotRegistration;
 using Newtonsoft.Json;
+using TBot.Client.Parameters.Stickers;
+using TBot.Client.Requests.Stickers;
 
 namespace Kyoto.Commands.BotRegistrationCommand;
 
@@ -21,9 +24,9 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
     private readonly BotRegistrationHttpService _botRegistrationHttpService;
 
     private static string BuildConfirmNameQuestion(BotModel botModel) => 
-        $"🤔 Do you want to register this bot?\n\n" +
-        $"Name: {botModel.FirstName}\n" +
-        $"Username: {botModel.Username}";
+        $"🤔 Ви хочете зареєструвати цього бота?\n\n" +
+        $"Ім'я: {botModel.FirstName}\n" +
+        $"Псевдонім: {botModel.Username}";
 
     public BotRegistrationConfirmNameStep(
         IPostService postService, 
@@ -54,15 +57,25 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
         {
             await _postService.DeleteMessageAsync(Session);
             await _postService.SendTextMessageAsync(Session, 
-                $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Confirmation}");
+                $"{BuildConfirmNameQuestion(botModel).Replace("_", "\\_")}\nВідповідь: {CallbackQueryButtons.Confirmation}");
             
             await _botService.SaveAsync(Session, botModel);
             await _postService.SendTextMessageAsync(Session, 
-                "The bot has been successfully registered! 🪄🥰");
+                "Бот успішно зареєстрований! 🪄🥰");
+
+            await _postService.PostAsync(Session, new SendStickerRequest(new SendStickersParameters
+            {
+                ChatId = Session.ChatId,
+                Sticker = "CAACAgIAAxUAAWSEa3MKyIkhZRmAabutnAfxiyuFAAJLBwACRvusBJjCZeijaQ8uLwQ"
+            }).ToRequest());
             
             await _menuRepository.EnableMenuAsync(MenuPanelConstants.BotFeaturesMenuPanel);
             await _postService.SendTextMessageAsync(Session, 
-                "Now you can go to the menu: 🪄 Features of the bot.\nAnd customize your bot!");
+                "Тепер Вам доступне меню\\: *🪄 Функції бота*");
+            
+            await _postService.SendTextMessageAsync(Session, 
+                $"⚠️ Щоб продовжити, почніть діалог зі своїм ботом [{botModel.FirstName}](http://t.me/{botModel.Username}) " +
+                $"та в налаштуваннях бота, виберіть функцію *🚀 Запустити бота*");
             
             return CommandStepResult.CreateSuccessful();
         }
@@ -76,7 +89,7 @@ public class BotRegistrationConfirmNameStep : BaseCommandStep
         
         await _postService.DeleteMessageAsync(Session);
         await _postService.SendTextMessageAsync(Session, 
-            $"{BuildConfirmNameQuestion(botModel)}\nAnswer: {CallbackQueryButtons.Cancel}");
+            $"{BuildConfirmNameQuestion(botModel)}\nnВідповідь: {CallbackQueryButtons.Cancel}");
         return CommandStepResult.CreateSuccessful();
     }
 }

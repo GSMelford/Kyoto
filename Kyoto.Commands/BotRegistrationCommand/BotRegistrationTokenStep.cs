@@ -18,7 +18,7 @@ public class BotRegistrationTokenStep : BaseCommandStep
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     { 
         await _postService.SendTextMessageAsync(Session,
-            "🔑 First of all, generate and send us a bot token:");
+            "🔑 Відправте токен Вашого бота\n\\(Ви можете згенерувати його тут [BotFather](https://t.me/BotFather)\\)\\:");
        return CommandStepResult.CreateSuccessful();
     }
 

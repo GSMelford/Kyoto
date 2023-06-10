@@ -3,24 +3,24 @@
     "Name": "StartMessage",
     "Code": "1",
     "Description": "Welcome to the new user",
-    "Text": "Hello!"
+    "Text": "Привіт!!"
   },
   {
     "Name": "ThankRegistering",
     "Code": "2",
     "Description": "Thank you for registering",
-    "Text": "Thank you for registering, {FirstName}!"
+    "Text": "Дякую за реєстрацію, {FirstName}!"
   },
   {
     "Name": "AboutBot",
     "Code": "3",
     "Description": "Information about Telegram bot",
-    "Text": "I am botik"
+    "Text": "Я бот"
   },
   {
     "Name": "RetryRegistration",
     "Code": "4",
     "Description": "Message in case of non-sending contact by the client",
-    "Text": "You need to share a contact to continue!"
+    "Text": "Вам потрібно поділитися контактом!"
   }
 ]

@@ -15,7 +15,7 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
     private readonly IRequestService _requestService;
     private readonly KyotoBotFactorySettings _kyotoBotFactorySettings;
 
-    private const string PREPARED_MESSAGE_ENDPOINT = "/api/prepared-message";
+    private const string PreparedMessageEndpoint = "/api/prepared-message";
 
     public SetUpNewsletterEventCommandStep(
         IPostService postService, 
@@ -34,7 +34,7 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
         if (newsletterData.PostEventCode == PostEventCode.Time)
         {
             await _postService.SendTextMessageAsync(Session,
-                "⌚ Please write the time when you want to send this message in the format 00:00 :");
+                "⌚ Будь ласка, відправте час, коли ви хочете надіслати це повідомлення у форматі *00\\:00*\\:");
         }
         
         return CommandStepResult.CreateSuccessful();
@@ -49,7 +49,7 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
             if (DateTime.TryParse(CommandContext.Message!.Text!, out var time))
             {
                 var isSuccess = await _requestService.SendWithStatusCodeAsync(
-                    new RequestCreator(HttpMethod.Post, _kyotoBotFactorySettings.ClientBaseUrl + PREPARED_MESSAGE_ENDPOINT)
+                    new RequestCreator(HttpMethod.Post, _kyotoBotFactorySettings.ClientBaseUrl + PreparedMessageEndpoint)
                         .AddTenantHeader(newsletterData.TenantKey)
                         .SetBody(new PreparedMessageDto
                         {
@@ -65,18 +65,18 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
             }
             else
             {
-                await _postService.SendTextMessageAsync(Session, "The time format is incorrect!");
+                await _postService.SendTextMessageAsync(Session, "Неправильний формат часу!");
                 return CommandStepResult.CreateRetry();
             }
         }
         
-        await _postService.SendTextMessageAsync(Session, "Prepared message added! 🎉");
+        await _postService.SendTextMessageAsync(Session, "Заготовлене повідомлення збережено! 🎉");
         return CommandStepResult.CreateSuccessful();
     }
 
     protected override async Task<CommandStepResult> SetRetryActionRequestAsync()
     {
-        await _postService.SendTextMessageAsync(Session, "Try again! The time must be in this format 00:00!");
+        await _postService.SendTextMessageAsync(Session, "Спробуйте ще раз!");
         return CommandStepResult.CreateSuccessful();
     }
 }

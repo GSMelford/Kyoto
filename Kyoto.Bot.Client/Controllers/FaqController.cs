@@ -9,14 +9,14 @@ namespace Kyoto.Bot.Client.Controllers;
 public class FaqController : ControllerBase
 {
     [HttpPost]
-    [Authorize]
+    //[Authorize]
     public Task SetFaq([FromBody, Required] string text)
     {
         return Task.CompletedTask;
     }
     
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public Task<string> GetFaq()
     {
         return Task.FromResult(new string(""));

@@ -8,7 +8,9 @@ using Kyoto.Kafka.Interfaces;
 using TBot.Client.Parameters;
 using TBot.Client.Parameters.ReplyMarkupParameters.Buttons;
 using TBot.Client.Parameters.ReplyMarkupParameters.Keyboards;
+using TBot.Client.Parameters.Stickers;
 using TBot.Client.Requests;
+using TBot.Client.Requests.Stickers;
 
 namespace Kyoto.Services.BotFactory.PostSystem;
 
@@ -35,7 +37,18 @@ public class PostService : IPostService
         return PostAsync(session, new SendMessageRequest(new SendMessageParameters
         {
             Text = text,
-            ChatId = session.ChatId
+            ChatId = session.ChatId,
+            ParseMode = ParseMode.MarkdownV2,
+            DisableWebPagePreview = false
+        }).ToRequest());
+    }
+    
+    public Task SendStickerMessageAsync(Session session, string sticker)
+    {
+        return PostAsync(session, new SendStickerRequest(new SendStickersParameters
+        {
+            ChatId = session.ChatId,
+            Sticker = sticker
         }).ToRequest());
     }
     

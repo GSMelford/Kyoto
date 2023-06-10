@@ -18,7 +18,7 @@ public class PreparedMessagesController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize]
+    //[Authorize]
     public Task AddNewsLetter([FromBody, Required] PreparedMessageDto preparedMessageDto)
     {
         return _messagesRepository.AddNewsletterAsync(PreparedMessage.Create(
@@ -28,14 +28,14 @@ public class PreparedMessagesController : ControllerBase
     }
     
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public Task<PreparedMessageDto> GetNewsLetters([FromQuery, Required] int offset, [FromQuery] int limit = 5)
     {
         return Task.FromResult<PreparedMessageDto>(null);
     }
     
     [HttpDelete]
-    [Authorize]
+    //[Authorize]
     public Task RemoveNewsLetter([FromBody, Required] Guid id)
     {
         return Task.CompletedTask;

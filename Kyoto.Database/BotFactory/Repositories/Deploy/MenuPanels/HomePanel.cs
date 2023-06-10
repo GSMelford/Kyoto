@@ -32,7 +32,7 @@ public static class HomePanel
                 },
                 new ()
                 {
-                    Text = "📄 Generate QR-Code",
+                    Text = "📄 Згенерувати QR-Code",
                     Code = CommandCodes.GenerateQrCode,
                     IsCommand = true,
                     Index = 1,
@@ -41,7 +41,7 @@ public static class HomePanel
                 },
                 new ()
                 {
-                    Text = "🍙 About the bot",
+                    Text = "🍙 Деталі про бота",
                     Code = CommandCodes.AboutBot,
                     IsCommand = true,
                     Index = 0,

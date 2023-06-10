@@ -36,7 +36,7 @@ public class MakingChoiceNewsletterEventCommandStep : BaseCommandStep
         
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "📃 Select the sending event: ",
+            Text = "📃 Виберіть подію надсилання повідомлення:",
             ChatId = Session.ChatId,
             ReplyMarkup = keyboard
         }).ToRequest());

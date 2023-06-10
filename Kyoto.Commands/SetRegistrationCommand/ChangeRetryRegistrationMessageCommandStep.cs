@@ -21,7 +21,7 @@ public class ChangeRetryRegistrationMessageCommandStep : BaseChangeMessageComman
     protected override async Task<CommandStepResult> SetProcessResponseAsync()
     {
         var result = await base.SetProcessResponseAsync();
-        await _postService.SendTextMessageAsync(Session, "😊 The command has been changed successfully.");
+        await _postService.SendTextMessageAsync(Session, "😊 Команду успішно змінено");
         return result;
     }
 }

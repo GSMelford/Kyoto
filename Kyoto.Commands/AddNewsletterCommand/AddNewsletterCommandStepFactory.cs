@@ -11,8 +11,8 @@ public class AddNewsletterCommandStepFactory : BaseCommandStepFactory
     protected override List<Type> CommandStepTypes { get; set; } = new ()
     {
         typeof(SelectBotCommandStep),
-        typeof(SetTextNewsletterCommandStep),
         typeof(MakingChoiceNewsletterEventCommandStep),
+        typeof(SetTextNewsletterCommandStep),
         typeof(SetUpNewsletterEventCommandStep)
     };
 }

@@ -18,7 +18,7 @@ public class TemplateMessageController : ControllerBase
     }
 
     [HttpGet]
-    [Authorize]
+    //[Authorize]
     public async Task<TemplateMessageDto> GetTemplateMessage([FromQuery, Required] TemplateMessageTypeValue type)
     {
         var templateMessage = await _templateMessageService.GetTemplateMessageAsync(type);
@@ -26,7 +26,7 @@ public class TemplateMessageController : ControllerBase
     }
     
     [HttpPatch]
-    [Authorize]
+    //[Authorize]
     public Task UpdateTemplateMessage(
         [FromQuery, Required] TemplateMessageTypeValue type, 
         [FromQuery, Required] string text)

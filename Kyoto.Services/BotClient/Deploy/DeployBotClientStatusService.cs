@@ -21,14 +21,17 @@ public class DeployBotClientStatusService : IDeployStatusService
         var newSession = Session.CreatePersonalNew(session.TenantKey, session.ExternalUserId);
         await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Hello!👋\nYou activated me, now I can work with your clients 👨‍💻",
+            Text = "Я успішно активований! 👨‍💻",
             ChatId = session.ChatId
         }).ToRequest());
         
         await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "You can customize my functionality in the bot factory 💅",
-            ChatId = session.ChatId
+            Text = "Ви можете налаштувати мої функції в *Kyoto Bot Factory* ⚙️",
+            ChatId = session.ChatId,
+            ParseMode = ParseMode.MarkdownV2
         }).ToRequest());
+
+        await _postService.SendStickerMessageAsync(session, "CAACAgIAAxUAAWSEa3NLOXR0rnIWNh6olo3v1LY2AAIzBwACRvusBB9PEXZlMCInLwQ");
     }
 }

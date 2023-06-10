@@ -39,8 +39,8 @@ public abstract class BaseChangeMessageCommandStep : BaseCommandStep
                 .AddParameters(new Dictionary<string, string> { { "type", ((int)TemplateMessageType).ToString() } })
                 .Create());
 
-        await _postService.SendTextMessageAsync(Session, $"Code: {templateMessageDto.Code}\nDescription: {templateMessageDto.Description}\nText: {templateMessageDto.Text}");
-        await _postService.SendTextMessageAsync(Session, $"{AdditionalText}✍️ Enter new text:");
+        await _postService.SendTextMessageAsync(Session, $"Код\\: {templateMessageDto.Code}\nОпис\\: {templateMessageDto.Description}\nТекст\\: {templateMessageDto.Text}");
+        await _postService.SendTextMessageAsync(Session, $"{AdditionalText}✍️ Введіть новий текст\\:");
         return CommandStepResult.CreateSuccessful();
     }
 
@@ -58,11 +58,11 @@ public abstract class BaseChangeMessageCommandStep : BaseCommandStep
                 }).Create());
 
         if (!isSuccess) {
-            await _postService.SendTextMessageAsync(Session, "😨 Something went wrong.");
+            await _postService.SendTextMessageAsync(Session, "😨 Щось пішло не так\\.");
             return CommandStepResult.CreateInterrupt();
         }
         
-        await _postService.SendTextMessageAsync(Session, "🎉 The text has been updated!");
+        await _postService.SendTextMessageAsync(Session, "🎉 Текст оновлено\\!");
         return CommandStepResult.CreateSuccessful();
     }
 }

@@ -29,7 +29,7 @@ public class DisableBotCommandStep : BaseCommandStep
         var botList = await _botRepository.GetBotsAsync(Session.ExternalUserId, true);
         
         if (!botList.Any()) {
-            await _postService.SendTextMessageAsync(Session, "You have no active bots at the moment");
+            await _postService.SendTextMessageAsync(Session, "На даний момент у вас немає активних ботів");
             return CommandStepResult.CreateInterrupt();
         }
         
@@ -44,7 +44,7 @@ public class DisableBotCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Select a bot to deactivate:",
+            Text = "Виберіть бота для деактивації:",
             ReplyMarkup = keyboard,
             ChatId = Session.ChatId
         }).ToRequest());
@@ -61,7 +61,7 @@ public class DisableBotCommandStep : BaseCommandStep
 
         var botName = CommandContext.CallbackQuery.Data!;
         await _postService.SendTextMessageAsync(Session, 
-            $"😴 Shutting down the {botName}... Beeb Beeb Beeb...");
+            $"😴 Вимкнення {botName}... Біп біп біп...");
         
         await _botService.DeactivateBotAsync(Session, botName);
         return CommandStepResult.CreateSuccessful();

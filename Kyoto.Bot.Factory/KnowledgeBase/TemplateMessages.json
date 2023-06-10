@@ -3,24 +3,24 @@
     "Name": "StartMessage",
     "Code": "1",
     "Description": "",
-    "Text": "Kon'nichiwa! \uD83D\uDC4B%0Let's get to know each other!%0I'm Kyoto, like a city in Japan ⛩%0And what is your name?\uD83D\uDE09"
+    "Text": "Kon'nichiwa! \uD83D\uDC4B%0AДавайте знайомитись!%0AЯ Кіото, як місто в Японії ⛩%0AА як вас звати?\uD83D\uDE09"
   },
   {
     "Name": "ThankRegistering",
     "Code": "2",
     "Description": "",
-    "Text": "Nice to meet you, {FirstName} \uD83D\uDC9E"
+    "Text": "Приємно познайомитись, {FirstName} \uD83D\uDC9E"
   },
   {
     "Name": "AboutBot",
     "Code": "3",
     "Description": "",
-    "Text": "\uD83E\uDD13The bot can:%0%0✍\uFE0F Register customers!%0\uD83D\uDDE3 Collect feedback from them!"
+    "Text": "\uD83E\uDD13Бот може:%0A%0A✍\uFE0F Реєстрація клієнтів!%0A\uD83D\uDDE3 Збирайте від них відгуки!"
   },
   {
     "Name": "RetryRegistration",
     "Code": "4",
     "Description": "",
-    "Text": "\uD83E\uDD7A You need to send a contact to continue!"
+    "Text": "\uD83E\uDD7A Вам потрібно надіслати контакт, щоб продовжити!"
   }
 ]

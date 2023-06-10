@@ -27,7 +27,7 @@ public class SelectBotCommandStep : BaseCommandStep
         var bots = await _botRepository.GetDeployedBotsAsync(Session.ExternalUserId);
         
         if (!bots.Any()) {
-            await _postService.SendTextMessageAsync(Session, "You haven't deployed any bot yet.%0ABlock: 🤖⚙️ Bot management");
+            await _postService.SendTextMessageAsync(Session, "Ви ще не розгорнули жодного бота\\.%0AДля цього зайдіть у меню\\: *🤖⚙️ Управління ботами*");
             return CommandStepResult.CreateInterrupt();
         }
         
@@ -54,7 +54,7 @@ public class SelectBotCommandStep : BaseCommandStep
     {
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "⛔ Select a bot to continue or enter /cancel to cancel the command",
+            Text = "⛔ Виберіть бота, щоб продовжити, або введіть /cancel, щоб скасувати команду",
             ChatId = Session.ChatId
         }).ToRequest());
         
@@ -71,7 +71,7 @@ public class SelectBotCommandStep : BaseCommandStep
         CommandContext.SetAdditionalData(CommandContext.CallbackQuery.Data!);
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = $"Your choice bot {CommandContext.CallbackQuery.Data!}",
+            Text = $"Ваш вибір бот {CommandContext.CallbackQuery.Data!}",
             ChatId = Session.ChatId
         }).ToRequest());
         

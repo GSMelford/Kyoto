@@ -16,7 +16,7 @@ public static class BotFeaturesMenuPanel
             {
                 new ()
                 {
-                    Text = "🧑‍💻 Registration",
+                    Text = "🧑‍💻 Налаштувати реєстрацію",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.SetRegistration,
                     Index = 0,
@@ -25,7 +25,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "📜 Add newsletter",
+                    Text = "📜 Додати заготовлене повідомлення",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.AddNewsletter,
                     Index = 0,
@@ -34,7 +34,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "📜 Remove newsletter",
+                    Text = "📜 Видалити заготовлене повідомлення",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.RemoveNewsletter,
                     Index = 1,
@@ -43,7 +43,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "🗣️ EnableCollectFeedback",
+                    Text = "🗣️ Увімкнути збір відгуків",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.EnableCollectFeedback,
                     Index = 0,
@@ -52,7 +52,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "🙋‍♂️ Set FAQ",
+                    Text = "🙋‍♂️ Встановити FAQ",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.SetFaq,
                     Index = 1,
@@ -61,7 +61,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "ℹ️ Get Statistics",
+                    Text = "ℹ️ Отримати статистику",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.GetStatistics,
                     Index = 2,

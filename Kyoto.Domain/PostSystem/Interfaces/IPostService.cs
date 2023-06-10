@@ -8,4 +8,5 @@ public interface IPostService
     Task SendTextMessageAsync(Session session, string text);
     Task SendConfirmationMessageAsync(Session session, string text);
     Task PostAsync(Session session, Request request);
+    Task SendStickerMessageAsync(Session session, string sticker);
 }

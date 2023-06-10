@@ -44,7 +44,7 @@ public class DeployBotFactoryStatusService : IDeployStatusService
         
         await _postService.PostAsync(newSession, new SendMessageRequest(new SendMessageParameters
         {
-            Text = $"Bot {newTenant} deployed successfully! 🤖🚀",
+            Text = $"Бот {newTenant} успішно запущений! 🤖🚀",
             ChatId = newSession.ChatId
         }).ToRequest());
     }

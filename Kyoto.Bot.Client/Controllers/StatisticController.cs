@@ -8,7 +8,7 @@ namespace Kyoto.Bot.Client.Controllers;
 [Route("api/statistic")]
 public class StatisticController : ControllerBase
 {
-    [Authorize]
+    //[Authorize]
     [HttpGet]
     public Task<StatisticDto> GetFeedbacks()
     {

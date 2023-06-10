@@ -9,20 +9,20 @@ namespace Kyoto.Bot.Client.Controllers;
 public class FeedbackController : ControllerBase
 {
     [HttpPost]
-    [Authorize]
+    //[Authorize]
     public Task SetEnableStatus([FromQuery, Required] bool isEnable)
     {
         return Task.CompletedTask;
     }
     
-    [Authorize]
+    //[Authorize]
     [HttpGet("list")]
     public Task<FeedbackDto> GetFeedbacks([FromQuery, Required] int offset, [FromQuery] int limit = 5)
     {
         return Task.FromResult(new FeedbackDto());
     }
     
-    [Authorize]
+    //[Authorize]
     [HttpGet("rating")]
     public Task<RatingDto> GetRating()
     {

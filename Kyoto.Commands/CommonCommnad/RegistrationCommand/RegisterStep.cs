@@ -71,7 +71,7 @@ public class RegisterStep : BaseCommandStep
             ReplyMarkup = new ReplyKeyboardMarkup { OneTimeKeyboard = true, ResizeKeyboard = true }
                 .Add(new KeyboardButton
                 {
-                    Text = $"I'm {CommandContext.AdditionalData}! (Share contact with bot) 👋",
+                    Text = $"I'm {CommandContext.AdditionalData}! (Поділіться контактом з ботом) 👋",
                     RequestContact = true
                 })
         }).ToRequest();

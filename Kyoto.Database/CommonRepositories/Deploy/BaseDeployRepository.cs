@@ -59,15 +59,26 @@ public abstract class BaseDeployRepository : IDeployRepository
         }
     }
 
-    private Task InitPostEventAsync()
+    private async Task InitPostEventAsync()
     {
-        var postEvent = new PostEvent
+        var postEvents = new List<PostEvent>()
         {
-            Code = PostEventCode.Time,
-            Name = "Message by time"
+            new()
+            {
+                Code = PostEventCode.Time,
+                Name = "Message by time"
+            },
+            new()
+            {
+                Code = PostEventCode.Answer,
+                Name = "Answer to words"
+            }
         };
-        
-        return DatabaseContext.SaveAsync(postEvent);
+
+        foreach (var postEvent in postEvents)
+        {
+            await DatabaseContext.SaveAsync(postEvent);
+        }
     }
     
     protected abstract Task InitMenuAsync();

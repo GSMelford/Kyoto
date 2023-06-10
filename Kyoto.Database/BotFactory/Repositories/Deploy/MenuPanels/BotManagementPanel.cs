@@ -16,7 +16,7 @@ public abstract class BotManagementPanel
             {
                 new ()
                 {
-                    Text = "🏗 Register a new bot",
+                    Text = "🏗 Зареєструвати бота",
                     IsCommand = true,
                     Code = CommandCodes.BotManagement.BotRegistration,
                     Index = 0,
@@ -25,7 +25,7 @@ public abstract class BotManagementPanel
                 },
                 new ()
                 {
-                    Text = "🚀 Deploy bot",
+                    Text = "🚀 Запустити бота",
                     IsCommand = true,
                     Code = CommandCodes.BotManagement.DeployBot,
                     Index = 0,
@@ -34,7 +34,7 @@ public abstract class BotManagementPanel
                 },
                 new ()
                 {
-                    Text = "😴 Disable bot",
+                    Text = "😴 Вимкнути бота",
                     IsCommand = true,
                     Code = CommandCodes.BotManagement.DisableBot,
                     Index = 1,
@@ -43,7 +43,7 @@ public abstract class BotManagementPanel
                 },
                 new ()
                 {
-                    Text = "❌ Delete bot",
+                    Text = "❌ Видалити бота",
                     IsCommand = true,
                     Code = CommandCodes.BotManagement.DeleteBot,
                     Index = 2,
