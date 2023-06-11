@@ -32,7 +32,7 @@ public class CommandService : ICommandService
         return command.Name;
     }
     
-    public async Task ProcessCommandAsync(
+    public async Task<bool> ProcessCommandAsync(
         Session session, 
         string commandName,
         Message? message = null,
@@ -44,11 +44,12 @@ public class CommandService : ICommandService
                 await _commandRepository.TrySaveCommandAsync(session, commandName);
             }
             else {
-                return;
+                return false;
             }
         }
         
         await ExecuteCommandAsync(session, CommandContext.Create(message, callbackQuery));
+        return true;
     }
     
     private async Task ExecuteCommandAsync(Session session, CommandContext commandContext)

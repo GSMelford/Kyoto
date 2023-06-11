@@ -31,7 +31,7 @@ public class SetFeedbackStarsCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "Скільки зірок Ви поставите цьому боту?",
+            Text = "Скільки зірок Ви поставите?",
             ChatId = Session.ChatId,
             ReplyMarkup = keyboard
         }).ToRequest());

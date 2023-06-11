@@ -67,7 +67,7 @@ public class FeedbackRepository : IFeedbackRepository
     {
         var feedbacks = await _databaseContext.Set<CommonModels.Feedback>()
             .Include(x=>x.ExternalUser)
-            .OrderBy(x=>x.CreationTime)
+            .OrderByDescending(x=>x.CreationTime)
             .ToListAsync();
 
         if (offset < 0) {

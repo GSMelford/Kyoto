@@ -38,14 +38,15 @@ public class MenuService : IMenuService
         await SendMenuAsync(session, menuPanel);
     }
     
-    public async Task SendMenuIfExistsAsync(Session session, string menuButtonText)
+    public async Task<bool> SendMenuIfExistsAsync(Session session, string menuButtonText)
     {
         var tempMenuPanelName = menuButtonText.Replace($"{MenuPanelConstants.Back}", "");
         if (!await _menuRepository.IsMenuPanelAsync(tempMenuPanelName))
-            return;
+            return false;
 
         var menuPanel = await _menuRepository.GetMenuPanelAsync(tempMenuPanelName);
         await SendMenuAsync(session, menuPanel);
+        return true;
     }
 
     private async Task SendMenuAsync(Session session, MenuPanel menuPanel)

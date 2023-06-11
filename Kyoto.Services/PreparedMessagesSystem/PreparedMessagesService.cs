@@ -15,13 +15,16 @@ public class PreparedMessagesService : IPreparedMessagesService
         _postService = postService;
     }
     
-    public async Task ProcessAsync(Session session, string messageText)
+    public async Task<bool> ProcessAsync(Session session, string messageText)
     {
         var (isExist, suitablePreparedMessage) = await TryFindPreparedMessageAsync(messageText);
         if (isExist)
         {
             await _postService.SendTextMessageAsync(session, suitablePreparedMessage!.Text);
+            return true;
         }
+        
+        return false;
     }
 
     private async Task<(bool, PreparedMessage?)> TryFindPreparedMessageAsync(string messageText)

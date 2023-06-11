@@ -96,9 +96,16 @@ public class GetFeedbackListCommandStep : BaseCommandStep
         string message = string.Empty;
         if (feedbackSet.Feedbacks.Any())
         {
-            message = feedbackSet.Feedbacks.Aggregate(message,
-                (current, feedbackObject) =>
-                    current + $"{feedbackObject.Stars} ⭐️ - {feedbackObject.Text} - {feedbackObject.ClientFullName}\n");
+            foreach (var feedback in feedbackSet.Feedbacks)
+            {
+                message += $"{feedback.Stars} ⭐️ - {feedback.Text}";
+                if (!string.IsNullOrEmpty(feedback.ClientFullName))
+                {
+                    message += $" - {feedback.ClientFullName}";
+                }
+
+                message += "\n";
+            }
         }
         else
         {
@@ -130,7 +137,12 @@ public class GetFeedbackListCommandStep : BaseCommandStep
         else if (CommandContext.CallbackQuery!.Data == "↙️")
         {
             await _postService.DeleteMessageAsync(Session);
-            await _postService.SendTextMessageAsync(Session, CommandContext.CallbackQuery.Message!.Text!.Replace("-", "\\-"));
+            await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
+            {
+                Text = CommandContext.CallbackQuery.Message!.Text!,
+                ChatId = Session.ChatId
+            }).ToRequest());
+            
             await _postService.SendTextMessageAsync(Session, "☕ Перегляд відгуків завершений\\!");
             return CommandStepResult.CreateSuccessful();
         }

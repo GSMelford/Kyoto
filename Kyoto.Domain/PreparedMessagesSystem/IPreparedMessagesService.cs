@@ -4,5 +4,5 @@ namespace Kyoto.Domain.PreparedMessagesSystem;
 
 public interface IPreparedMessagesService
 {
-    Task ProcessAsync(Session session, string messageText);
+    Task<bool> ProcessAsync(Session session, string messageText);
 }

@@ -20,6 +20,7 @@ public static class CommandCodes
         public const string ShowFeedbacks = "ShowFeedbacks";
         public const string SetFaq = "SetFaq";
         public const string GetStatistics = "GetStatistics";
+        public const string PreOrderService = "PreOrderService";
     }
     
     public static class ComplaintsSuggestions

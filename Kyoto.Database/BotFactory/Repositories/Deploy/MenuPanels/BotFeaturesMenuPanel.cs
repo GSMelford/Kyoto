@@ -72,7 +72,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "🙋‍♂️ Редагувати FAQ",
+                    Text = "🙋‍♂️ FAQ",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.SetFaq,
                     Index = 0,
@@ -85,6 +85,15 @@ public static class BotFeaturesMenuPanel
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.GetStatistics,
                     Index = 1,
+                    Line = 3,
+                    IsEnable = true
+                },
+                new ()
+                {
+                    Text = "🛒 Послуги",
+                    IsCommand = true,
+                    Code = CommandCodes.BotFeatures.PreOrderService,
+                    Index = 2,
                     Line = 3,
                     IsEnable = true
                 },
