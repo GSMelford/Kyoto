@@ -1,20 +1,18 @@
 using Kyoto.Domain.FeedbackSystem;
-using Kyoto.Domain.Menu;
-using Kyoto.Domain.Menu.Interfaces;
 
 namespace Kyoto.Services.FeedbackSystem;
 
 public class FeedbackService : IFeedbackService
 {
-    private readonly IMenuRepository _menuRepository;
+    private readonly IFeedbackRepository _feedbackRepository;
 
-    public FeedbackService(IMenuRepository menuRepository)
+    public FeedbackService(IFeedbackRepository feedbackRepository)
     {
-        _menuRepository = menuRepository;
+        _feedbackRepository = feedbackRepository;
     }
 
     public Task SetFeedbackStatusAsync(bool isEnable)
     {
-        return _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.Client.SendFeedback, isEnable);
+        return _feedbackRepository.SetFeedbackStatusAsync(isEnable);
     }
 }

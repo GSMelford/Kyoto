@@ -1,3 +1,4 @@
+using Kyoto.Database.CommonModels;
 using Kyoto.Domain.Menu.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using MenuButton = Kyoto.Database.CommonModels.MenuButton;
@@ -55,5 +56,56 @@ public class MenuRepository : IMenuRepository
         menuPanelDal.IsEnable = isEnable;
         _databaseContext.Update(menuPanelDal);
         await _databaseContext.SaveChangesAsync();
+    }
+    
+    public async Task AddAccessToWatchButtonAsync(long externalId, string menuButtonText)
+    {
+        var (accessToButton, menuButton, externalUser) = await GetMenuButtonInfoAsync(externalId, menuButtonText);
+
+        if (accessToButton is null)
+        {
+            await _databaseContext.AddAsync(new MenuButtonAccess
+            {
+                MenuButton = menuButton,
+                ExternalUser = externalUser
+            });
+            await _databaseContext.SaveChangesAsync();
+        }
+    }
+    
+    public async Task RemoveAccessToWatchButtonAsync(long externalId, string menuButtonText)
+    {
+        var (accessToButton, _, _) = await GetMenuButtonInfoAsync(externalId, menuButtonText);
+
+        if (accessToButton is not null)
+        { 
+            _databaseContext.Remove(accessToButton);
+            await _databaseContext.SaveChangesAsync();
+        }
+    }
+
+    public async Task<bool> IsAccessToWatchExistAsync(long externalId, Guid menuButtonId)
+    {
+        var accessToButton = await _databaseContext.Set<MenuButtonAccess>()
+            .Include(x=>x.ExternalUser)
+            .FirstOrDefaultAsync(x => x.MenuButtonId == menuButtonId && x.ExternalUser.PrivateId == externalId);
+        
+        return accessToButton is not null;
+    }
+    
+    private async Task<(MenuButtonAccess?, MenuButton, ExternalUser)> GetMenuButtonInfoAsync(long externalId, string menuButtonText)
+    {
+        var menuButton = await _databaseContext.Set<MenuButton>()
+            .FirstAsync(x => x.Text == menuButtonText);
+
+        var externalUser = await _databaseContext.Set<ExternalUser>()
+            .FirstAsync(x => x.PrivateId == externalId);
+
+        var accessToButton = await _databaseContext.Set<MenuButtonAccess>()
+            .Include(x=>x.MenuButton)
+            .Include(x=>x.ExternalUser)
+            .FirstOrDefaultAsync(x => x.MenuButton.Id == menuButton.Id && x.ExternalUser.Id == externalUser.Id);
+
+        return (accessToButton, menuButton, externalUser);
     }
 }

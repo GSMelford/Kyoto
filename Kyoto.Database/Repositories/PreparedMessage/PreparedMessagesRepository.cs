@@ -28,6 +28,18 @@ public class PreparedMessagesRepository : IPreparedMessagesRepository
             KeyWords = preparedMessage.KeyWords
         });
     }
+    
+    public async Task<List<Domain.PreparedMessagesSystem.PreparedMessage>> GetPreparedMessagesByAnswerAsync()
+    {
+        var preparedMessages = await _databaseContext.Set<CommonModels.PreparedMessage>()
+            .Include(x=>x.PostEvent)
+            .Where(x=>x.PostEvent.Code == PostEventCode.Answer)
+            .ToListAsync();
+
+        return preparedMessages.Select(x =>
+            Domain.PreparedMessagesSystem.PreparedMessage.Create(x.PostEvent.Code, x.Text, null, x.KeyWords))
+            .ToList();
+    }
 
     public Task<List<PostEvent>> GetEventsAsync()
     {

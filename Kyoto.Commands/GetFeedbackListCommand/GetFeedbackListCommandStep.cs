@@ -41,12 +41,62 @@ public class GetFeedbackListCommandStep : BaseCommandStep
             })
             .Create());
 
-        var feedback = (await response.Content.ReadAsStringAsync()).ToObject<FeedbackSet>();
+        var feedbackSet = (await response.Content.ReadAsStringAsync()).ToObject<FeedbackSet>();
+        await PostListAsync(int.Parse(feedBackListData.Offset), feedbackSet);
+        return CommandStepResult.CreateSuccessful();
+    }
 
-        string message = string.Empty;
-        if (feedback.Feedbacks.Any())
+    private async Task PostListAsync(int offset, FeedbackSet feedbackSet)
+    {
+        string message = $"📃 Ваші відгуки {offset}-{feedbackSet.Total}\n\n{BuildMessage(feedbackSet)}";
+        var keyboard = new InlineKeyboardMarkup();
+
+        bool isButtonExist = false;
+        if (offset != 0)
         {
-            message = feedback.Feedbacks.Aggregate(message,
+            isButtonExist = true;
+            keyboard.Add(new InlineKeyboardButton
+            {
+                Text = "⬅️",
+                CallbackData = "⬅️"
+            });
+        }
+
+        if (feedbackSet.Total - offset > 5)
+        {
+            isButtonExist = true;
+            keyboard.Add(new InlineKeyboardButton
+            {
+                Text = "➡️",
+                CallbackData = "➡️"
+            });
+        }
+
+        if (isButtonExist)
+        {
+            keyboard.AddNextLine();
+        }
+
+        keyboard.Add(new InlineKeyboardButton
+        {
+            Text = "↙️ Вийти з перегляду",
+            CallbackData = "↙️"
+        });
+        
+        await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
+        {
+            Text = message,
+            ChatId = Session.ChatId,
+            ReplyMarkup = keyboard
+        }).ToRequest());
+    }
+
+    private string BuildMessage(FeedbackSet feedbackSet)
+    {
+        string message = string.Empty;
+        if (feedbackSet.Feedbacks.Any())
+        {
+            message = feedbackSet.Feedbacks.Aggregate(message,
                 (current, feedbackObject) =>
                     current + $"{feedbackObject.Stars} ⭐️ - {feedbackObject.Text} - {feedbackObject.ClientFullName}\n");
         }
@@ -54,31 +104,8 @@ public class GetFeedbackListCommandStep : BaseCommandStep
         {
             message = "😞 Тут пусто";
         }
-        
-        await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = message,
-            ChatId = Session.ChatId,
-            ReplyMarkup = new InlineKeyboardMarkup()
-                .Add(new InlineKeyboardButton
-                {
-                    Text = "⬅️",
-                    CallbackData = "⬅️"
-                })
-                .Add(new InlineKeyboardButton
-                {
-                    Text = "➡️",
-                    CallbackData = "➡️"
-                })
-                .AddNextLine()
-                .Add(new InlineKeyboardButton
-                {
-                    Text = "↙️ Вийти з перегляду",
-                    CallbackData = "↙️"
-                })
-        }).ToRequest());
 
-        return CommandStepResult.CreateSuccessful();
+        return message;
     }
 
     protected override async Task<CommandStepResult> SetProcessResponseAsync()
@@ -88,7 +115,10 @@ public class GetFeedbackListCommandStep : BaseCommandStep
         if (CommandContext.CallbackQuery!.Data == "⬅️")
         {
             var offset = int.Parse(feedBackListData.Offset);
-            offset -= 5;
+            if (offset - 5 >= 0) {
+                offset -= 5;
+            }
+            
             feedBackListData.Offset = (offset).ToString();
         }
         else if (CommandContext.CallbackQuery!.Data == "➡️")

@@ -61,17 +61,17 @@ public abstract class BaseDeployRepository : IDeployRepository
 
     private async Task InitPostEventAsync()
     {
-        var postEvents = new List<PostEvent>()
+        var postEvents = new List<PostEvent>
         {
             new()
             {
                 Code = PostEventCode.Time,
-                Name = "Message by time"
+                Name = "Повідомлення за часом"
             },
             new()
             {
                 Code = PostEventCode.Answer,
-                Name = "Answer to words"
+                Name = "Повідомлення у відповідь"
             }
         };
 

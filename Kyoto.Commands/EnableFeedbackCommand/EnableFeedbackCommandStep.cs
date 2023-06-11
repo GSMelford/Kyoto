@@ -59,8 +59,8 @@ public class EnableFeedbackCommandStep : BaseCommandStep
                 return CommandStepResult.CreateInterrupt();
             }
 
-            await _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.Button.EnableCollectFeedback, false);
-            await _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.Button.DisableCollectFeedback);
+            await _menuRepository.RemoveAccessToWatchButtonAsync(Session.ExternalUserId, MenuPanelConstants.Button.EnableCollectFeedback);
+            await _menuRepository.AddAccessToWatchButtonAsync(Session.ExternalUserId, MenuPanelConstants.Button.DisableCollectFeedback);
             
             await _postService.SendTextMessageAsync(Session, "🎉 Збір відгуків увімкнено!\\!");
             await _menuService.SendMenuIfExistsAsync(Session, MenuPanelConstants.BotFeaturesMenuPanel);

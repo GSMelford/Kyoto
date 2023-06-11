@@ -24,7 +24,8 @@ public class PreparedMessagesController : ControllerBase
         return _messagesRepository.AddNewsletterAsync(PreparedMessage.Create(
             preparedMessageDto.PostEventCode, 
             preparedMessageDto.Text,
-            preparedMessageDto.TimeToSend));
+            preparedMessageDto.TimeToSend, 
+            preparedMessageDto.KeyWords));
     }
     
     [HttpGet]

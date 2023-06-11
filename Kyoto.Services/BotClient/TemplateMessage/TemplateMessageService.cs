@@ -1,4 +1,3 @@
-using Kyoto.Domain.System;
 using Kyoto.Domain.TemplateMessage;
 
 namespace Kyoto.Services.BotClient.TemplateMessage;

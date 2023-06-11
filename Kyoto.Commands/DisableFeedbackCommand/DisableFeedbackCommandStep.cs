@@ -46,7 +46,7 @@ public class DisableFeedbackCommandStep : BaseCommandStep
                 $"🤔 Ви дійсно хочите вимкнути збір відгуків\\?\nВідповідь: {CallbackQueryButtons.Confirmation}");
             
             var isSuccess = await _requestService.SendWithStatusCodeAsync(
-                new RequestCreator(HttpMethod.Patch, _kyotoBotFactorySettings.ClientBaseUrl + "/api/feedback")
+                new RequestCreator(HttpMethod.Post, _kyotoBotFactorySettings.ClientBaseUrl + "/api/feedback")
                     .AddTenantHeader(CommandContext.AdditionalData!)
                     .AddParameters(new Dictionary<string, string>
                     {
@@ -58,8 +58,8 @@ public class DisableFeedbackCommandStep : BaseCommandStep
                 return CommandStepResult.CreateInterrupt();
             }
         
-            await _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.Button.EnableCollectFeedback);
-            await _menuRepository.SetMenuButtonStatusAsync(MenuPanelConstants.Button.DisableCollectFeedback, false);
+            await _menuRepository.AddAccessToWatchButtonAsync(Session.ExternalUserId, MenuPanelConstants.Button.EnableCollectFeedback);
+            await _menuRepository.RemoveAccessToWatchButtonAsync(Session.ExternalUserId, MenuPanelConstants.Button.DisableCollectFeedback);
             
             await _postService.SendTextMessageAsync(Session, "🎉 Збір відгуків вимкнуто!\\!");
             await _menuService.SendMenuIfExistsAsync(Session, MenuPanelConstants.BotFeaturesMenuPanel);

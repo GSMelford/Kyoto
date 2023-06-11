@@ -34,7 +34,16 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
         if (newsletterData.PostEventCode == PostEventCode.Time)
         {
             await _postService.SendTextMessageAsync(Session,
-                "⌚ Будь ласка, відправте час, коли ви хочете надіслати це повідомлення у форматі *00\\:00*\\:");
+                "⌚ На котрий час\\, Ви хочите відправити повідомлення\\. Напішіть у такому форматі \\- *00\\:00*\\:");
+        }
+        else if (newsletterData.PostEventCode == PostEventCode.Answer)
+        {
+            await _postService.SendTextMessageAsync(Session,
+                "🤔 На які слова повинен реагувати бот?\nВкажіть їх, розділяючи за допомогою цього знаку \\( *\\,* \\)\\:");
+        }
+        else
+        {
+            return CommandStepResult.CreateInterrupt();
         }
         
         return CommandStepResult.CreateSuccessful();
@@ -43,25 +52,18 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
     protected override async Task<CommandStepResult> SetProcessResponseAsync()
     {
         var newsletterData = CommandContext.AdditionalData!.ToObject<NewsletterData>();
-
+        PreparedMessageDto preparedMessageDto = null!;
+        
         if (newsletterData.PostEventCode == PostEventCode.Time)
         {
             if (DateTime.TryParse(CommandContext.Message!.Text!, out var time))
             {
-                var isSuccess = await _requestService.SendWithStatusCodeAsync(
-                    new RequestCreator(HttpMethod.Post, _kyotoBotFactorySettings.ClientBaseUrl + PreparedMessageEndpoint)
-                        .AddTenantHeader(newsletterData.TenantKey)
-                        .SetBody(new PreparedMessageDto
-                        {
-                            Text = newsletterData.Text,
-                            PostEventCode = newsletterData.PostEventCode,
-                            TimeToSend = time
-                        }.ToJson()).Create());
-
-                if (!isSuccess)
+                preparedMessageDto = new PreparedMessageDto
                 {
-                    return CommandStepResult.CreateInterrupt();
-                }
+                    Text = newsletterData.Text,
+                    PostEventCode = newsletterData.PostEventCode,
+                    TimeToSend = time
+                };
             }
             else
             {
@@ -69,14 +71,31 @@ public class SetUpNewsletterEventCommandStep : BaseCommandStep
                 return CommandStepResult.CreateRetry();
             }
         }
+        else if(newsletterData.PostEventCode == PostEventCode.Answer)
+        {
+            preparedMessageDto = new PreparedMessageDto
+            {
+                Text = newsletterData.Text,
+                PostEventCode = newsletterData.PostEventCode,
+                KeyWords = CommandContext.Message!.Text!
+            };
+        }
         
-        await _postService.SendTextMessageAsync(Session, "Заготовлене повідомлення збережено! 🎉");
+        var isSuccess = await _requestService.SendWithStatusCodeAsync(
+            new RequestCreator(HttpMethod.Post, _kyotoBotFactorySettings.ClientBaseUrl + PreparedMessageEndpoint)
+                .AddTenantHeader(newsletterData.TenantKey)
+                .SetBody(preparedMessageDto.ToJson()).Create());
+
+        if (!isSuccess)
+            return CommandStepResult.CreateInterrupt();
+        
+        await _postService.SendTextMessageAsync(Session, "Повідомлення збережено\\! 🎉");
         return CommandStepResult.CreateSuccessful();
     }
 
     protected override async Task<CommandStepResult> SetRetryActionRequestAsync()
     {
-        await _postService.SendTextMessageAsync(Session, "Спробуйте ще раз!");
+        await _postService.SendTextMessageAsync(Session, "😨 Щось пішло не так, спробуйте ще раз!");
         return CommandStepResult.CreateSuccessful();
     }
 }

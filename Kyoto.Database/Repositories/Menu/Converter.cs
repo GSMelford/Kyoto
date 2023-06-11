@@ -19,6 +19,7 @@ public static class Converter
             menuButton.IsCommand,
             menuButton.IsEnable,
             menuButton.Index,
-            menuButton.Line);
+            menuButton.Line,
+            menuButton.IsNeedAccessToWatch);
     }
 }

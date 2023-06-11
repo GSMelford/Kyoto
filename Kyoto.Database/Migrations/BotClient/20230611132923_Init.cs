@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace Kyoto.Database.Migrations.BotFactory
+namespace Kyoto.Database.Migrations.BotClient
 {
     /// <inheritdoc />
     public partial class Init : Migration
@@ -158,6 +158,7 @@ namespace Kyoto.Database.Migrations.BotFactory
                     IsEnable = table.Column<bool>(type: "boolean", nullable: false),
                     Index = table.Column<int>(type: "integer", nullable: false),
                     Line = table.Column<int>(type: "integer", nullable: false),
+                    IsNeedAccessToWatch = table.Column<bool>(type: "boolean", nullable: false),
                     CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     ModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
@@ -216,40 +217,10 @@ namespace Kyoto.Database.Migrations.BotFactory
                 });
 
             migrationBuilder.CreateTable(
-                name: "Bots",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    ExternalUserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    PrivateId = table.Column<string>(type: "text", nullable: false),
-                    FirstName = table.Column<string>(type: "text", nullable: false),
-                    Username = table.Column<string>(type: "text", nullable: false),
-                    CanJoinGroups = table.Column<bool>(type: "boolean", nullable: false),
-                    CanReadAllGroupMessages = table.Column<bool>(type: "boolean", nullable: false),
-                    SupportsInlineQueries = table.Column<bool>(type: "boolean", nullable: false),
-                    Token = table.Column<string>(type: "text", nullable: false),
-                    IsEnable = table.Column<bool>(type: "boolean", nullable: false),
-                    IsDeployed = table.Column<bool>(type: "boolean", nullable: false),
-                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
-                    ModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Bots", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Bots_ExternalUsers_ExternalUserId",
-                        column: x => x.ExternalUserId,
-                        principalTable: "ExternalUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Feedbacks",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    UserExternalId = table.Column<Guid>(type: "uuid", nullable: true),
                     ExternalUserId = table.Column<Guid>(type: "uuid", nullable: true),
                     Text = table.Column<string>(type: "text", nullable: false),
                     Type = table.Column<string>(type: "text", nullable: false),
@@ -265,6 +236,33 @@ namespace Kyoto.Database.Migrations.BotFactory
                         column: x => x.ExternalUserId,
                         principalTable: "ExternalUsers",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "MenuButtonAccesses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    ExternalUserId = table.Column<Guid>(type: "uuid", nullable: false),
+                    MenuButtonId = table.Column<Guid>(type: "uuid", nullable: false),
+                    CreationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    ModificationTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MenuButtonAccesses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_MenuButtonAccesses_ExternalUsers_ExternalUserId",
+                        column: x => x.ExternalUserId,
+                        principalTable: "ExternalUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MenuButtonAccesses_MenuButtons_MenuButtonId",
+                        column: x => x.MenuButtonId,
+                        principalTable: "MenuButtons",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -296,11 +294,6 @@ namespace Kyoto.Database.Migrations.BotFactory
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_Bots_ExternalUserId",
-                table: "Bots",
-                column: "ExternalUserId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_ExternalUsers_UserId",
                 table: "ExternalUsers",
                 column: "UserId",
@@ -310,6 +303,16 @@ namespace Kyoto.Database.Migrations.BotFactory
                 name: "IX_Feedbacks_ExternalUserId",
                 table: "Feedbacks",
                 column: "ExternalUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuButtonAccesses_ExternalUserId",
+                table: "MenuButtonAccesses",
+                column: "ExternalUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_MenuButtonAccesses_MenuButtonId",
+                table: "MenuButtonAccesses",
+                column: "MenuButtonId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_MenuButtons_MenuPanelId",
@@ -341,16 +344,13 @@ namespace Kyoto.Database.Migrations.BotFactory
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Bots");
-
-            migrationBuilder.DropTable(
                 name: "Commands");
 
             migrationBuilder.DropTable(
                 name: "Feedbacks");
 
             migrationBuilder.DropTable(
-                name: "MenuButtons");
+                name: "MenuButtonAccesses");
 
             migrationBuilder.DropTable(
                 name: "PreOrderServices");
@@ -365,7 +365,7 @@ namespace Kyoto.Database.Migrations.BotFactory
                 name: "TemplateMessages");
 
             migrationBuilder.DropTable(
-                name: "MenuPanels");
+                name: "MenuButtons");
 
             migrationBuilder.DropTable(
                 name: "ExternalUsers");
@@ -378,6 +378,9 @@ namespace Kyoto.Database.Migrations.BotFactory
 
             migrationBuilder.DropTable(
                 name: "TemplateMessageTypes");
+
+            migrationBuilder.DropTable(
+                name: "MenuPanels");
 
             migrationBuilder.DropTable(
                 name: "User");

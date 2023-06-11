@@ -10,6 +10,7 @@ public class MenuButton
     public bool IsEnable { get; private set; }
     public int Index { get; private set; }
     public int Line { get; private set; }
+    public bool IsNeedAccessToWatch { get; private set; }
 
     private MenuButton(
         Guid id, 
@@ -19,7 +20,8 @@ public class MenuButton
         bool isCommand,
         bool isEnable,
         int index,
-        int line)
+        int line,
+        bool isNeedAccessToWatch)
     {
         Id = id;
         Text = text;
@@ -29,6 +31,7 @@ public class MenuButton
         IsEnable = isEnable;
         Index = index;
         Line = line;
+        IsNeedAccessToWatch = isNeedAccessToWatch;
     }
 
     public static MenuButton Create(
@@ -39,8 +42,9 @@ public class MenuButton
         bool isCommand, 
         bool isEnable, 
         int index, 
-        int line)
+        int line,
+        bool isNeedAccessToWatch)
     {
-        return new MenuButton(id, text, code, menuPanelId, isCommand, isEnable, index, line);
+        return new MenuButton(id, text, code, menuPanelId, isCommand, isEnable, index, line, isNeedAccessToWatch);
     }
 }

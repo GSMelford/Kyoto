@@ -20,6 +20,7 @@ public class BaseDatabaseContext : DbContext, IDatabaseContext
     public DbSet<CommonModels.Feedback>? Feedbacks { get; set; }
     public DbSet<PreOrderService>? PreOrderServices { get; set; }
     public DbSet<Service>? Services { get; set; }
+    public DbSet<MenuButtonAccess>? MenuButtonAccesses { get; set; }
 
     public BaseDatabaseContext(string connectionString)
     {

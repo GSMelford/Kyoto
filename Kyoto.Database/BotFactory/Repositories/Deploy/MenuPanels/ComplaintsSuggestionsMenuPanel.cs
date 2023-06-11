@@ -25,7 +25,7 @@ public class ComplaintsSuggestionsMenuPanel
                 },
                 new ()
                 {
-                    Text = "❤️ Додайте пропозиції або відгуки",
+                    Text = "❤️ Залишити відгук",
                     IsCommand = true,
                     Code = CommandCodes.ComplaintsSuggestions.Suggestions,
                     Index = 1,

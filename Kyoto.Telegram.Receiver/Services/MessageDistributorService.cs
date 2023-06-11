@@ -41,7 +41,7 @@ public class MessageDistributorService : IMessageDistributorService
         {
             "/start" => CommandCodes.Registration,
             "/cancel" => CommandCodes.Cancel,
-            _ => throw new ArgumentOutOfRangeException(nameof(command), command, null)
+            _ => string.Empty
         };
     }
 }

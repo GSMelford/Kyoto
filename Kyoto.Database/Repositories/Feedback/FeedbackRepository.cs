@@ -7,6 +7,8 @@ namespace Kyoto.Database.Repositories.Feedback;
 public class FeedbackRepository : IFeedbackRepository
 {
     private readonly IDatabaseContext _databaseContext;
+    
+    private const string FeedbackStatus = "Feedback";
 
     public FeedbackRepository(IDatabaseContext databaseContext)
     {
@@ -31,6 +33,36 @@ public class FeedbackRepository : IFeedbackRepository
         await _databaseContext.SaveAsync(feedback);
     }
 
+    public async Task SetFeedbackStatusAsync(bool isEnable)
+    {
+        var systemStatus = await _databaseContext.Set<SystemStatus>()
+            .FirstOrDefaultAsync(x => x.Name == FeedbackStatus);
+
+        if (systemStatus is null)
+        {
+            await _databaseContext.AddAsync(new SystemStatus
+            {
+                Name = FeedbackStatus,
+                Status = isEnable.ToString()
+            });
+        }
+        else
+        {
+            systemStatus.Status = isEnable.ToString();
+            _databaseContext.Update(systemStatus);
+        }
+
+        await _databaseContext.SaveChangesAsync();
+    }
+
+    public async Task<bool> IsFeedbackEnableAsync()
+    {
+        var systemStatus = await _databaseContext.Set<SystemStatus>()
+            .FirstOrDefaultAsync(x => x.Name == FeedbackStatus);
+
+        return systemStatus is not null && bool.Parse(systemStatus.Status);
+    }
+    
     public async Task<FeedbackSet> GetFeedbackSetAsync(int offset, int limit)
     {
         var feedbacks = await _databaseContext.Set<CommonModels.Feedback>()
@@ -48,6 +80,7 @@ public class FeedbackRepository : IFeedbackRepository
         
         return new FeedbackSet
         {
+            Total = feedbacks.Count,
             Feedbacks = feedbacks.Take(new Range(offset, limit + offset)).Select(x =>
             {
                 var feedback = new Domain.FeedbackSystem.Feedback

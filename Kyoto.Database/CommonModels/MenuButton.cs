@@ -10,4 +10,5 @@ public class MenuButton : BaseModel
     public bool IsEnable { get; set; }
     public int Index { get; set; }
     public int Line { get; set; }
+    public bool IsNeedAccessToWatch { get; set; } = false;
 }

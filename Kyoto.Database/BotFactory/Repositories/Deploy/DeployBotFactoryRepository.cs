@@ -17,7 +17,7 @@ public class DeployBotFactoryRepository : BaseDeployRepository
         var botManagementMenuPanel = BotManagementPanel.Get(homeMenuPanel.Name);
         await DatabaseContext.SaveAsync(botManagementMenuPanel);
         
-        var botFeaturesMenuPanel = BotFeaturesMenuPanel.Get(homeMenuPanel.Name);
+        var botFeaturesMenuPanel = BotFeaturesMenuPanel.GetFirstPart(homeMenuPanel.Name);
         await DatabaseContext.SaveAsync(botFeaturesMenuPanel);
         
         var complaintsSuggestionsMenuPanel = ComplaintsSuggestionsMenuPanel.Get(homeMenuPanel.Name);

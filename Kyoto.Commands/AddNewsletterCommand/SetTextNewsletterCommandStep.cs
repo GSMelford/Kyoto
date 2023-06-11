@@ -1,10 +1,7 @@
 using Kyoto.Domain.CommandSystem;
 using Kyoto.Domain.PostSystem.Interfaces;
 using Kyoto.Extensions;
-using Kyoto.Services.BotFactory.PostSystem;
 using Kyoto.Services.CommandSystem;
-using TBot.Client.Parameters;
-using TBot.Client.Requests;
 
 namespace Kyoto.Commands.AddNewsletterCommand;
 
@@ -19,22 +16,18 @@ public class SetTextNewsletterCommandStep : BaseCommandStep
 
     protected override async Task<CommandStepResult> SetActionRequestAsync()
     {
-        await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
-        {
-            Text = "🤔 Яке повідомлення ви хочете встановити?\nНапишіть це (ви можете використовувати текст MarkdownV2 😋):",
-            ChatId = Session.ChatId
-        }).ToRequest());
+        await _postService.SendTextMessageAsync(Session,
+            "🤔 Напишіть повідомлення \\(Mожете використовувати *MarkdownV2* 😋\\)\\:");
         
         return CommandStepResult.CreateSuccessful();
     }
 
     protected override Task<CommandStepResult> SetProcessResponseAsync()
     {
-        CommandContext.SetAdditionalData(new NewsletterData
-        {
-            TenantKey = CommandContext.AdditionalData!,
-            Text = CommandContext.Message!.Text!
-        }.ToJson());
+        var newsletterData = CommandContext.AdditionalData!.ToObject<NewsletterData>();
+        newsletterData.Text = CommandContext.Message!.Text!;
+        
+        CommandContext.SetAdditionalData(newsletterData.ToJson());
         
         return Task.FromResult(CommandStepResult.CreateSuccessful());
     }

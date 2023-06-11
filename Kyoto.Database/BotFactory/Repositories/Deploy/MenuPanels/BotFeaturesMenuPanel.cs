@@ -7,7 +7,7 @@ namespace Kyoto.Database.BotFactory.Repositories.Deploy.MenuPanels;
 
 public static class BotFeaturesMenuPanel
 {
-    public static MenuPanelDal Get(string backMenuPanelName)
+    public static MenuPanelDal GetFirstPart(string backMenuPanelName)
     {
         return new MenuPanelDal
         {
@@ -25,7 +25,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "📜 Додати заготовлене повідомлення",
+                    Text = "📝 Додати повідмолення",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.AddNewsletter,
                     Index = 0,
@@ -34,7 +34,7 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "📜 Видалити заготовлене повідомлення",
+                    Text = "❌ Видалити повідомлення",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.RemoveNewsletter,
                     Index = 1,
@@ -48,7 +48,8 @@ public static class BotFeaturesMenuPanel
                     Code = CommandCodes.BotFeatures.EnableCollectFeedback,
                     Index = 0,
                     Line = 2,
-                    IsEnable = true
+                    IsEnable = true,
+                    IsNeedAccessToWatch = true
                 },
                 new ()
                 {
@@ -57,7 +58,8 @@ public static class BotFeaturesMenuPanel
                     Code = CommandCodes.BotFeatures.DisableCollectFeedback,
                     Index = 0,
                     Line = 2,
-                    IsEnable = false
+                    IsEnable = true,
+                    IsNeedAccessToWatch = true
                 },
                 new ()
                 {
@@ -70,20 +72,20 @@ public static class BotFeaturesMenuPanel
                 },
                 new ()
                 {
-                    Text = "🙋‍♂️ Встановити FAQ",
+                    Text = "🙋‍♂️ Редагувати FAQ",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.SetFaq,
-                    Index = 2,
-                    Line = 2,
+                    Index = 0,
+                    Line = 3,
                     IsEnable = true
                 },
                 new ()
                 {
-                    Text = "ℹ️ Отримати статистику",
+                    Text = "ℹ️ Статистика",
                     IsCommand = true,
                     Code = CommandCodes.BotFeatures.GetStatistics,
-                    Index = 3,
-                    Line = 2,
+                    Index = 1,
+                    Line = 3,
                     IsEnable = true
                 },
                 new ()
@@ -91,7 +93,7 @@ public static class BotFeaturesMenuPanel
                     Text = MenuPanelConstants.BuildBackText(backMenuPanelName),
                     Code = MenuPanelConstants.MenuPanelCode,
                     Index = 0,
-                    Line = 3,
+                    Line = 4,
                     IsEnable = true
                 }
             }

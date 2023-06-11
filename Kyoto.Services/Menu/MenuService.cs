@@ -55,6 +55,7 @@ public class MenuService : IMenuService
 
         for (int i = 0; i < maxLine; i++)
         {
+            bool isMenuButtonAdded = false;
             var maxIndex = menuPanel.MenuButtons.Where(x=>x.Line == i).Max(x=>x.Index) + 1;
             for (int j = 0; j < maxIndex; j++)
             {
@@ -62,9 +63,21 @@ public class MenuService : IMenuService
                 var j1 = j;
                 
                 var menuButtons = menuPanel.MenuButtons.Where(x => x.Line == i1 && x.Index == j1);
-                var menuButton = menuButtons.FirstOrDefault(x => x.IsEnable);
-                if (menuButton is not null)
+
+                foreach (var menuButton in menuButtons)
                 {
+                    if (!menuButton.IsEnable)
+                    {
+                        continue;
+                    }
+                    
+                    if (menuButton.IsNeedAccessToWatch)
+                    {
+                        if (!await _menuRepository.IsAccessToWatchExistAsync(session.ExternalUserId, menuButton.Id))
+                            continue;
+                    }
+
+                    isMenuButtonAdded = true;
                     keyboard.Add(new KeyboardButton
                     {
                         Text = menuButton.Text
@@ -72,7 +85,7 @@ public class MenuService : IMenuService
                 }
             }
 
-            if (i + 1 != maxLine) 
+            if (i + 1 != maxLine && isMenuButtonAdded) 
                 keyboard.AddNextLine();
         }
 

@@ -117,9 +117,6 @@ namespace Kyoto.Database.Migrations.BotClient
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<Guid?>("UserExternalId")
-                        .HasColumnType("uuid");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ExternalUserId");
@@ -149,6 +146,9 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.Property<bool>("IsEnable")
                         .HasColumnType("boolean");
 
+                    b.Property<bool>("IsNeedAccessToWatch")
+                        .HasColumnType("boolean");
+
                     b.Property<int>("Line")
                         .HasColumnType("integer");
 
@@ -167,6 +167,33 @@ namespace Kyoto.Database.Migrations.BotClient
                     b.HasIndex("MenuPanelId");
 
                     b.ToTable("MenuButtons");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButtonAccess", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("CreationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<Guid>("ExternalUserId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("MenuButtonId")
+                        .HasColumnType("uuid");
+
+                    b.Property<DateTime?>("ModificationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExternalUserId");
+
+                    b.HasIndex("MenuButtonId");
+
+                    b.ToTable("MenuButtonAccesses");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.MenuPanel", b =>
@@ -441,6 +468,25 @@ namespace Kyoto.Database.Migrations.BotClient
                         .IsRequired();
 
                     b.Navigation("MenuPanel");
+                });
+
+            modelBuilder.Entity("Kyoto.Database.CommonModels.MenuButtonAccess", b =>
+                {
+                    b.HasOne("Kyoto.Database.CommonModels.ExternalUser", "ExternalUser")
+                        .WithMany()
+                        .HasForeignKey("ExternalUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Kyoto.Database.CommonModels.MenuButton", "MenuButton")
+                        .WithMany()
+                        .HasForeignKey("MenuButtonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ExternalUser");
+
+                    b.Navigation("MenuButton");
                 });
 
             modelBuilder.Entity("Kyoto.Database.CommonModels.PreOrderService", b =>

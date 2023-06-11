@@ -28,7 +28,8 @@ public static class HomePanel
                     Code = MenuPanelConstants.MenuPanelCode,
                     Index = 0,
                     Line = 1,
-                    IsEnable = false
+                    IsEnable = true,
+                    IsNeedAccessToWatch = true
                 },
                 new ()
                 {

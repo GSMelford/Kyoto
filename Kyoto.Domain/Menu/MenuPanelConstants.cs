@@ -9,15 +9,15 @@ public static class MenuPanelConstants
     
     public static class Button
     {
-        public const string EnableCollectFeedback = "🗣️ Увімкнути збір відгуків";
-        public const string DisableCollectFeedback = "🗣️ Вимкнути збір відгуків";
+        public const string EnableCollectFeedback = "🗣️ Увімкнути відгуки";
+        public const string DisableCollectFeedback = "🗣️ Вимкнути відгуки";
     }
     
     public static class Client
     {
-        public const string SendFeedback = "🗣 Відправити відгук";
-        public const string GetFaq = "ℹ️ FAQ";
-        public const string PreOrderService = "⌛️ Передзамовити послугу";
+        public const string SendFeedback = "🗣 Залишити відгук";
+        public const string GetFaq = "ℹ️ Подивитися FAQ";
+        public const string PreOrderService = "⌛️ Послуги";
     }
     
     public const string MenuPanelCode = "MenuPanel";

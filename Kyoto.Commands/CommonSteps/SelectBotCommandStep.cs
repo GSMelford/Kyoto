@@ -27,7 +27,7 @@ public class SelectBotCommandStep : BaseCommandStep
         var bots = await _botRepository.GetDeployedBotsAsync(Session.ExternalUserId);
         
         if (!bots.Any()) {
-            await _postService.SendTextMessageAsync(Session, "Ви ще не розгорнули жодного бота\\.%0AДля цього зайдіть у меню\\: *🤖⚙️ Управління ботами*");
+            await _postService.SendTextMessageAsync(Session, "Ви ще не розгорнули жодного бота\\.%0AЩоб це зробити, зайдіть у меню\\: *🤖⚙️ Управління ботами*");
             return CommandStepResult.CreateInterrupt();
         }
         
@@ -42,7 +42,7 @@ public class SelectBotCommandStep : BaseCommandStep
 
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "🤖 Choose the bot:",
+            Text = "🤖 Виберіть бота:",
             ReplyMarkup = keyboard,
             ChatId = Session.ChatId
         }).ToRequest());

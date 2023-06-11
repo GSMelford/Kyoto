@@ -36,7 +36,7 @@ public class MakingChoiceNewsletterEventCommandStep : BaseCommandStep
         
         await _postService.PostAsync(Session, new SendMessageRequest(new SendMessageParameters
         {
-            Text = "📃 Виберіть подію надсилання повідомлення:",
+            Text = "📃 Виберіть подію надсилання:",
             ChatId = Session.ChatId,
             ReplyMarkup = keyboard
         }).ToRequest());
@@ -46,11 +46,14 @@ public class MakingChoiceNewsletterEventCommandStep : BaseCommandStep
 
     protected override Task<CommandStepResult> SetProcessResponseAsync()
     {
+        string tenantKey = CommandContext.AdditionalData!;
         var postEventCode = Enum.Parse<PostEventCode>(CommandContext.CallbackQuery!.Data!);
         
-        var newsletterData = CommandContext.AdditionalData!.ToObject<NewsletterData>();
-        newsletterData.PostEventCode = postEventCode;
-        CommandContext.SetAdditionalData(newsletterData.ToJson());
+        CommandContext.SetAdditionalData(new NewsletterData
+        {
+            TenantKey = tenantKey,
+            PostEventCode = postEventCode
+        }.ToJson());
         
         return Task.FromResult(CommandStepResult.CreateSuccessful());
     }

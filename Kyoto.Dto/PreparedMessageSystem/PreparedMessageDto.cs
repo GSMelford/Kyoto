@@ -7,4 +7,5 @@ public class PreparedMessageDto
     public PostEventCode PostEventCode { get; set; }
     public string Text { get; set; } = null!;
     public DateTime? TimeToSend { get; set; }
+    public string? KeyWords { get; set; }
 }
